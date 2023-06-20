@@ -40,6 +40,16 @@
 >
   <input type="hidden" name="quantity" value="1">
 
+  <script>
+    function checkelement(){
+      if($('[x-show="modal"]').css('display') == 'none'){
+        $("html").css("overflow","hidden");
+      }else{
+        $("html").css("overflow","unset");
+      }
+    }
+  </script>
+
   <div
     id="MainProduct-{{ section.id }}"
     class="{{ section.settings.section_spacing }}"
@@ -60,14 +70,16 @@
             formInput.setAttribute('value', value);
             ticketId.setAttribute('data-prodId', value);
             ticketId.innerText = ticketVal;
+            
+
 
             setTimeout(function() {
             if (symPlugginForm || swymPlugginButtonBar) {
-
               symPlugginForm.classList.add('hidden');
               swymPlugginButtonBar.classList.add('hidden');
 
             } else {
+
               return
             }
           }, 4000);
@@ -241,7 +253,7 @@
                   name="add"
 
                   {% if product.metafields.custom.configurable_product_check == true %}
-                    x-on:click="modal = ! modal, clickModal()"
+                    x-on:click="modal = ! modal, clickModal(), checkelement()"
                   {% endif %}
                   class="js-add-to-cart add-to-cart btn-primary-green w-full"
                   x-text="atcButtonText"
@@ -287,7 +299,7 @@
                 href="#"
                 data-target="#monogramming-modal"
                 {% if product.metafields.custom.configurable_product_check == true %}
-                  x-on:click="modal = ! modal, clickModal()"
+                  x-on:click="modal = ! modal, clickModal(), checkelement()"
                 {% endif %}
               >
                 {{- 'products.product.edit' | t -}}
@@ -367,6 +379,35 @@
                       return parseInt(value);
                     },
                     time() {
+                      if(this.format(this.days().value) > 0){
+                        $(".show-model-timer [x-show='time().days > 0'] span").text(this.format(this.days().value));
+                        $(".show-model-timer [x-show='time().days > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().days > 0']").hide();
+                      }
+                      if(this.format(this.hours().value) > 0){
+                        $(".show-model-timer [x-show='time().hours > 0'] span").text(this.format(this.hours().value));
+                        $(".show-model-timer [x-show='time().hours > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().hours > 0']").hide();
+                      }
+                      if(this.format(this.minutes().value) > 0){
+                        $(".show-model-timer [x-show='time().minutes > 0'] span").text(this.format(this.minutes().value));
+                        $(".show-model-timer [x-show='time().minutes > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().minutes > 0']").hide();
+                      }
+                      if(this.format(this.seconds().value) > 0){
+                        $(".show-model-timer [x-show='time().seconds > 0'] span").text(this.format(this.seconds().value));
+                        $(".show-model-timer [x-show='time().seconds > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().seconds > 0']").hide();
+                      }
+                      if(this.format(this.days().value) <= 0 && this.format(this.hours().value) <= 0 && this.format(this.minutes().value) <= 0 && this.format(this.seconds().value) <= 0){
+                        $(".modal-scroll .font-body.text-center.text-base.mb-8").hide();
+                      }else{
+                        $(".modal-scroll .font-body.text-center.text-base.mb-8").show();
+                      }
                       return {
                         days: this.format(this.days().value),
                         hours: this.format(this.hours().value),
