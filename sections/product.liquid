@@ -367,11 +367,37 @@
                       return parseInt(value);
                     },
                     time() {
+                      if(this.format(this.days().value) > 0){
+                        $(".show-model-timer [x-show='time().days > 0'] span").text(this.format(this.days().value));
+                        $(".show-model-timer [x-show='time().days > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().days > 0']").hide();
+                      }
+                      if(this.format(this.hours().value) > 0){
+                        $(".show-model-timer [x-show='time().hours > 0'] span").text(this.format(this.hours().value));
+                        $(".show-model-timer [x-show='time().hours > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().hours > 0']").hide();
+                      }
+                      if(this.format(this.minutes().value) > 0){
+                        $(".show-model-timer [x-show='time().minutes > 0'] span").text(this.format(this.minutes().value));
+                        $(".show-model-timer [x-show='time().minutes > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().minutes > 0']").hide();
+                      }
+                      if(this.format(this.seconds().value) > 0){
+                        $(".show-model-timer [x-show='time().seconds > 0'] span").text(this.format(this.seconds().value));
+                        $(".show-model-timer [x-show='time().seconds > 0']").show();
+                      }else{
+                        $(".show-model-timer [x-show='time().seconds > 0']").hide();
+                      }
+
                       return {
                         days: this.format(this.days().value),
                         hours: this.format(this.hours().value),
                         minutes: this.format(this.minutes().value),
                         seconds: this.format(this.seconds().value),
+
                       };
                     },
                   };
