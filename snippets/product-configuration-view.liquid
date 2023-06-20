@@ -61,12 +61,31 @@
         </picture>
       </div>
     {% endif %}
+    {% if shop.metafields.accentuate.next_day_cut_off != blank %}
+      {%- capture countdown -%}
+      <span class="text-black font-semibold show-model-timer">
+        <span x-show="time().days > 0"><span x-text="time().days"></span>d</span>
+        <span x-show="time().hours > 0"><span x-text="time().hours"></span>hr</span>
+        <span x-show="time().minutes > 0"><span x-text="time().minutes"></span>m</span>
+        <span x-show="time().seconds > 0"><span x-text="time().seconds"></span>sec</span>
+      </span>
+      {%- endcapture -%}
+
+      {%- capture countdownText -%}
+      {{ 'products.product.delivery_countdown_html' | t }}
+      {% endcapture %}
+      <p class="delivery-countdown font-body text-xs text-gray-600 leading-none ml-2">
+        {{ countdownText | replace: '[countdown]', countdown }}
+      </p>
+    {% endif %}
     <div class="modal-content w-full mx-auto h-auto grid col-span-12 text-center">
       {% comment %} Content {% endcomment %}
       <div class="flex justify-center items-center pb-2 flex-col py-8 border-b border-b-gray-300 max-w-7xl mx-auto w-full">
         <h2 class="font-primary text-12xl leading-primary-font uppercase pb-4 text-center">{{ productName }}</h2>
         {% comment %} todo make dynamic {% endcomment %}
-        <p class="font-body text-center text-base mb-8">Order in the next 1hr 5m 22secs for next day delivery</p>
+        {% comment %} <p class="font-body text-center text-base mb-8">Order in the next 1hr 5m 22secs for next day delivery</p> {% endcomment %}
+        <p class="font-body text-center text-base mb-8">{{ countdownText | replace: '[countdown]', countdown }}</p>
+        
       </div>
     </div>
 
