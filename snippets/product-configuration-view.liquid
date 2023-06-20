@@ -1,0 +1,208 @@
+{% liquid
+  assign addToCartText = 'products.product.add_to_cart' | t
+  if product.available != true
+    assign addToCartText = 'products.product.inventory_out_of_stock' | t
+  endif
+%}
+
+<script src="{{ 'monogramming.js' | asset_url }}" defer></script>
+<script src="{{ 'product-config.js' | asset_url }}" defer></script>
+
+<div
+  x-cloak
+  x-show="modal"
+  x-trap.noscroll="modal"
+  class="modal fixed w-full h-full top-0 left-0 flex items-center justify-center z-product-configuration"
+  x-id="['tab']"
+  x-data="
+    {
+      innerModal: false,
+    }
+  "
+>
+  <div class="modal-overlay absolute w-full h-full bg-white opacity-100 z-50"></div>
+
+  <div
+    class="modal-container fixed w-full h-full z-50 overflow-y-auto grid grid-cols-12 mx-auto"
+    style="grid-template-rows: auto auto 1fr 1fr 1fr auto auto;"
+  >
+    {% comment %} back Link {% endcomment %}
+    <div class="modal-close grid top-0 right-0 cursor-pointer col-start-2  sm:col-start-2 md:col-start-3 col-span-10 sm:col-span-10 md:col-span-9 items-center text-black text-sm z-50 h-16">
+      <a
+        href="#"
+        x-on:click="modal = ! modal, clickModal()"
+        alt="{{ 'products.product.quick_back_to_product_text' | t }}"
+        ><span class="text-2xl relative top-1">&#8592;</span> {{ 'products.product.quick_back_to_product_text' | t }}
+        {{ productName }}
+      </a>
+    </div>
+    {% comment %} image block {% endcomment %}
+
+    {% if productImg != blank %}
+      <div class="col-span-12  items-center w-full bg-gray-100 overflow-hidden h-80 row-auto">
+        <picture>
+          <source
+            productImg="(max-width: 768px)"
+            srcset="{{ productImg | image_url: height: 1000 }} 1x"
+          >
+          <source
+            productImg="(max-width: 960px)"
+            srcset="{{ productImgc | image_url: height: 1000 }} 1x"
+          >
+          <img
+            src="{{ productImg | image_url: height: 1000 }}"
+            srcset="{{ productImg| image_url: height: 1000 }} 1x"
+            alt="{{ productImg.alt | escape }}"
+            class="object-cover mx-auto"
+            width="1000"
+            height="1000"
+            loading="lazy"
+          >
+        </picture>
+      </div>
+    {% endif %}
+    <div class="modal-content w-full mx-auto h-auto grid col-span-12 text-center">
+      {% comment %} Content {% endcomment %}
+      <div class="flex justify-center items-center pb-2 flex-col py-8 border-b border-b-gray-300 max-w-7xl mx-auto w-full">
+        <h2 class="font-primary text-12xl leading-primary-font uppercase pb-4 text-center">{{ productName }}</h2>
+        {% comment %} todo make dynamic {% endcomment %}
+        <p class="font-body text-center text-base mb-8">Order in the next 1hr 5m 22secs for next day delivery</p>
+      </div>
+    </div>
+
+    {% comment %} Options {% endcomment %}
+
+    {% render 'trade-in-option' %}
+
+    <div class="spacer w-full h-20"></div>
+    <div class="modal-options mx-auto w-full h-auto grid col-span-12">
+      <h2 class="font-primary text-5xl col-span-12 text-center mb-4 uppercase">options</h2>
+      <div class="grid col-span-12 w-full mx-auto">
+        {% comment %} {{ product | json }} {% endcomment %}
+
+        <div
+          x-cloak
+          x-data="{ tab: 'tab1' }"
+          class="flex w-full flex-row flex-wrap sm:flex-wrap md:flex-nowrap lg:flex-nowrap space justify-center gap-x-4 gap-y-4 sm:gap-y-4 md:gap-y-0 px-6"
+        >
+          {% comment %} {{ product.variants | json }} {% endcomment %}
+          {% for variant in product.variants limit: 4 %}
+            {% assign product_thumbnail = variant.featured_image | img_url: '131x175', crop: 'center' %}
+
+            <div
+              @click.prevent="tab = 'tab{{- forloop.index -}}'"
+              :class="{ 'border-gray-900 tick': tab == 'tab{{- forloop.index -}}'}"
+              class="border border-gray-300 flex flex-row md:h-44 w-full sm:w-full md:w-1/3 md:max-w-xs lg:max-w-xs cursor-pointer relative"
+              data-productid="{{ variant.id }}"
+              x-on:click="selectedClick"
+            >
+              <a
+                class="absolute top-0 left-0 bottom-0 w-full h-full z-10"
+                alt=""
+                data-price="{{ variant.price | money }}"
+                data-productid="{{ variant.id }}"
+              ></a>
+              <div class="w-1/3 flex bg-gray-300 relative checkbox">
+                <div
+                  class="w-6 h-6 bg-black absolute top-0 left-0 hidden"
+                >
+                  <span class="font-primary text-white mx-auto w-full flex justify-center">&#10003</span>
+                </div>
+                <img
+                  src="{{- product_thumbnail -}}"
+                  width="106"
+                  loading="lazy"
+                  alt="{{ image.alt | escape }}"
+                  height="auto"
+                >
+              </div>
+              <div class="w-2/3 flex flex-col justify-center pl-10">
+                <p class="text-sm leading-4">with</p>
+                <div class="flex flex-row">
+                  <h2 class="font-primary text-xl">{{ variant.metafields.custom.variant_box_options }}</h2>
+
+                  {% if variant.metafields.custom.variant_box_options_page_description != blank %}
+                    <p x-cloak x-on:click="innerModal = true" class="text-xs underline pl-2 leading-8">
+                      {{ 'products.product.page_description_modal' | t }}
+                    </p>
+
+                    {% assign content = variant.metafields.custom.variant_box_options_page_description %}
+
+                    <div
+                      class="absolute top-0 left-0 w-full h-full flex items-center justify-center"
+                      style="background-color: rgba(0,0,0,.5);"
+                      x-show="innerModal"
+                      x-cloak
+                    >
+                      <div
+                        class="relative text-left bg-white h-auto p-4 md:max-w-xl md:py-16 md:px-12 lg:py-16 lg:px-12 shadow-xl mx-2 md:mx-0"
+                        @click.away="innerModal = false"
+                      >
+                        <button x-on:click="innerModal = false" class="absolute top-9 right-9 w-5 h-5">
+                          <svg
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                        </button>
+                        <h2 class="font-primary text-10xl">{{ variant.title }}</h2>
+
+                        {{ variant.metafields.custom.variant_box_options_page_description.title }}
+
+                        {{ content.value.content }}
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="flex flex-row">
+                  <p class="text-lg price-varient">{{ variant.price | money }}</p>
+                  {% if variant.metafields.custom.variant_box_options_price_saving != blank %}
+                    <p class="text-lg pl-2">{{ variant.metafields.custom.variant_box_options_price_saving }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="spacer w-full h-20"></div>
+    {% comment %} mongram {% endcomment %}
+
+    {% render 'monogram' %}
+
+    {% render 'bundle-card' %}
+    <div x-cloak class="modal-content mx-auto w-full h-auto grid col-span-12"></div>
+
+    <div x-cloak class="modal-content mx-auto w-full h-auto grid col-span-12">
+      <div class="flex justify-center items-center py-10 flex-col bg-black">
+        <span class="font-body text-white pb-4">
+          {{- 'products.product.total' | t }}
+          <span id="config-price" data-prodId="" class="font-secondary text-2xl">{{ productPrice | money }}</span></span
+        >
+
+        <form action="/cart/add" method="post" id="product-configure-form-{{ product.id }}">
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+          <button
+            name="add"
+            x-on:click="modal = ! modal, clickModal()"
+            class="js-add-to-cart add-to-cart btn-primary-green w-fit"
+            {% if productAvailable != true %}
+              disabled
+            {% endif %}
+          >
+            <span data-add-to-cart-text>
+              {{ addToCartText }}
+            </span>
+          </button>
+        </form>
+      </div>
+      <!-- Body -->
+    </div>
+  </div>
+</div>

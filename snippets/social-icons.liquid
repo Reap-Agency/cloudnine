@@ -1,0 +1,18 @@
+<ul class="social-list flex items-center">
+  {% assign socials = 'YouTube,Facebook,Instagram,Twitter,Pinterest' | split: ',' %}
+  {% for social in socials %}
+    {% assign socialLink = social | prepend: 'social_' | append: '_link' | downcase %}
+    {% assign socialIcon = social | downcase %}
+    {% if socialLink %}
+      <li class="social-list__item">
+        <a
+          href="{{ settings[socialLink] }}"
+          target="_blank"
+          class="social-list__link flex items-center px-2 cursor-pointer">
+          {% render 'icon', icon: socialIcon, iconClasses: ' w-6 h-6 text-gray-400 transition-all hover:text-white' %}
+          <span class="sr-only">{{ social }}</span>
+        </a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>

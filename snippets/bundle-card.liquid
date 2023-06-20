@@ -1,0 +1,107 @@
+{% liquid
+  assign title = section.settings.title
+%}
+
+{%- if product.metafields.custom.bundle_options or title != blank -%}
+  <div class="mx-auto w-full mx-auto h-auto md:grid col-span-12 py-8  sm:py-8 md:py-20 lg:py-20 max-w-screen-2xl">
+    {%- if product.metafields.custom.bundle_options -%}
+      {%- assign upsell_item = product.metafields.custom.bundle_options.value.product_item.value -%}
+
+      <!-- Start of slider -->
+      <!-- @todo Can we create a function for the swiper for it to be reusable? -->
+
+      <h2 class="font-primary text-10xl leading-primary-font text-center pb-4 md:pb-12 uppercase">
+        {{- 'products.product.bundle_card_title' | t -}}
+      </h2>
+      <div
+        x-data="{ swiper: null, isMobile: false }"
+        x-init="
+          isMobile = (window.innerWidth < 846) ? true : false;
+          if (isMobile) {
+            swiper = new Swiper($refs.bundledProductsMain, {
+              loop: false,
+              slidesPerView: 1,
+              spaceBetween: 0,
+              navigation: {
+                nextEl: '.bundle-products-slider-next',
+                prevEl: '.bundle-products-slider-prev',
+              },
+              pagination: {
+                el: '.c9-swiper-progress-pagination',
+                progressbarFillClass: 'c9-swiper-pagination-progressbar-fill bg-black ',
+                type: 'progressbar',
+              },
+            });
+          }
+        "
+        x-on:resize.window="
+          isMobile = (window.innerWidth < 846) ? true : false;
+          if (isMobile && swiper === null) {
+            swiper = new Swiper($refs.bundledProductsMain, {
+              loop: false,
+              slidesPerView: 1,
+              spaceBetween: 0,
+              navigation: {
+                nextEl: '.bundle-products-slider-next',
+                prevEl: '.bundle-products-slider-prev',
+              },
+              pagination: {
+                el: '.c9-swiper-progress-pagination',
+                type: 'progressbar',
+              },
+            });
+          } else if ( !isMobile && swiper !== null) {
+            console.log('destroy swiper');
+            swiper.destroy();
+            swiper = null;
+          }
+        "
+        class="relative w-full"
+      >
+        <div class="swiper swiper-container" x-ref="bundledProductsMain">
+          <div class="swiper-wrapper md:grid md:grid-cols-12 md:gap-x-1">
+            <!-- Slides -->
+            {%- for upsell_product in upsell_item limit: 4 -%}
+              <div
+                class="swiper-slide w-full mr-1 last:mr-0 md:mr-0 md:col-span-3"
+                data-slider-id="{{ forloop.index }}"
+              >
+                {% render 'product-card',
+                  item: upsell_product,
+                  cardClasses: 'w-full',
+                  addToCart: true,
+                  link: true,
+                  fullHeightContainer: true
+                %}
+              </div>
+            {%- endfor -%}
+          </div>
+          <!-- Slider progress -->
+          <div class="flex justify-between items-center px-6 pt-4 md:hidden ">
+            <div class="relative w-full mr-4">
+              <div class="c9-swiper-progress-pagination"></div>
+            </div>
+            <!-- Slider controls -->
+            <div class="flex items-center">
+              <button type="button" class="group bundle-products-slider-prev">
+                {% render 'icon',
+                  icon: 'arrow-full-left',
+                  iconClasses: 'text-black group-[.swiper-button-disabled]:text-gray-300'
+                %}
+              </button>
+              <button type="button" class="group bundle-products-slider-next">
+                {% render 'icon',
+                  icon: 'arrow-full-right',
+                  iconClasses: 'text-black group-[.swiper-button-disabled]:text-gray-300'
+                %}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of slider -->
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<script></script>

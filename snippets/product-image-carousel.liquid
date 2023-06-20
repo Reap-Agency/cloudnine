@@ -1,0 +1,73 @@
+{% if product_media.size > 0 %}
+  <div
+    x-data="{swiper: null}"
+    x-init="
+      swiper = new Swiper($refs.productImage, {
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 0,
+        pagination: {
+            el: '.c9-swiper-pagination',
+            clickable: true,
+            bulletClass: 'c9-swiper-pagination-bullet',
+            bulletActiveClass: 'c9-swiper-pagination-bullet-active',
+        },
+      })
+    "
+    class="relative w-full mx-auto flex flex-row"
+  >
+    <div class="absolute inset-y-0 left-0 z-10 flex items-center">
+      <button
+        @click="swiper.slidePrev()"
+        class="ml-2 flex justify-center items-center w-7 h-24 border border-solid border-gray-50 hover:bg-white hover:border-black"
+      >
+        {% render 'icon', icon: 'arrow-left' %}
+      </button>
+    </div>
+
+    <div class="swiper swiper-container" x-ref="productImage">
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        {% for media in product_media %}
+          {% case media.media_type %}
+            {% when 'image' %}
+              <div class="swiper-slide flex items-end" data-media-id="{{ media.id }}">
+                <picture>
+                  <source
+                    media="(max-width: 768px)"
+                    srcset="{{ media.src | image_url: height: 768 }} 1x"
+                  >
+                  <source
+                    media="(max-width: 960px)"
+                    srcset="{{ media.src | image_url: height: 960 }} 1x"
+                  >
+                  <img
+                    src="{{ media.src | image_url: height: 1000 }}"
+                    srcset="{{ media.src | image_url: height: 1000 }} 1x"
+                    alt="{{ media.alt | escape }}"
+                    class="object-cover"
+                    width="1000"
+                    height="720"
+                    {% unless forloop.index == 1 %}
+                      loading="lazy"
+                    {% endunless %}
+                  >
+                </picture>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+      <div class="c9-swiper-pagination"></div>
+    </div>
+
+    <div class="absolute inset-y-0 right-0 z-10 flex items-center">
+      <button
+        @click="swiper.slideNext()"
+        class="mr-2 flex justify-center items-center w-7 h-24 border border-solid border-gray-50 hover:bg-white hover:border-black"
+      >
+        {% render 'icon', icon: 'arrow-right' %}
+      </button>
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,15 @@
+{% for prod in shop.metaobjects.linked_products.values %}
+	{% for linked in prod.products_to_be_linked.value %}
+	{% capture handles %}{{ linked.handle }},{% endcapture %}
+	{% assign handlesArray = handles | split: ',' %}
+	{%- if handlesArray contains product.handle -%}
+<div class="pb-4" x-data="{ swatchName: '{{ product.title | split: '-' | last}}'}">
+		{% for swatch in prod.products_to_be_linked.value %}
+			<a href="{{ swatch.url }}" class="mr-2 pl-1 inline-block" @mouseover="swatchName = '{{ swatch.title | split: '-' | last}}'" @mouseleave="swatchName = '{{ product.title | split: '-' | last}}'"><img src="{{ swatch.metafields.accentuate.linked_colour_swatch }}" class="inline-block rounded-full w-4 h-4 ring-1 ring-offset-3 hover:ring-gray-300 {% if product.handle == swatch.handle %}current-swatch ring-black{% else %}ring-gray-400{% endif %}" /> </a>
+		{% endfor %}
+		
+		<span class="block mt-2 text-gray-600 text-x" x-text="swatchName">{{ product.title | split: '-' | last}}</span>
+</div>
+	{% endif %}
+	{% endfor %}
+{% endfor %}

@@ -1,0 +1,155 @@
+{%- if section.settings.main_image != blank
+  or section.settings.small_image != blank
+  or section.settings.pre_heading_text != blank
+  or section.settings.heading_text != blank
+  or section.settings.main_text != blank
+  or section.settings.button_link != blank
+  or section.settings.button_text != blank
+-%}
+  <div class="{{- section.settings.section_spacing -}}">
+    <div class="flex flex-col bg-gray-100 relative md:flex-row md:min-h-500px">
+      <div class="{% if section.settings.small_image == blank %}order-1 md:order-2{% else %}order-2 md:order-2{% endif %} sm:absolute sm:inset-0 grid sm:grid-cols-12">
+        {%- if section.settings.main_image != blank -%}
+          <img
+            src="{{ section.settings.main_image | image_url }}"
+            class="sm:col-start-6 md:w-auto md:h-full sm:absolute sm:left-50 sm:top-50 sm:min-w-full sm:object-contain object-right 2xl:object-center mb-11 sm:mb-0"
+            alt="{{ section.settings.main_image.alt }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+      <div class="order-1 max-w-screen-xl mx-auto pt-12 pb-8 md:py-24 pl-6 pr-16 md:pr-0 sm:relative">
+        <div class="grid gap-0 sm:gap-10 md:gap-18 lg:gap-20 grid-cols-1 sm:grid-cols-12">
+          <div class="col-span-4 flex justify-center flex-col items-start">
+            <div class="md:pl-0 xl:px-0">
+              {%- if section.settings.small_image != blank -%}
+                <img
+                  src="{{ section.settings.small_image | image_url }}"
+                  class="w-full mb-8 md:mb-12"
+                  alt="{{ section.settings.small_image.alt }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+
+              {%- if section.settings.pre_heading_text != blank -%}
+                <div class="font-secondary leading-secondary-font text-2xl mb-1">
+                  {{ section.settings.pre_heading_text }}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.heading_text != blank -%}
+                <div class="font-primary leading-primary-font uppercase text-10xl max-w-[370px] mb-6">
+                  {{ section.settings.heading_text }}
+                </div>
+              {%- endif -%}
+              {%- if section.settings.main_text != blank -%}
+                <div class="font-body text-sm">
+                  {{ section.settings.main_text }}
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.button_link != blank and section.settings.button_text != blank -%}
+                <a href="{{ section.settings.button_link }}" class="underline block text-base mt-6 mb-4 md:mb-0">
+                  {{- section.settings.button_text -}}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product Content Section 2",
+  "class": "product-content-section-2",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "small_image",
+      "label": "Small Image"
+    },
+    {
+      "type": "text",
+      "id": "pre_heading_text",
+      "label": "Pre heading text"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading text"
+    },
+    {
+      "type": "text",
+      "id": "main_text",
+      "label": "Main Text"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Content Section 2"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

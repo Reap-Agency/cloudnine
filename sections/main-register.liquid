@@ -1,0 +1,183 @@
+{% liquid
+  assign section_spacing = section.settings.section_spacing
+%}
+
+<div class="container m-auto p-4 md:max-w-[25rem] md:p-0 {{ section_spacing }}">
+  {% form 'create_customer' %}
+    <div class="flex flex-col mb-6">
+      <label for="RegisterForm-FirstName" class="form-label">
+        {{ 'customer.register.first_name' | t }}
+      </label>
+      <input
+        type="text"
+        name="customer[first_name]"
+        id="RegisterForm-FirstName"
+        class="form-input"
+        {% if form.first_name %}
+          value="{{ form.first_name }}"
+        {% endif %}
+        placeholder=""
+      >
+    </div>
+
+    <div class="flex flex-col mb-6">
+      <label for="RegisterForm-LastName" class="form-label">
+        {{ 'customer.register.last_name' | t }}
+      </label>
+      <input
+        type="text"
+        name="customer[last_name]"
+        id="RegisterForm-LastName"
+        class="form-input"
+        {% if form.last_name %}
+          value="{{ form.last_name }}"
+        {% endif %}
+        autocomplete="family-name"
+        placeholder=""
+      >
+    </div>
+
+    <div class="flex flex-col mb-6">
+      <label for="RegisterForm-email" class="form-label">
+        {{ 'customer.register.email' | t }}
+      </label>
+      <input
+        type="email"
+        name="customer[email]"
+        id="RegisterForm-email"
+        class="form-input {% if form.errors contains 'email' %}form-input-error{% endif %}"
+
+        {% if form.email %}
+          value="{{ form.email }}"
+        {% endif %}
+        aria-required="true"
+        {% if form.errors contains 'email' %}
+          aria-invalid="true"
+          aria-describedby="RegisterForm-email-error"
+        {% endif %}
+        placeholder=""
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off"
+      >
+
+      {%- if form.errors contains 'email' -%}
+        <span id="RegisterForm-email-error" class="form-label-error">
+          {{ form.errors.translated_fields.email | capitalize }}
+          {{ form.errors.messages.email }}
+        </span>
+      {%- endif -%}
+    </div>
+
+    <div class="flex flex-col mb-6">
+      <label for="RegisterForm-password" class="form-label">
+        {{ 'customer.register.password' | t }}
+      </label>
+      <input
+        type="password"
+        name="customer[password]"
+        id="RegisterForm-password"
+        class="form-input {% if form.errors contains 'password' %}form-input-error{% endif %}"
+        aria-required="true"
+        {% if form.errors contains 'password' %}
+          aria-invalid="true"
+          aria-describedby="RegisterForm-password-error"
+        {% endif %}
+        placeholder=""
+      >
+      {%- if form.errors contains 'password' -%}
+        <span id="RegisterForm-password-error" class="form-label-error">
+          {{ form.errors.translated_fields.password | capitalize }}
+          {{ form.errors.messages.password }}
+        </span>
+      {%- endif -%}
+    </div>
+
+    <div class="flex flex-row mb-6 text-sm">
+      <span class="flex">
+        <input
+          type="hidden"
+          name="customer[accepts_marketing]"
+          value=""
+        >
+        <input
+          type="checkbox"
+          name="customer[accepts_marketing]"
+          id="acceptsMarketing"
+          class="form-checkbox h-8 w-8 border-gray-300 cursor-pointer focus:outline-none focus:ring focus:ring-brand-blue focus:border-white hover:border-black"
+        >
+      </span>
+      <label class="flex" for="acceptsMarketing">
+        <span class="ml-4">{{ 'customer.register.newsletter' | t }}</span>
+      </label>
+    </div>
+
+    <button class="btn-primary-dark w-full">
+      {{ 'customer.register.sign_up' | t }}
+    </button>
+  {%- endform -%}
+
+  <div class="block m-auto text-center mt-4">
+    {{ 'customer.register.login_link_text' | t }}
+    <a href="{{ routes.account_login_url }}" class="underline">{{ 'customer.register.login_link' | t }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-register.name",
+  "class": "customer register",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["customers/register"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.main-register.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,11 @@
+{
+  "assets\/app.css": "\/assets\/app.css",
+  "assets\/app.js": "\/assets\/app.js",
+  "assets\/runtime.js": "\/assets\/runtime.js",
+  "assets\/comparison.js": "\/assets\/comparison.js",
+  "assets\/monogramming.js": "\/assets\/monogramming.js",
+  "assets\/icon-arrow-right-white.svg": "\/assets\/icon-arrow-right-white.svg",
+  "assets\/icon-close-white.svg": "\/assets\/icon-close-white.svg",
+  "assets\/icon-close.svg": "\/assets\/icon-close.svg",
+  "assets\/product-config.js": "\/assets\/product-config.js"
+}

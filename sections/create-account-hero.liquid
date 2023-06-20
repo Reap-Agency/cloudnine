@@ -1,0 +1,181 @@
+{% liquid
+  assign section_spacing = section.settings.section_spacing
+  assign left_image = section.settings.left_image
+  assign right_image = section.settings.right_image
+  assign create_account_title = section.settings.create_account_title
+  assign create_account_copy = section.settings.create_account_copy
+  assign create_account_sub_title = section.settings.create_account_sub_title
+%}
+
+{%- if create_account_title != blank or right_image != blank or left_image != blank -%}
+  <div class="{{ section_spacing }} relative grid grid-cols-2 auto-cols-max md:grid-cols-5">
+    {%- if left_image != blank -%}
+      <img
+        class="h-full order-1 aspect-square object-cover object-center w-full md:aspect-1/2"
+        src="{{ left_image | image_url }}"
+        width="auto"
+        height="auto"
+        alt="{{ left_image.alt }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+
+    <div class="bg-gray-50 w-full px-4 py-8 col-span-2 flex flex-col items-center justify-center order-3 md:col-start-2 md:col-end-5 md:order-2 md:col-span-full">
+      <div class="md:max-w-screen-sm flex flex-col items-center justify-center">
+        {%- if create_account_title != blank -%}
+          <h1 class="font-primary uppercase text-center text-10xl leading-primary-font mb-2 md:text-12xl">
+            {{ create_account_title }}
+          </h1>
+        {%- endif -%}
+
+        {%- if create_account_copy != blank -%}
+          <div class="text-center text-base md:max-w-[35rem] md:px-10">
+            {{ create_account_copy }}
+          </div>
+        {%- endif -%}
+
+        {%- if create_account_sub_title != blank -%}
+          <div class="text-center text-2xl font-secondary leading-secondary-font mt-10">
+            {{ create_account_sub_title }}
+          </div>
+        {%- endif -%}
+
+        {% if section.blocks.size > 0 %}
+          <ul class="block w-full mt-6 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-4 md:max-w-[35rem]">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'bullets' -%}
+                <li class="flex items-start pb-2 md:pb-0">
+                  {%- if block.settings.icon != blank -%}
+                    <img
+                      class="mr-2"
+                      src="{{ block.settings.icon | image_url }}"
+                      width="auto"
+                      height="auto"
+                      alt="{{ block.settings.icon.alt }}"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+
+                  <span class=""> {{ block.settings.bullet }}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+
+    {%- if right_image != blank -%}
+      <img
+        class="h-full order-2 aspect-square object-cover object-center w-full md:order-3 md:aspect-1/2"
+        src="{{ right_image | image_url }}"
+        width="auto"
+        height="auto"
+        alt="{{ right_image.alt }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Create Account hero",
+  "class": "create-account-hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right Image"
+    },
+    {
+      "type": "text",
+      "id": "create_account_title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "create_account_copy",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "create_account_sub_title",
+      "label": "Sub Title"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Bullet Points",
+      "type": "bullets",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "bullet",
+          "label": "Bullet Point"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Create Account hero"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["customers/register"]
+  }
+}
+{% endschema %}

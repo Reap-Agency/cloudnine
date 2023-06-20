@@ -1,0 +1,235 @@
+{% liquid
+  assign feature_product_block_title = section.settings.feature_product_block_title
+  assign feature_product_block_image = section.settings.feature_product_block_image
+  assign section_spacing = section.settings.section_spacing
+
+  assign feature_product_block_features = product.metafields.custom.product_features_block.value
+%}
+
+{% if feature_product_block_image != blank or feature_product_block_title != blank %}
+  <div class="{{ section_spacing }} scroll-m-16" id="features_container">
+    <div class="container mx-auto flex flex-col max-w-screen-2xl">
+      {% if feature_product_block_title != blank %}
+        <h2 class="w-full text-center font-primary leading-primary-font uppercase text-10xl pb-10">
+          {{ feature_product_block_title }}
+        </h2>
+      {%- endif -%}
+      <div
+        x-data="{ swiper: null, isMobile: false }"
+        x-init="
+          isMobile = (window.innerWidth < 846) ? true : false;
+          if (isMobile) {
+            swiper = new Swiper($refs.blockSlider, {
+              loop: false,
+              slidesPerView: 1,
+              spaceBetween: 0,
+              navigation: {
+                nextEl: '.feature-product-slider-next',
+                prevEl: '.feature-product-slider-prev',
+              },
+              pagination: {
+                el: '.c9-swiper-progress-pagination-feature-product-block',
+                progressbarFillClass: 'c9-swiper-pagination-progressbar-fill',
+                type: 'progressbar',
+              },
+            });
+          }
+        "
+        x-on:resize.window="
+          isMobile = (window.innerWidth < 846) ? true : false;
+          if (isMobile && swiper === null) {
+            swiper = new Swiper($refs.blockSlider, {
+              loop: false,
+              slidesPerView: 1,
+              spaceBetween: 0,
+              navigation: {
+                nextEl: '.feature-product-slider-next',
+                prevEl: '.feature-product-slider-prev',
+              },
+              pagination: {
+                el: '.c9-swiper-progress-pagination-feature-product-block',
+                type: 'progressbar',
+              },
+            });
+          } else if ( !isMobile && swiper !== null) {
+            swiper.destroy(); swiper = null;
+          }
+        "
+      >
+        <div class="flex swiper swiper-container" x-ref="blockSlider">
+          <div class="swiper-wrapper flex flex-row items-center md:px-10">
+            <div class="swiper-slide flex justify-center items-center w-full px-10 md:p-0 md:w-4/12">
+              <div class="flex flex-col justify-center items-start w-full md:max-w-96 md:mt-16">
+                {% for feature_product_block_feature in feature_product_block_features %}
+                  {% assign mod = forloop.index | modulo: 2 %}
+                  {% if mod == 0 %}
+                    <div
+                      class="flex mb-16 last-of-type:mb-8 last-of-type:lg-0 md:opacity-0"
+                      x-intersect.half="$el.classList.add('md:fadeInUp')"
+                    >
+                      <div class="flex w-12 items-start">
+                        {%- if feature_product_block_feature.icon != blank -%}
+                          <img
+                            src="{{ feature_product_block_feature.icon.value | image_url: width: 50 }}"
+                            alt="{{ feature_product_block_feature.icon.alt | escape }}"
+                            width="50"
+                            height="50"
+                            class="max-w-fit"
+                          >
+                        {%- endif -%}
+                      </div>
+                      <div class="flex flex-col items-start">
+                        <div class="font-secondary leading-secondary-font text-2xl mb-2">
+                          {{ feature_product_block_feature.title }}
+                        </div>
+                        <div class="text-sm">
+                          {{ feature_product_block_feature.content }}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <div class="hidden md:flex items-end self-end justify-center w-full md:w-4/12">
+              <div class="">
+                {%- if feature_product_block_image != blank -%}
+                  <img
+                    src="{{ feature_product_block_image | image_url: height: 795 }}"
+                    alt="{{ feature_product_block_image.alt }}"
+                    height="795"
+                    width="auto"
+                    class="opacity-0"
+                    x-intersect.half="$el.classList.add('scale')"
+                  >
+                {%- endif -%}
+              </div>
+            </div>
+            <div class="swiper-slide flex justify-center items-center w-full p-10 md:p-0 md:w-4/12">
+              <div class="flex flex-col justify-center items-start w-full md:max-w-96 md:mt-16">
+                {% for feature_product_block_feature in feature_product_block_features %}
+                  {% assign mod = forloop.index | modulo: 2 %}
+                  {% if mod != 0 %}
+                    <div
+                      class="flex mb-16 last-of-type:mb-8 last-of-type:lg-0 md:opacity-0"
+                      x-intersect.half="$el.classList.add('md:fadeInUp')"
+                    >
+                      <div class="flex w-12 items-start">
+                        {%- if feature_product_block_feature.icon != blank -%}
+                          <img
+                            src="{{ feature_product_block_feature.icon.value | image_url: width: 50 }}"
+                            alt="{{ feature_product_block_feature.icon.alt | escape }}"
+                            width="50"
+                            height="50"
+                            class="max-w-fit"
+                          >
+                        {%- endif -%}
+                      </div>
+                      <div class="flex flex-col items-start">
+                        <div class="font-secondary leading-secondary-font text-2xl mb-2">
+                          {{ feature_product_block_feature.title }}
+                        </div>
+                        <div class="text-sm">
+                          {{ feature_product_block_feature.content }}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between items-center px-6 md:hidden">
+        <div class="relative w-full mr-4">
+          <div class="c9-swiper-progress-pagination c9-swiper-progress-pagination-feature-product-block"></div>
+        </div>
+        <!-- Slider controls -->
+        <div class="flex items-center">
+          <button type="button" class="group feature-product-slider-prev">
+            {% render 'icon',
+              icon: 'arrow-full-left',
+              iconClasses: 'text-black group-[.swiper-button-disabled]:text-gray-300'
+            %}
+          </button>
+          <button type="button" class="group feature-product-slider-next">
+            {% render 'icon',
+              icon: 'arrow-full-right',
+              iconClasses: 'text-black group-[.swiper-button-disabled]:text-gray-300'
+            %}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Feature Product Block",
+  "class": "feature-product-block",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "feature_product_block_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "feature_product_block_title",
+      "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Product Block"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

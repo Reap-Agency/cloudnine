@@ -1,0 +1,45 @@
+{%- if block.settings.menu != blank -%}
+  <div
+    id="{{ forloop.index }}"
+    class="footer__menu md:col-span-2 border-b border-b-gray-600 md:border-none"
+    x-data="{ isOpen: false }"
+  >
+    <button
+      type="button"
+      aria-controls="footer-menu-{{ forloop.index }}"
+      @click="isOpen = !isOpen"
+      x-bind:aria-expanded="isOpen"
+      class="accordion__control md:hidden w-full font-body text-base leading-body-font font-semibold text-gray-100 flex justify-between items-center py-3"
+    >
+      {{ block.settings.menu_title }}
+      <span
+        class="accordion__control-icon relative block w-4 h-4 border border-white rounded-full before:absolute before:top-1/2 before:left-1/2 before:-translate-y-1/2 before:-translate-x-1/2 before:bg-white before:opacity-100 before:transition-all before:w-2 before:h-px after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:bg-white after:opacity-100 after:h-2 after:w-px after:transition-all"
+        x-bind:class="isOpen ? 'after:-translate-y-1/2 after:-translate-x-1/2 after:rotate-90 after:opacity-0 after:transition-all' : ''"
+      ></span>
+    </button>
+    <h4 class="hidden md:block font-body text-base leading-body-font font-semibold text-gray-100 mb-4">
+      {{ block.settings.menu_title }}
+    </h4>
+    <div
+      id="footer-menu-{{ forloop.index }}"
+      class="text-left overflow-hidden transition-all max-h-0 md:max-h-none duration-700"
+      x-ref="accordionContent{{ forloop.index }}"
+      x-bind:aria-hidden="!isOpen"
+      x-bind:style="isOpen ? 'max-height: ' + $refs.accordionContent{{ forloop.index }}.scrollHeight + 'px' : ''"
+    >
+      <ul class="pt-1 pb-3 md:p-0">
+        {%- for link in block.settings.menu.links -%}
+          <li>
+            <a
+              href="{{ link.url }}"
+              title="{{ link.title }}"
+              class="block font-body text-xs text-gray-300 mb-1 hover:underline"
+            >
+              {{- link.title -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+{%- endif -%}

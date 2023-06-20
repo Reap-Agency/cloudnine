@@ -1,0 +1,204 @@
+{% liquid
+  assign section_spacing = section.settings.section_spacing
+%}
+
+<div class="container m-auto mt-12 md:mt-20 {{ section_spacing }}">
+  <div id="recover" class="hidden">
+    <h1 class="font-primary uppercase text-center text-10xl leading-primary-font mb-2 md:text-12xl" tabindex="-1">
+      {{ 'customer.recover_password.title' | t }}
+    </h1>
+
+    <div class="bg-gray-50 m-auto mt-16 md:mt-20 md:max-w-[48rem]">
+      <div class="m-auto px-4 py-20 md:max-w-[25rem] md:px-0">
+        {%- form 'recover_customer_password' -%}
+          {% assign recover_success = form.posted_successfully? %}
+          <div class="flex flex-col mb-6">
+            <label for="RecoverEmail" class="form-label">
+              {{ 'customer.login_page.email' | t }}
+            </label>
+            <input
+              type="email"
+              value=""
+              name="email"
+              id="RecoverEmail"
+              class="form-input {% if form.errors %}form-input-error{% endif %}"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="email"
+              {% if form.errors %}
+                aria-invalid="true"
+                aria-describedby="RecoverEmail-email-error"
+                autofocus
+              {% endif %}
+              placeholder=""
+            >
+            {%- if form.errors -%}
+              <div id="RecoverEmail-email-error" class="form-label-error">
+                {{ form.errors.messages.form }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <button class="btn-primary-dark w-full">
+            {{ 'customer.login_page.submit' | t }}
+          </button>
+
+          <a href="#login" class="cursor-pointer block m-auto text-center mt-4 underline">
+            {{ 'customer.login_page.cancel' | t }}
+          </a>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if recover_success == true -%}
+    <div class="block text-sm leading-body-font text-black p-4" tabindex="-1">
+      {{ 'customer.recover_password.success' | t }}
+    </div>
+  {%- endif -%}
+
+  <div id="login" class="">
+    <h1 class="font-primary uppercase text-center text-10xl leading-primary-font mb-2 md:text-12xl" tabindex="-1">
+      {{ 'customer.login_page.title' | t }}
+    </h1>
+    <div class="bg-gray-50 m-auto mt-16 md:mt-20 md:max-w-[768px]">
+      <div class="m-auto px-4 py-20 md:max-w-[400px] md:px-0">
+        {%- form 'customer_login' -%}
+          {%- if form.errors -%}
+            <div class="form-label-error" tabindex="-1">
+              <span class="visually-hidden">{{ 'accessibility.error' | t }} </span>
+              {{ 'templates.contact.form.error_heading' | t }}
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="flex flex-col mb-6">
+            <label for="CustomerEmail" class="form-label">
+              {{ 'customer.login_page.email' | t }}
+            </label>
+            <input
+              type="email"
+              name="customer[email]"
+              id="CustomerEmail"
+              class="form-input {% if form.errors %}form-input-error{% endif %}"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              {% if form.errors contains 'form' %}
+                aria-invalid="true"
+              {% endif %}
+              placeholder=""
+            >
+          </div>
+
+          {%- if form.password_needed -%}
+            <div class="flex flex-col">
+              <label for="CustomerPassword" class="form-label">
+                {{ 'customer.login_page.password' | t }}
+              </label>
+              <input
+                type="password"
+                value=""
+                name="customer[password]"
+                id="CustomerPassword"
+                class="form-input {% if form.errors %}form-input-error{% endif %}"
+                autocomplete="current-password"
+                {% if form.errors contains 'form' %}
+                  aria-invalid="true"
+                {% endif %}
+                placeholder=""
+              >
+            </div>
+          {%- endif -%}
+          <a
+            href="#recover"
+            class="cursor-pointer block m-auto text-left underline mb-10 w-full"
+          >
+            {{ 'customer.login_page.forgot_password' | t }}
+          </a>
+
+          <button class="btn-primary-dark w-full">
+            {{ 'customer.login_page.sign_in' | t }}
+          </button>
+        {%- endform -%}
+        <div class="block m-auto text-center mt-4">
+          {{ 'customer.login_page.not_got_account' | t }}
+          <a href="{{ routes.account_register_url }}" class="underline">{{ 'customer.login_page.sign_up' | t }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- if shop.checkout.guest_login -%}
+    <div>
+      <h2 class="font-primary uppercase text-center text-10xl leading-primary-font mb-2 md:text-12xl">
+        {{ 'customer.login_page.guest_title' | t }}
+      </h2>
+
+      {%- form 'guest_login' -%}
+        <button class="btn-primary-dark w-full">
+          {{ 'customer.login_page.guest_continue' | t }}
+        </button>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.main-login.name",
+  "class": "customer login",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["customers/login"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.main-login.name"
+    }
+  ]
+}
+{% endschema %}

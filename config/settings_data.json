@@ -1,0 +1,123 @@
+{
+  "current": {
+    "social_youtube_link": "https:\/\/www.youtube.com\/user\/CloudNineHair",
+    "social_facebook_link": "https:\/\/www.facebook.com\/cloudninehair",
+    "social_instagram_link": "https:\/\/www.instagram.com\/cloudninehair\/",
+    "social_twitter_link": "https:\/\/twitter.com\/CloudNineC9",
+    "social_pinterest_link": "https:\/\/www.pinterest.co.uk\/cloudninehair\/",
+    "enable_product_trade_in": true,
+    "product_trade_in_text": "<p><strong>Trade-in available at checkout.<\/strong> Up-to £60 cash-back. Trade-in your old Cloud Nine, Dyson or GHD products and get money back. <a href=\"\/pages\/homepage\" title=\"homepage\">Learn more<\/a><\/p>",
+    "loyalty": true,
+    "salesforce_enable": true,
+    "salesforce_base_core_url": "https:\/\/cloudninehair--fullsbx.sandbox.my.salesforce.com",
+    "salesforce_base_webchat_url": "https:\/\/cloudninehair--fullsbx.sandbox.my.site.com\/webchat",
+    "salesforce_organizationId": "00D26000000IKmC",
+    "salesforce_baseLiveAgentContentURL": "https:\/\/c.la1-c1cs-lo3.salesforceliveagent.com\/content",
+    "salesforce_baseLiveAgentURL": "https:\/\/d.la1-c1cs-lo3.salesforceliveagent.com\/chat",
+    "salesforce_deploymentId": "5724J000000H7W5",
+    "salesforce_buttonId": "5734J000000H8uV",
+    "salesforce_eswLiveAgentDevName": "UK_Chat_Team",
+    "salesforce_embeddedServiceScriptSrc": "https:\/\/cloudninehair--fullsbx.sandbox.my.salesforce.com\/embeddedservice\/5.0\/esw.min.js",
+    "salesforce_redirectOfflineToHelpcentre": true,
+    "checkout_accent_color": "#000000",
+    "checkout_button_color": "#000000",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify:\/\/shop_images\/Logo.svg",
+          "primary_menu": "main-menu",
+          "secondary_menu": "secondary-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "221ba289-fe52-4d01-b3ef-b4e70c84c78e": {
+            "type": "menu",
+            "settings": {
+              "menu_title": "Help Center",
+              "menu": "help-centre"
+            }
+          },
+          "190316d7-bd58-436b-800c-9ae680ecb53a": {
+            "type": "menu",
+            "settings": {
+              "menu_title": "About Us",
+              "menu": "about-us"
+            }
+          },
+          "0b709150-28cc-4c81-801d-e3798ea8584f": {
+            "type": "menu",
+            "settings": {
+              "menu_title": "Links",
+              "menu": "links"
+            }
+          },
+          "975e6a81-942b-4137-b7de-2b0e61050c07": {
+            "type": "menu",
+            "settings": {
+              "menu_title": "Shop",
+              "menu": "shop"
+            }
+          }
+        },
+        "block_order": [
+          "221ba289-fe52-4d01-b3ef-b4e70c84c78e",
+          "190316d7-bd58-436b-800c-9ae680ecb53a",
+          "0b709150-28cc-4c81-801d-e3798ea8584f",
+          "975e6a81-942b-4137-b7de-2b0e61050c07"
+        ],
+        "settings": {
+          "social_heading": "Socials",
+          "brand_image": "shopify:\/\/shop_images\/icon-square-white.svg",
+          "brand_heading": "Brand Message",
+          "brand_supporting_text": "Lorem ipsum dolor sit amet consectetur. Sagittis suspendisse placerat pharetra viverra maecenas elit eu nisl est. Quam blandit massa elementum pretium massa auctor porta.",
+          "payment_method_heading": "Payment Methods",
+          "legal_menu": "legal",
+          "footnote": "©2013 - 2023 CLOUD NINE, All rights reserved. VAT: 312 4856 17. Company Reg No: 07079855. A2 Hornbeam Square West, Harrogate HG2 8PA"
+        }
+      },
+      "usps": {
+        "type": "usps",
+        "blocks": {
+          "96a2f4c0-98da-4db8-beff-49e6edfdc445": {
+            "type": "usp",
+            "settings": {
+              "usp_title": "<p>Lorem ipsum dolor<\/p>",
+              "usp_icon": "shopify:\/\/shop_images\/test-svg.svg"
+            }
+          },
+          "fc20f418-7490-4087-819a-9c42a5018838": {
+            "type": "usp",
+            "settings": {
+              "usp_title": "<p>Lorem ipsum dolor<\/p>",
+              "usp_icon": "shopify:\/\/shop_images\/test-svg.svg"
+            }
+          },
+          "e54bde55-60a0-4455-8eaa-babf7247fcf8": {
+            "type": "usp",
+            "settings": {
+              "usp_title": "<p>Lorem ipsum dolor<\/p>",
+              "usp_icon": "shopify:\/\/shop_images\/test-svg.svg"
+            }
+          }
+        },
+        "block_order": [
+          "96a2f4c0-98da-4db8-beff-49e6edfdc445",
+          "fc20f418-7490-4087-819a-9c42a5018838",
+          "e54bde55-60a0-4455-8eaa-babf7247fcf8"
+        ],
+        "settings": {}
+      },
+      "promo-bar": {
+        "type": "promo-bar",
+        "settings": {
+          "show-promo-bar": true,
+          "message": "Promo message lorem ipsum dolor sit amit"
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}

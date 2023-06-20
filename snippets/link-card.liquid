@@ -1,0 +1,35 @@
+{% liquid
+  assign image = image
+  assign title = title
+  assign copy = copy
+  assign link = link
+  assign button = button
+%}
+
+<div class="flex flex-col items-center justify-center w-full">
+  {%- if image != blank -%}
+    <img
+      src="{{ image.src | image_url: width: 800 }}"
+      alt="{{ image.alt | escape }}"
+      class="object-cover aspect-2/1"
+      width="800"
+      height="auto"
+      loading="lazy"
+    >
+  {%- endif -%}
+  <div class="bg-gray-50 flex flex-col items-center justify-center w-full p-10">
+    {%- if title != blank -%}
+      <h3 class="font-secondary text-4xl leading-secondary-font w-full text-center pb-2 sm:text-6xl">
+        {{ title }}
+      </h3>
+    {%- endif -%}
+    {%- if copy != blank -%}
+      <div class="text-center text-sm w-full mb-4">{{ copy }}</div>
+    {%- endif -%}
+    {%- if button != blank -%}
+      <a class="btn-primary-dark w-full md:w-auto" href="{{ link }}">
+        {{- button -}}
+      </a>
+    {%- endif -%}
+  </div>
+</div>

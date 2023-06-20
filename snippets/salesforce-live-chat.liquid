@@ -1,0 +1,106 @@
+{% if settings.salesforce_enable == true %}
+  <style type="text/css">
+
+
+  </style>
+  <script type="text/javascript" src="https://service.force.com/embeddedservice/5.0/esw.min.js" defer></script>
+  <script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', () => {
+	  var initESW = function(gslbBaseURL) {
+		embedded_svc.settings.displayHelpButton = true; //Or false
+		embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+		embedded_svc.settings.extraPrechatInfo = [{
+		  "entityFieldMaps": [{
+			"doCreate":true,
+			"doFind":false,
+			"fieldName":"LastName",
+			"isExactMatch":false,
+			"label":"Last Name"
+		  }, {
+			"doCreate":true,
+			"doFind":false,
+			"fieldName":"FirstName",
+			"isExactMatch":false,
+			"label":"First Name"
+		  }, {
+			"doCreate":true,
+			"doFind":true,
+			"fieldName":"Email",
+			"isExactMatch":true,
+			"label":"Email"
+		  }],
+		  "entityName":"Contact"
+		}];
+
+		embedded_svc.settings.defaultMinimizedText = '{{ settings.salesforce_chat_with_us }}';
+		embedded_svc.settings.disabledMinimizedText = '{{ settings.salesforce_disabledMinimizedText }}'; //(Defaults to Agent Offline)
+
+		//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+		//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+		// Settings for Chat
+		//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+			// Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+			// Returns a valid button ID.
+		//};
+		//embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
+		//embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+		//embedded_svc.settings.offlineSupportMinimizedText = ''; //(Defaults to Contact Us)
+
+		embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+		embedded_svc.settings.entryFeature = 'LiveAgent';
+
+		embedded_svc.init(
+			'{{ settings.salesforce_base_core_url }}',
+			'{{ settings.salesforce_base_webchat_url }}',
+			gslbBaseURL,
+			'{{ settings.salesforce_organizationId }}',
+			'{{ settings.salesforce_eswLiveAgentDevName }}',
+			{
+			  {% if settings.salesforce_baseLiveAgentContentURL != blank %}baseLiveAgentContentURL: '{{ settings.salesforce_baseLiveAgentContentURL }}',{% endif %}
+			  baseLiveAgentURL: '{{ settings.salesforce_baseLiveAgentURL }}',
+			  deploymentId: '{{ settings.salesforce_deploymentId }}',
+			  buttonId: '{{ settings.salesforce_buttonId }}',
+			  eswLiveAgentDevName: '{{ settings.salesforce_eswLiveAgentDevName }}',
+			  isOfflineSupportEnabled: {{ settings.salesforce_isOfflineSupportEnabled }},
+			}
+		  );
+	  };
+
+	  if (!window.embedded_svc) {
+		  var s = document.createElement('script');
+		  s.setAttribute('src', '{{ settings.salesforce_embeddedServiceScriptSrc }}');
+		  s.onload = function() {
+			  initESW(null);
+		  };
+		  document.body.appendChild(s);
+	  } else {
+		initESW('https://service.force.com');
+	  }
+	});
+  </script>
+
+  {% if settings.salesforce_redirectOfflineToHelpcentre %}
+	<script>
+	  window.setTimeout(function () {
+		if (document.querySelector('.helpButtonDisabled')) {
+		  document.querySelector('.helpButtonDisabled').addEventListener('click', function (e) {
+			e.preventDefault();
+			location.href = '/pages/help-centre';
+		  });
+		}
+	  }, 1500);
+	</script>
+
+	<style type="text/css">
+	  .helpButtonDisabled .embeddedServiceIcon {
+		display: none !important;
+	  }
+
+	  .helpButtonDisabled {
+		cursor: pointer !important;
+	  }
+	</style>
+  {% endif %}
+{% endif %}

@@ -1,0 +1,218 @@
+{% liquid
+  assign theme = section.settings.theme
+  assign background_image = section.settings.background_image
+  assign section_spacing = section.settings.section_spacing
+
+  if theme == 'light' or background_image == blank
+    assign text_color = 'text-white'
+  else
+    assign text_color = 'text-black'
+  endif
+%}
+<div class="{{ section_spacing }}">
+  <div class="relative bg-black flex flex-col justify-center items-center mx-auto max-w-screen-xl py-28 px-6 md:p-36">
+    {%- if background_image != blank -%}
+      <img
+        class="w-full h-full absolute object-cover object-center z-0"
+        src="{{ background_image | image_url: width: 1280 }}"
+        width="auto"
+        height="auto"
+        alt="{{ background_image.alt }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="relative w-full max-w-xl">
+        <div class="text-center space-y-2 {{ text_color }}">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'primary_heading' %}
+                <h3 class="font-primary text-8xl md:text-10xl leading-primary-font uppercase">
+                  {{ block.settings.heading }}
+                </h3>
+              {% when 'primary_heading_large' %}
+                <h3 class="font-primary text-13xl leading-primary-font uppercase">
+                  {{ block.settings.heading }}
+                </h3>
+              {% when 'secondary_heading' %}
+                <h3 class="font-secondary text-4xl md:text-6xl leading-secondary-font">
+                  {{ block.settings.heading }}
+                </h3>
+            {% endcase %}
+          {% endfor %}
+        </div>
+        <div class="mx-auto pt-8 sm:pt-12 flex flex-col sm:flex-row flex-wrap items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'button' %}
+                {% liquid
+                  comment
+                    // build button style
+                    // we're checking background_image is blank to ensure the button is white on a black background
+                  endcomment
+                  if background_image == blank
+                    assign button_theme = 'btn-' | append: block.settings.button_style | append: '-' | append: 'light'
+                  else
+                    assign button_theme = 'btn-' | append: block.settings.button_style | append: '-' | append: theme
+                  endif
+                %}
+                <a href="{{ block.settings.button_link }}" class="w-fit btn-small {{ button_theme }}">
+                  {{- block.settings.button_text -}}
+                </a>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Contained Link Card",
+  "class": "contained-link-card",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "radio",
+      "id": "theme",
+      "label": "Select Theme",
+      "options": [
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "light",
+          "label": "Light"
+        }
+      ],
+      "default": "light",
+      "info": "Will only apply if background image exists."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "If no image is chosen, the background colour will be black."
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Primary Heading",
+      "type": "primary_heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        }
+      ]
+    },
+    {
+      "name": "Primary Heading Large",
+      "type": "primary_heading_large",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        }
+      ]
+    },
+    {
+      "name": "Secondary Heading",
+      "type": "secondary_heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "type": "button",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text"
+        },
+        {
+          "type": "radio",
+          "id": "button_style",
+          "label": "Button Style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary (Filled)"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary (Outlined)"
+            }
+          ],
+          "default": "primary",
+          "info": "Select the style of the button."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contained Link Card"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}

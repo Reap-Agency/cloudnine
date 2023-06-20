@@ -1,0 +1,172 @@
+{% liquid
+  assign link_card_image = section.settings.link_card_image
+  assign link_card_title = section.settings.link_card_title
+  assign link_card_copy = section.settings.link_card_copy
+  assign link_card_button_link = section.settings.link_card_button_link
+  assign link_card_button_text = section.settings.link_card_button_text
+
+  assign bg_image_link_card_theme = section.settings.bg_image_link_card_theme
+  assign bg_image_link_card_image = section.settings.bg_image_link_card_image
+  assign bg_image_link_card_title = section.settings.bg_image_link_card_title
+  assign bg_image_link_card_copy = section.settings.bg_image_link_card_copy
+  assign bg_image_link_card_button_link = section.settings.bg_image_link_card_button_link
+  assign bg_image_link_card_button_text = section.settings.bg_image_link_card_button_text
+
+  assign section_spacing = section.settings.section_spacing
+%}
+
+{%- if link_card_image != blank
+  or link_card_title != blank
+  or link_card_copy != blank
+  or bg_image_link_card_image != blank
+  or bg_image_link_card_title != blank
+  or bg_image_link_card_copy != blank
+-%}
+  <div class="flex flex-col md:mx-4 md:flex-row xl:mx-4 {{ section_spacing }}">
+    <div class="w-full mb-4 md:w-7/12 md:mr-6 md:mb-0">
+      {% render 'bg-image-link-card',
+        theme: bg_image_link_card_theme,
+        image: bg_image_link_card_image,
+        title: bg_image_link_card_title,
+        copy: bg_image_link_card_copy,
+        link: bg_image_link_card_button_link,
+        button: bg_image_link_card_button_text
+      %}
+    </div>
+
+    <div class="w-full mt-0 md:w-5/12 md:ml-6 md:mt-20 lg:mt-44">
+      {% render 'link-card',
+        image: link_card_image,
+        title: link_card_title,
+        copy: link_card_copy,
+        link: link_card_button_link,
+        button: link_card_button_text
+      %}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bg image & link cards",
+  "tag": "section",
+  "class": "background-image-and-link-cards container m-auto",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "link_card_image",
+      "label": "Link Card Image"
+    },
+    {
+      "type": "text",
+      "id": "link_card_title",
+      "label": "Link Card Title"
+    },
+    {
+      "type": "textarea",
+      "id": "link_card_copy",
+      "label": "Link Card Text"
+    },
+    {
+      "type": "text",
+      "id": "link_card_button_text",
+      "label": "Link Card Button Text"
+    },
+    {
+      "type": "url",
+      "id": "link_card_button_link",
+      "label": "Link Card Button Link"
+    },
+    {
+      "type": "radio",
+      "id": "bg_image_link_card_theme",
+      "label": "Select Theme",
+      "options": [
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "light",
+          "label": "Light"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_link_card_image",
+      "label": "BG Image Link Card Image"
+    },
+    {
+      "type": "text",
+      "id": "bg_image_link_card_title",
+      "label": "BG Image Link Card Title"
+    },
+    {
+      "type": "textarea",
+      "id": "bg_image_link_card_copy",
+      "label": "BG Image Link Card Copy"
+    },
+    {
+      "type": "text",
+      "id": "bg_image_link_card_button_text",
+      "label": "BG Image Link Card Button Text"
+    },
+    {
+      "type": "url",
+      "id": "bg_image_link_card_button_link",
+      "label": "BG Image Link Card Button Link"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bg image & link cards"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}

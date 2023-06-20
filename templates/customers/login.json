@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-login",
+      "settings": {
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

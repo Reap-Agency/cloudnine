@@ -1,0 +1,156 @@
+{% liquid
+  assign upsell_block_1_title = section.settings.upsell_block_1_title
+  assign upsell_block_1_copy = section.settings.upsell_block_1_copy
+  assign upsell_block_1_image_left = section.settings.upsell_block_1_image_left
+  assign upsell_block_1_image_right = section.settings.upsell_block_1_image_right
+  assign upsell_block_1_button_text = section.settings.upsell_block_1_button_text
+  assign upsell_block_1_button_link = section.settings.upsell_block_1_button_link
+  assign section_spacing = section.settings.section_spacing
+%}
+
+{% if upsell_block_1_image_left != blank
+  or upsell_block_1_title != blank
+  or upsell_block_1_copy != blank
+  or upsell_block_1_image_right != blank
+%}
+  <div class="{{- section_spacing -}}">
+    <div
+      class="container mx-auto flex flex-col bg-gray-50 sm:flex-row-reverse"
+    >
+      <div class="flex justify-center sm:justify-start w-full sm:w-4/12">
+        {%- if upsell_block_1_image_right != blank -%}
+          <img
+            src="{{ upsell_block_1_image_right | image_url: height: 600 }}"
+            alt="{{ upsell_block_1_image_right.alt }}"
+            height="600"
+            width="auto"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+      <div class="flex flex-col items-center justify-center w-full sm:w-4/12 p-10 sm:p-0 md:pl-0">
+        <div class="sm:max-w-xs sm:py-12">
+          {%- if upsell_block_1_title != blank -%}
+            <div class="text-center font-secondary text-4xl mb-2 md:text-6xl">
+              {{ upsell_block_1_title }}
+            </div>
+          {%- endif -%}
+
+          {%- if upsell_block_1_copy != blank -%}
+            <div class="text-gray-700 mb-6 text-center">
+              {{ upsell_block_1_copy }}
+            </div>
+          {%- endif -%}
+
+          {%- if upsell_block_1_button_text != blank and upsell_block_1_button_link != blank -%}
+            <div class="flex justify-center">
+              <a class="btn-primary-dark w-full lg:w-auto px-4 lg:px-16" href="{{ upsell_block_1_button_link }}">
+                {{ upsell_block_1_button_text }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="hidden sm:flex justify-end w-full sm:w-4/12">
+        {%- if upsell_block_1_image_left != blank -%}
+          <img
+            src="{{ upsell_block_1_image_left | image_url: height: 600 }}"
+            alt="{{ upsell_block_1_image_left.alt }}"
+            height="600"
+            width="auto"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Upsell Block 1",
+  "class": "upsell-block-1",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "upsell_block_1_image_left",
+      "label": "Image Left"
+    },
+    {
+      "type": "image_picker",
+      "id": "upsell_block_1_image_right",
+      "label": "Image Right"
+    },
+    {
+      "type": "text",
+      "id": "upsell_block_1_title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "upsell_block_1_copy",
+      "label": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "upsell_block_1_button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "upsell_block_1_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Upsell Block 1"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

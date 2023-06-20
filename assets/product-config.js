@@ -1,0 +1,1 @@
+const form=document.querySelector(".modal .modal-content form");function configForm(o){o.preventDefault();document.querySelector(".modal .modal-content form input[name='id']")}form.addEventListener("submit",configForm);

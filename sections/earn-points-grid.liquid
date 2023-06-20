@@ -1,0 +1,116 @@
+{% liquid
+  assign heading = section.settings.heading
+%}
+<div class="bg-black w-full px-6 {{ section.settings.section_spacing }}">
+  {%- if heading -%}
+    <h2 class="font-primary text-10xl leading-primary-font text-white uppercase text-center pb-12 md:pb-14">
+      {{- heading -}}
+    </h2>
+  {%- endif -%}
+  {% if section.blocks.size > 0 %}
+    <div class="max-w-screen-xl w-full mx-auto space-y-6 md:space-y-0 md:grid md:grid-cols-2 md:gap-12">
+      {% for block in section.blocks %}
+        <div class="w-full border border-white p-6 space-y-2 text-center">
+          {%- if block.settings.heading -%}
+            <h4 class="font-primary uppercase text-2xl text-white leading-primary-font">
+              {{- block.settings.heading -}}
+            </h4>
+          {%- endif -%}
+          {%- if block.settings.description -%}
+            <p class="font-secondary text-xl leading-secondary-font text-white">
+              {{- block.settings.description -}}
+            </p>
+          {%- endif -%}
+        </div>
+      {% endfor %}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Earn Points Grid",
+  "class": "earn-points-grid",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "heading"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Earn Points Item",
+      "type": "points_item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "This link only appears for logged-in users."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Earn Points Grid"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}

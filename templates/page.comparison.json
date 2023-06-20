@@ -1,0 +1,44 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "comparison": {
+      "type": "comparison",
+      "blocks": {
+        "a5c0afe0-4b2c-45cc-9b55-fbfdef8d26ff": {
+          "type": "nav",
+          "settings": {
+            "nav_text": "Straighteners",
+            "nav_page": "compare-straighteners"
+          }
+        },
+        "76af68cc-8358-4538-8415-eee1636405a4": {
+          "type": "nav",
+          "settings": {
+            "nav_text": "Hairdryers",
+            "nav_page": ""
+          }
+        },
+        "a7c5d516-8be8-405d-90da-49fedb922e86": {
+          "type": "nav",
+          "settings": {
+            "nav_text": "Curlers",
+            "nav_page": ""
+          }
+        }
+      },
+      "block_order": [
+        "a5c0afe0-4b2c-45cc-9b55-fbfdef8d26ff",
+        "76af68cc-8358-4538-8415-eee1636405a4",
+        "a7c5d516-8be8-405d-90da-49fedb922e86"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "comparison"
+  ]
+}

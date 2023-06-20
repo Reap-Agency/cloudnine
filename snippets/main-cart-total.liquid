@@ -1,0 +1,70 @@
+<div class="bg-gray-50 pt-10 pb-6 px-6 mb-6">
+    <h2 class="font-primary text-9xl leading-primary-font uppercase mb-12">
+      {{ 'templates.cart.order_total_title' | t }}
+    </h2>
+
+    <div class="has-margin-bottom-medium is-size-8 pb-3 border-b-gray-300 border-b-2">
+      <div class="flex items-centerr justify-between pb-3">
+        <span class="font-semibold">{{ 'templates.cart.subtotal' | t }}</span>
+        <span>{{ cart.total_price | money | replace: '.00', '' }}</span>
+      </div>
+      <div class="flex items-center justify-between pb-3">
+        <span class="font-semibold">{{ 'templates.cart.discount' | t }}</span>
+        <span>{{ 0 | money | replace: '.00', '' }}</span>
+      </div>
+      <div class="flex items-center justify-between pb-3">
+        <span class="font-semibold">{{ 'templates.cart.delivery' | t }}</span>
+        <span>{{ 0 | money | replace: '.00', '' }}</span>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between py-3 border-b-gray-300 border-b-2">
+      <span class="font-semibold">{{ 'templates.cart.total_label' | t }}</span>
+      <span>{{ cart.total_price | money | replace: '.00', '' }}</span>
+    </div>
+
+    {% if settings.loyalty and loyaltyPoints == 0 %}
+      {%- comment -%} Loyalty Lion {%- endcomment -%}
+      <div class="flex items-center justify-end mb-3 pt-3">
+        <span
+          class="upprercase"
+          data-lion-points-for="{{ loyaltyPoints }}"
+        ></span>
+        {{- 'templates.cart.loyalty_points' | t }}
+      </div>
+    {% endif %}
+    <div class="mt-6 pb-5">
+      {% render 'payment-icons' %}
+    </div>
+
+    <div class="flex flex-col">
+      <a
+        href="/checkout"
+        checkout-button
+        class="js-add-to-cart add-to-cart btn-primary-dark w-full px-6 mb-6"
+      >
+        <span class="uppercase">{{ 'templates.cart.checkout' | t }}</span>
+      </a>
+      <a
+        class="underline font-body text-base text-center justify-center"
+        href="/"
+        alt="{{ 'templates.cart.continue_shop_alt' | t }}"
+      >
+        {{- 'templates.cart.continue_shop_label' | t -}}
+      </a>
+    </div>
+  </div>
+
+  <div class="bg-gray-50 py-8 px-6 mt-6">
+    {% comment %}{% render 'cart-delivery-date' %}{% endcomment %}
+
+    <h2 class="font-primary text-3xl mb-6 leading-primary-font uppercase text-center">
+      {{ 'templates.cart.avaliable_at_checkout_title' | t }}
+    </h2>
+
+    {% assign checkoutContent = shop.metaobjects.shipping_information_at_cart['shipping-information-at-cart'].checkout_content.value %}
+
+    {% if checkoutContent != blank %}
+      {{ checkoutContent.content }}
+    {% endif %}
+  </div>

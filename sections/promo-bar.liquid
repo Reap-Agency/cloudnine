@@ -1,0 +1,26 @@
+{% if section.settings['show-promo-bar'] %}
+  <div class="w-full pt-2 pb-[0.438rem] bg-black border border-solid border-black">
+    <p class="font-body font-medium text-xs leading-body-font text-white text-center">
+      {{ section.settings.message }}
+    </p>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Promo Bar",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show-promo-bar",
+      "label": "Show Promo Bar"
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message"
+    }
+  ]
+}
+{% endschema %}

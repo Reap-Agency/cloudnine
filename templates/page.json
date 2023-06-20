@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "content-carousel": {
+      "type": "content-carousel",
+      "blocks": {
+        "1f4bd476-900c-4722-be39-7e3dc2993ea7": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3_2.png",
+            "subheading": "Recycling",
+            "text": "We’ve pioneered the industry’s first styling tool recycling service. Working with LSS, a leading UK Recycling and Waste Management company, we’ll recycle your old styling tools for free. Whatever the brand, whatever the condition."
+          }
+        },
+        "9e84e360-1689-4a76-b5e0-3392532d1d70": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3_2.png",
+            "subheading": "Subheading 2",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
+          }
+        },
+        "069dc966-cae9-494b-95eb-4c47a56e9f3d": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3_2.png",
+            "subheading": "Subheading 3",
+            "text": "Lorem ipsum dolor sit amet, We’ve pioneered the industry’s first styling tool recycling service. Working with LSS, a leading UK Recycling and Waste Management company, we’ll recycle your old styling tools for free. Whatever the brand, whatever the condition."
+          }
+        }
+      },
+      "block_order": [
+        "1f4bd476-900c-4722-be39-7e3dc2993ea7",
+        "9e84e360-1689-4a76-b5e0-3392532d1d70",
+        "069dc966-cae9-494b-95eb-4c47a56e9f3d"
+      ],
+      "settings": {
+        "heading": "Our sustainability mission",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "content-carousel"
+  ]
+}

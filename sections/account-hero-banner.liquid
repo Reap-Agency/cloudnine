@@ -1,0 +1,124 @@
+{% liquid
+  assign section_spacing = section.settings.section_spacing
+  assign account_bg_image = section.settings.account_bg_image
+  assign account_title = section.settings.account_title
+  assign account_link_text = section.settings.account_link_text
+  assign account_circle_bg_image = 'https://via.placeholder.com/500'
+%}
+
+{% comment %} account_circle_bg_image image will need to be updated when provided by design {% endcomment %}
+
+{%- if account_title != blank or account_bg_image != blank -%}
+  <div class="{{ section_spacing }} relative">
+    <div class="absolute w-full h-full">
+      <div class="container mx-auto flex items-center justify-center p-6 h-full w-full">
+        <div
+          class="relative flex flex-col items-center rounded-full p-10 justify-center aspect-square bg-black bg-no-repeat bg-cover bg-center"
+          style="background-image: url({{ account_circle_bg_image }})"
+        >
+          {%- if account_title != blank -%}
+            <div class="flex items-center font-secondary leading-secondary-font text-2xl text-center mb-1 text-white">
+              {% render 'icon', icon: 'loyalty-star' %}
+              <span class="ml-2">{{ account_title }}</span>
+            </div>
+          {%- endif -%}
+
+          <div class="font-secondary leading-secondary-font text-13xl uppercase text-center mb-1 text-white">
+            <span data-lion-points></span>
+          </div>
+
+          {%- if account_link_text != blank -%}
+            <a class="w-full text-center underline text-white" href="#">
+              {{- account_link_text -}}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if account_bg_image != blank -%}
+      <img
+        class="w-full object-cover min-h-[22rem] sm:block"
+        src="{{ account_bg_image | image_url }}"
+        width="auto"
+        height="auto"
+        alt="{{ account_bg_image.alt }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Account hero banner",
+  "class": "account-hero-banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "account_bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "account_title",
+      "label": "Rewards Text"
+    },
+    {
+      "type": "text",
+      "id": "account_link_text",
+      "label": "Rewards Link Text"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Account hero banner"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["customers/account"]
+  }
+}
+{% endschema %}

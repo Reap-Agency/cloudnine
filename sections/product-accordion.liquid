@@ -1,0 +1,121 @@
+{% liquid
+  assign hide_warranty = product.metafields.accentuate.hide_warranty_accordion
+  assign hide_delivery = product.metafields.accentuate.hide_delivery_and_returns_accordion
+  assign contentClasses = 'richtext richtext-p:text-base richtext-headings:font-secondary richtext-headings:text-2xl richtext-headings:leading-secondary-font'
+
+  for warrantyInfo in shop.metaobjects.warranty_information.values
+    assign warranty_title = warrantyInfo.product_accordion_warranty_title
+    assign warranty_content = warrantyInfo.product_accordion_warranty_content | metafield_tag
+  endfor
+
+  for deliveryInfo in shop.metaobjects.delivery_returns_information.values
+    assign delivery_title = deliveryInfo.product_accordion_delivery_returns_title
+    assign delivery_content = deliveryInfo.product_accordion_delivery_returns_content | metafield_tag
+  endfor
+
+  comment
+    // Initial index set for warranty and delivery accordion.
+    // Are reCalculated if product-specific accordions exist
+    @todo see if better way to do this
+  endcomment
+  assign delivery_accordion_index = 1
+  assign warranty_accordion_index = 2
+
+  assign section_spacing = section.settings.section_spacing
+%}
+<div class="{{ section_spacing }} scroll-m-14" id="specs_container">
+  <div x-data="{ active: 0 }" class="mx-auto max-w-screen-md w-full">
+    {%- liquid
+      comment
+        // Sets a loop through product-specific accordion items
+      endcomment
+      for product_accordion_title in product.metafields.accentuate.product_accordion_title
+        assign product_accordion_content = product.metafields.accentuate.product_accordion_content[forloop.index0]
+        assign product_accordion_index = forloop.index
+        comment
+          // Getting the index of the loop and adding an increment to the global accordion items to ensure each accordion ID is unique.
+        endcomment
+        assign delivery_accordion_index = forloop.length | plus: 1
+        assign warranty_accordion_index = forloop.length | plus: 2
+        render 'accordion-item', title: product_accordion_title, content: product_accordion_content, contentClasses: contentClasses, id: product_accordion_index
+      endfor
+      comment
+        // Global delivery & returns info added as accordion item at end of the loop.
+        // Can be hidden per product via Accentuate custom fields.
+      endcomment
+      if delivery_title != blank and delivery_content != blank and hide_delivery != 'true'
+        render 'accordion-item', title: delivery_title, content: delivery_content, contentClasses: contentClasses, id: delivery_accordion_index
+      endif
+      comment
+        // Global warranty info added as accordion item at end of the loop, after delivery and returns.
+        // Can be hidden per product via Accentuate custom fields.
+      endcomment
+      if warranty_title != blank and warranty_content != blank and hide_warranty != 'true'
+        render 'accordion-item', title: warranty_title, content: warranty_content, contentClasses: contentClasses, id: warranty_accordion_index
+      endif
+    -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Accordion Block",
+  "class": "product-accordions",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product Accordions"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Accordions"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product", "collection"]
+  }
+}
+{% endschema %}

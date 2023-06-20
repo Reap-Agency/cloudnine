@@ -1,0 +1,50 @@
+{% assign usps = section.blocks | where: 'type', 'usp' %}
+{%- if usps.size > 0 -%}
+  <div class="usps__inner flex flex-wrap items-center md:items-start justify-start md:justify-center max-w-7xl mx-auto md:space-x-12">
+    {%- for usp in usps -%}
+      <div class="w-1/2 flex items-center md:block md:w-auto md:max-w-[8rem] pb-3 md:pb-0 pr-3 md:pr-0">
+        {%- if usp.settings.usp_icon != blank -%}
+          <img
+            width="40"
+            height="40"
+            src="{{ usp.settings.usp_icon | image_url }}"
+            class="md:m-auto"
+            alt="{{ usp.settings.usp_icon.alt }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+        {%- if usp.settings.usp_title != blank -%}
+          <div class="font-base text-xs font-semibold md:text-center pl-2 md:pl-0 md:pt-2">
+            {{ usp.settings.usp_title }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "USP's",
+  "tag": "section",
+  "class": "usps bg-gray-50 p-6",
+  "blocks": [
+    {
+      "name": "USP",
+      "type": "usp",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "usp_title",
+          "label": "USP Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "usp_icon",
+          "label": "USP Icon"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

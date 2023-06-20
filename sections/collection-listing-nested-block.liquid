@@ -1,0 +1,157 @@
+{% liquid
+  assign collection = section.settings.collection
+  assign collection_title = section.settings.collection.title
+  assign collection_description = section.settings.collection.description
+  assign last_card_image = section.settings.last_card_image
+  assign last_card_title = section.settings.last_card_title
+  assign last_card_copy = section.settings.last_card_copy
+  assign last_card_button_text = section.settings.last_card_button_text
+  assign last_card_button_link = section.settings.last_card_button_link
+  assign section_spacing = section.settings.section_spacing
+%}
+
+{%- if collection != blank -%}
+  <div class="border-b border-black border-solid flex flex-col pb-8 sm:pb-20 sm:grid sm:grid-cols-2 sm:gap-1 sm:auto-rows-auto md:grid-cols-3 2xl:grid-cols-4 {{ section_spacing }}">
+    <div class="flex flex-col items-center justify-center w-full px-6 py-11 xl:px-24 2xl:px-11">
+      <h2 class="font-secondary text-6xl leading-secondary-font w-full text-center pb-3">
+        {{ collection_title }}
+      </h2>
+      {%- if collection_description != blank -%}
+        <div class="text-center text-sm w-full">
+          {{ collection_description }}
+        </div>
+      {%- endif -%}
+    </div>
+    {%- for product in section.settings.collection.products -%}
+      {% render 'product-card',
+        item: product,
+        cardClasses: 'w-full',
+        addToCart: false,
+        addToCartIcon: false,
+        stackedMobileStyle: false,
+        link: false
+      %}
+    {%- endfor -%}
+
+    {%- if last_card_image != blank
+      or last_card_title != blank
+      or last_card_title != blank
+      or last_card_copy != blank
+      or last_card_button_text != blank
+    -%}
+      <div class="flex flex-col items-center justify-center w-full p-10 sm:p-11">
+        {%- if last_card_image != blank -%}
+          <img
+            src="{{ last_card_image.src | image_url: height: 500 }}"
+            alt="{{ last_card_image.alt | escape }}"
+            class="object-cover aspect-5/4 mb-10 sm:mb-8"
+            width="600"
+            height="500"
+            loading="lazy"
+          >
+        {%- endif -%}
+        {%- if last_card_title != blank -%}
+          <h3 class="font-secondary text-2xl leading-secondary-font w-full text-center pb-2">
+            {{ last_card_title }}
+          </h3>
+        {%- endif -%}
+        {%- if last_card_copy != blank -%}
+          <div class="text-center text-sm w-full mb-8">{{ last_card_copy }}</div>
+        {%- endif -%}
+        {%- if last_card_button_text != blank -%}
+          <a class="btn-primary-dark w-full md:w-auto" href="{{ last_card_button_link }}">
+            {{- last_card_button_text -}}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection Nested Row",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "last_card_image",
+      "label": "Last Card Image"
+    },
+    {
+      "type": "text",
+      "id": "last_card_title",
+      "label": "Last Card Title"
+    },
+    {
+      "type": "textarea",
+      "id": "last_card_copy",
+      "label": "Last Card Copy"
+    },
+    {
+      "type": "text",
+      "id": "last_card_button_text",
+      "label": "Last Card Button Text"
+    },
+    {
+      "type": "url",
+      "id": "last_card_button_link",
+      "label": "Last Card Button Link"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Nested Row"
+    }
+  ]
+}
+{% endschema %}

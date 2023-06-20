@@ -1,0 +1,312 @@
+{% liquid
+  assign comparisons = all_products[product.metafields.comparison.product_to_compare]
+  assign comparison_link = product.metafields.comparison.full_comparison_link
+  assign title = product.metafields.comparison.title
+  assign current_product_media = product.media[0]
+  assign current_product_title = product.title
+  assign current_product_price = product.price
+  assign current_product_id = product.id
+
+  assign compare_product_id = comparisons.id
+  assign compare_product_title = comparisons.title
+  assign compare_product_price = comparisons.price
+  assign compare_product_media = comparisons.media[0]
+  assign compare_product_url = comparisons.url
+
+  assign section_spacing = section.settings.section_spacing
+
+  assign content_block_title = section.settings.content_block_title
+  assign content_block_link_text = section.settings.content_block_link_text
+  assign content_block_link = section.settings.content_block_link
+
+  assign loyaltyExcluded = false
+  for collection in product.collections
+    if collection.title contains 'Exclusion' or collection.title contains 'Subscription'
+      assign loyaltyExcluded = true
+    endif
+  endfor
+
+  assign loyaltyExcludedComparison = false
+  for collection in comparisons.collections
+    if collection.title contains 'Exclusion' or collection.title contains 'Subscription'
+      assign loyaltyExcludedComparison = true
+    endif
+  endfor
+%}
+
+{% if comparisons != blank %}
+  <div class="{{ section_spacing }} scroll-m-14" id="compare_container">
+    <div class="container mx-auto max-w-screen-md flex flex-col px-6 pb-14 md:px-0">
+      <h2 class="flex w-full text-center justify-center font-secondary text-6xl leading-secondary-font pb-4">
+        {{ title }}
+      </h2>
+
+      <div class="grid grid-cols-2 grid-flow-row auto-rows-max gap-x-4 md:gap-x-6">
+        <div>
+          {% if current_product_media != blank %}
+            {% if current_product_media.media_type == 'image' %}
+              <div class="relative">
+                <img
+                  src="{{ current_product_media.src | image_url: height: 400 }}"
+                  alt="{{ current_product_media.alt | escape }}"
+                  class="object-cover"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+        <div>
+          {% if compare_product_media != blank %}
+            {% if compare_product_media.media_type == 'image' %}
+              <a
+                href="{{ compare_product_url }}"
+                class="relative"
+              >
+                <img
+                  src="{{ compare_product_media.src | image_url: height: 400 }}"
+                  alt="{{ compare_product_media.alt | escape }}"
+                  class="object-cover"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                >
+              </a>
+            {% endif %}
+          {% endif %}
+        </div>
+        <div>
+          <div class="flex pt-4 pb-2">
+            <div class="font-secondary text-sm flex items-center flex-wrap h-7 border border-solid border-black rounded-2xl px-4 leading-none md:text-md">
+              This Product
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flex pt-4 pb-2"></div>
+        </div>
+        <div>
+          <div class="flex items-start h-full">
+            <div class="text-3xl font-primary leading-primary-font uppercase pb-2 md:text-8xl">
+              {{ current_product_title }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-start h-full">
+            <a
+              href="{{ compare_product_url }}"
+              class="text-3xl font-primary leading-primary-font uppercase pb-2 md:text-8xl hover:text-gray-700 hover:underline"
+            >
+              {{- compare_product_title -}}
+            </a>
+          </div>
+        </div>
+        <div class="pb-8">
+          <div class="flex flex-col font-secondary items-start mt-2 md:mt-4 md:flex-row md:items-center">
+            <div class="flex items-end leading-none">
+              {{ 'products.facets.from' | t }}
+              <span class="text-lg pl-1.5 md:text-2xl" data-lion-price-for-product-id="{{ current_product_id }}">
+                {{- current_product_price | money -}}
+              </span>
+            </div>
+            <div class="font-body text-xs leading-none text-gray-600 flex flex-col mt-2 md:mt-0 md:inline-block md:ml-2">
+              {%- unless loyaltyExcluded == true -%}
+                {{ 'products.product.loyalty_lion_rewards_first' | t }}
+                <span data-lion-points-for-product-id="{{ current_product_id }}"></span>
+                <span class="">{{ 'products.product.loyalty_lion_rewards_last_html' | t }}</span>
+              {%- endunless -%}
+            </div>
+          </div>
+        </div>
+        <div class="pb-8">
+          <div class="flex flex-col font-secondary items-start mt-2 md:mt-4 md:flex-row md:items-center">
+            <div class="flex items-end leading-none">
+              {{ 'products.facets.from' | t }}
+              <span class="text-lg pl-1.5 md:text-2xl" data-lion-price-for-product-id="{{ compare_product_id }}">
+                {{- compare_product_price | money -}}
+              </span>
+            </div>
+            <div class="font-body text-xs leading-none text-gray-600 flex flex-col mt-2 md:mt-0 md:inline-block md:ml-2">
+              {%- unless loyaltyExcludedComparison == true -%}
+                {{ 'products.product.loyalty_lion_rewards_first' | t }}
+                <span data-lion-points-for-product-id="{{ compare_product_id }}"></span>
+                <span class="">{{ 'products.product.loyalty_lion_rewards_last_html' | t }}</span>
+              {%- endunless -%}
+            </div>
+          </div>
+        </div>
+        {% for item in product.metafields.comparison_item.label limit: 2 %}
+          {%- assign i = forloop.index0 -%}
+          <div class="flex flex-col border-t border-solid border-gray-400 py-5">
+            <div class="font-secondary text-sm md:text-xl">
+              {% if product.metafields.comparison_item.label[i] != blank -%}
+                {{- product.metafields.comparison_item.label[i] -}}
+              {%- else -%}
+                -
+              {%- endif %}
+            </div>
+            <div class="text-xs text-gray-700">
+              {% if product.metafields.comparison_item.value[i] != blank -%}
+                {{- product.metafields.comparison_item.value[i] -}}
+              {%- else -%}
+                -
+              {%- endif %}
+            </div>
+          </div>
+          {% assign comparisonCount2 = 0 %}
+
+          {% unless comparisons.id == product.id %}
+            {% if comparisonCount2 < 2 %}
+              {% assign comparisonCount2 = comparisonCount2 | plus: 1 %}
+              {% if comparisons.metafields.comparison_item.label != blank %}
+                {% assign matches = 0 %}
+                {% for label in comparisons.metafields.comparison_item.label %}
+                  {%- assign c = forloop.index0 -%}
+                  {% assign comparison_label = comparisons.metafields.comparison_item.label[c]
+                    | downcase
+                    | replace: ':', ''
+                    | strip
+                  %}
+                  {% assign product_label = product.metafields.comparison_item.label[i]
+                    | downcase
+                    | replace: ':', ''
+                    | strip
+                  %}
+
+                  {% if comparison_label == product_label %}
+                    {% assign matches = matches | plus: 1 %}
+
+                    <div class="flex flex-col border-t border-solid border-gray-400 py-5">
+                      <div class="font-secondary text-sm md:text-xl">
+                        {{ comparisons.metafields.comparison_item.label[c] }}
+                      </div>
+                      <div class="text-xs text-gray-700">
+                        {% if comparisons.metafields.comparison_item.value[c] != blank -%}
+                          {{- comparisons.metafields.comparison_item.value[c] -}}
+                        {%- else -%}
+                          -
+                        {%- endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+
+                {% if matches == 0 %}
+                  <div class="flex flex-col border-t border-solid border-gray-400 py-5">
+                    <div class="font-secondary text-sm md:text-xl">-</div>
+                    <div class="text-xs text-gray-700">-</div>
+                  </div>
+                {% endif %}
+              {% else %}
+                <div class="flex flex-col border-t border-solid border-gray-400 py-5">
+                  <div class="font-secondary text-sm md:text-xl">-</div>
+                  <div class="text-xs text-gray-700">-</div>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+      {% if comparison_link != blank %}
+        <div class="flex justify-center mt-10">
+          <a
+            class="btn-primary-dark w-full md:w-auto"
+            href="{{ shop.url }}/pages/{{ comparison_link }}?product={{ product.handle }}"
+          >
+            {{- 'products.product.full_comparison' | t -}}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    {% if content_block_title != blank or content_block_link_text != blank %}
+      <div class="container mx-auto max-w-screen-md flex flex-col p-6 border-y border-solid border-gray-300 md:border">
+        <div class="flex flex-col">
+          <div class="flex w-full text-center justify-center font-secondary text-lg leading-secondary-font pb-4">
+            {{ content_block_title }}
+          </div>
+
+          <a href="{{ content_block_link }}" class="text-sm flex w-full text-center justify-center underline">
+            {{- content_block_link_text -}}
+          </a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Comparison Block",
+  "class": "comparison-block",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "content_block_title",
+      "label": "Content Block Title"
+    },
+    {
+      "type": "text",
+      "id": "content_block_link_text",
+      "label": "Content Block Link Text"
+    },
+    {
+      "type": "url",
+      "id": "content_block_link",
+      "label": "Content Block Link"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison Block"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

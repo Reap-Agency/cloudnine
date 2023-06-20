@@ -1,0 +1,15 @@
+<div class="relative">
+	<select name="id" id="product-select-{{ product.id }}" class="appearance-none w-full px-4 py-3 border border-gray-300 my-4" x-on:change="onVariantChange">
+  	{% for variant in product.variants %}
+		<option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+			x-data="{
+				vId: {{ variant.id }},
+				vInventoryPolicy: '{{ variant.inventory_policy }}'
+			}"
+		>
+	  	{{ product.title }} - {{ variant.title }}
+		</option>
+  	{% endfor %}
+	</select>
+	<div class="w-6 h-6 absolute right-2 top-8">{% render 'icon', icon: 'select-arrow' %}</div>
+</div>

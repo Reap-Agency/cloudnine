@@ -1,0 +1,207 @@
+{% liquid
+  assign heading = section.settings.heading
+  assign text = section.settings.text
+  assign section_spacing = section.settings.section_spacing
+%}
+<div class="{{- section_spacing -}}">
+  <div class="md:ml-0 md:mx-auto">
+    {%- if heading or text -%}
+      <div class="mx-6">
+        <div class="md:mx-auto md:flex md:items-flex-end md:justify-between border-b border-b-gray-300 pb-6 md:max-w-screen-lg">
+          {%- if heading -%}
+            <h2 class="font-primary leading-primary-font text-10xl uppercase md:w-3/5">{{ heading }}</h2>
+          {%- endif -%}
+          {%- if text -%}
+            <p class="font-body leading-body-font text-sm pt-6 md:pt-0 mr-8 md:mr0 md:w-2/5">{{ text }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+    {% if section.blocks.size > 0 %}
+      <div
+        x-data="{swiper: null}"
+        x-init="
+          swiper = new Swiper($refs.contentCarousel, {
+              slidesPerView: 1.15,
+              spaceBetween: 32,
+              slideActiveClass: 'c9-swiper-slide-active',
+              scrollbar: {
+                  el: '.c9-swiper-scrollbar',
+                  dragClass: 'c9-swiper-scrollbar-drag'
+              },
+              navigation: {
+                  nextEl: '.content-carousel-slider-next',
+                  prevEl: '.content-carousel-slider-prev'
+              },
+              breakpoints: {
+                  846: {
+                      slidesPerView: 1.3,
+                      centeredSlides: true,
+                      spaceBetween: 48,
+                  }
+              }
+          })
+        "
+        class="relative w-full mt-6 md:mt-14"
+      >
+        <div class="swiper swiper-container ml-6 md:ml-0" x-ref="contentCarousel">
+          <div class="swiper-wrapper">
+            <!-- Slides -->
+            {%- for block in section.blocks -%}
+              <div
+                class="swiper-slide opacity-50"
+                {{ block.shopify_attributes }}
+              >
+                <div class="md:flex md:justify-center items-center mx-auto md:space-x-[8%]">
+                  {%- if block.settings.subheading or block.settings.text -%}
+                    <div class="md:w-[31%] space-y-4 pr-[20%] md:pr-0">
+                      {%- if block.settings.subheading -%}
+                        <h3 class="font-body text-base leading-body-font font-semibold">
+                          {{ block.settings.subheading }}
+                        </h3>
+                      {%- endif -%}
+                      {%- if block.settings.text -%}
+                        <p class="font-secondary text-xl md:text-2xl leading-secondary-font">
+                          {{ block.settings.text }}
+                        </p>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.image -%}
+                    <div class="relative overflow-hidden aspect-3/2 md:w-[61%] mt-6 md:mt-0">
+                      <img
+                        src="{{ block.settings.image | image_url }}"
+                        class="h-full w-full absolute top-0 left-0 object-cover"
+                        width="652"
+                        height="auto"
+                        {% unless forloop.index == 1 %}
+                          loading="lazy"
+                        {% endunless %}
+                        alt="{{ block.settings.image.alt | escape }}"
+                      >
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endfor -%}
+            <!-- End of Slides -->
+          </div>
+        </div>
+        <!-- Slider progress -->
+        <div class="pr-12 md:px-6 pt-6 md:pt-14">
+          <div class="flex justify-between items-center max-w-3xl md:mx-auto">
+            <div class="relative w-full mr-4">
+              <div class="c9-swiper-scrollbar"></div>
+            </div>
+            <!-- Slider controls -->
+            <div class="flex items-center">
+              <button type="button" class="group content-carousel-slider-prev">
+                {% render 'icon',
+                  icon: 'arrow-full-left',
+                  iconClasses: ' text-black group-[.swiper-button-disabled]:text-gray-300'
+                %}
+              </button>
+              <button type="button" class="group content-carousel-slider-next">
+                {% render 'icon',
+                  icon: 'arrow-full-right',
+                  iconClasses: ' text-black group-[.swiper-button-disabled]:text-gray-300'
+                %}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Content Carousel",
+  "class": "content-carousel",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Carousel Item",
+      "type": "slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content Carousel"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

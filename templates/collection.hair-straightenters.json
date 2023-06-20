@@ -1,0 +1,102 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection",
+      "blocks": {
+        "31b9f940-f22d-4d0e-94bc-fe0c25c894aa": {
+          "type": "title",
+          "settings": {}
+        },
+        "3daa18c1-e150-4556-bceb-c9cbb8ce1a9d": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "31b9f940-f22d-4d0e-94bc-fe0c25c894aa",
+        "3daa18c1-e150-4556-bceb-c9cbb8ce1a9d"
+      ],
+      "settings": {}
+    },
+    "hero-banner-plp": {
+      "type": "hero-banner-plp",
+      "settings": {
+        "hero_banner_theme": "{{ collection.metafields.custom.hero_banner_theme.value }}",
+        "content_alignment": "{{ collection.metafields.custom.hero_banner_content_alignment.value }}",
+        "hero_banner_bg_image": "{{ collection.metafields.custom.hero_banner_bg_image.value }}",
+        "hero_banner_mobile_bg_image": "{{ collection.metafields.custom.hero_banner_bg_image_mobile.value }}",
+        "hero_banner_pre_title": "{{ collection.metafields.custom.hero_banner_pre_title.value }}",
+        "hero_banner_title": "{{ collection.metafields.custom.hero_banner_title.value }}",
+        "hero_banner_copy": "<p>{{ collection.metafields.custom.hero_banner_copy | metafield_tag }}<\/p>",
+        "hero_banner_price": "{{ collection.metafields.custom.hero_banner_price.value }}",
+        "hero_banner_button_1_text": "{{ collection.metafields.custom.hero_banner_button_1_text.value }}",
+        "hero_banner_button_1_link": "{{ collection.metafields.custom.hero_banner_button_1_link.value }}",
+        "hero_banner_button_2_text": "{{ collection.metafields.custom.hero_banner_button_2_text.value }}",
+        "hero_banner_button_2_link": "{{ collection.metafields.custom.hero_banner_button_2_link.value }}",
+        "section_spacing": "mb-8 md:mb-16"
+      }
+    },
+    "collection-listing-nested-block": {
+      "type": "collection-listing-nested-block",
+      "settings": {
+        "collection": "classic-straighteners",
+        "last_card_image": "shopify:\/\/shop_images\/4_3.jpg",
+        "last_card_title": "Single column in grid CTA card",
+        "last_card_copy": "Lorem ipsum dolor sit amet consectetur.",
+        "last_card_button_text": "Button",
+        "last_card_button_link": "#",
+        "section_spacing": "mb-8 md:mb-16"
+      }
+    },
+    "2bf3dd7c-4486-42f4-90cb-635dc11416a3": {
+      "type": "collection-listing-nested-block",
+      "settings": {
+        "collection": "wide-straighteners",
+        "last_card_image": "shopify:\/\/shop_images\/4_3.jpg",
+        "last_card_title": "Last Card",
+        "last_card_copy": "Some last card copy that is different to the last card above",
+        "last_card_button_text": "Button",
+        "last_card_button_link": "#",
+        "section_spacing": "mb-8 md:mb-16"
+      }
+    },
+    "product-card-carousel": {
+      "type": "product-card-carousel",
+      "settings": {
+        "title": "You may also like",
+        "product_list": [
+          "test",
+          "test-product-colour-swatch-1",
+          "test-product-colour-swatch-2",
+          "the-original-iron-pro"
+        ],
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "background-image-and-link-cards": {
+      "type": "background-image-and-link-cards",
+      "settings": {
+        "link_card_image": "shopify:\/\/shop_images\/2_1-img.jpg",
+        "link_card_title": "Refurbished products headline",
+        "link_card_copy": "Lorem ipsum dolor sit amet consectetur.",
+        "link_card_button_text": "Call to action",
+        "link_card_button_link": "#",
+        "bg_image_link_card_theme": "light",
+        "bg_image_link_card_image": "shopify:\/\/shop_images\/4_3.jpg",
+        "bg_image_link_card_title": "Still not sure which product is right for you?",
+        "bg_image_link_card_copy": "Our product finder will help you",
+        "bg_image_link_card_button_text": "Get started",
+        "bg_image_link_card_button_link": "#",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hero-banner-plp",
+    "collection-listing-nested-block",
+    "2bf3dd7c-4486-42f4-90cb-635dc11416a3",
+    "product-card-carousel",
+    "background-image-and-link-cards"
+  ]
+}

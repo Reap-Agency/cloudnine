@@ -1,0 +1,374 @@
+{% liquid
+  assign send_hint_title = section.settings.send_a_hint_title
+  assign send_hint_icon = section.settings.send_a_hint_icon
+  assign send_hint_link_text = section.settings.send_a_hint_link_text
+  assign send_hint_modal_pre_text = section.settings.send_hint_modal_pre_text
+  assign section_spacing = section.settings.section_spacing
+%}
+
+{% if send_hint_title != blank or send_hint_link_text != blank %}
+  <div
+    x-data="{ open: false }"
+    class="{{- section_spacing -}}"
+  >
+    <!-- Section Page Component -->
+    <div class="px-6">
+      <div class="container mx-auto max-w-screen-md bg-white border border-gray-300 text-center py-8 px-6">
+        {%- if send_hint_title or send_hint_icon %}
+          <div class="flex items-start justify-center pb-2 space-x-2">
+            {%- if send_hint_title -%}
+              <h3 class="font-seconday text-lg leading-secondary-font text-black">{{- send_hint_title -}}</h3>
+            {%- endif -%}
+            {%- if send_hint_icon -%}
+              <img
+                src="{{ send_hint_icon | image_url }}"
+                width="17"
+                height="auto"
+                loading="lazy"
+                alt="{{ send_hint_icon.alt | escape }}"
+              >
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if send_hint_link_text -%}
+          <button
+            type="button"
+            x-on:click="open = true"
+            class="font-body text-sm leading-body-font underline text-black"
+          >
+            {{- send_hint_link_text -}}
+          </button>
+        {%- endif -%}
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      x-show="open"
+      x-trap.noscroll="open"
+      style="display: none"
+      x-on:keydown.escape.prevent.stop="open = false"
+      role="dialog"
+      aria-modal="true"
+      x-id="['send-a-hint-modal']"
+      :aria-labelledby="$id('send-a-hint-modal')"
+      class="fixed inset-0 z-50 overflow-y-auto "
+    >
+      <!-- Background Overlay -->
+      <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-overlay"></div>
+
+      <!-- Modal Panel -->
+      <div
+        x-show="open"
+        x-transition
+        x-on:click="open = false"
+        class="relative flex min-h-screen items-center justify-center px-6 py-32"
+      >
+        <div
+          x-on:click.stop
+          x-trap="open"
+          class="relative w-full max-w-2xl overflow-y-auto bg-white px-6 md:px-12 py-8 md:py-20"
+        >
+          <!-- Close Button -->
+          <button
+            type="button"
+            x-on:click="open = false"
+            aria-label="{{ 'accessibility.close' | t }}"
+            class="absolute top-4 md:top-8 right-4 md:right-8 hover:rotate-90 transition-transform duration-700"
+          >
+            <img src="{{ 'icon-close.svg' | asset_url }}" aria-hidden="true" focusable="false" alt="">
+            <span class="sr-only">Close</span>
+          </button>
+
+          <!-- Title -->
+          <h4 class="font-primary text-7xl md:text-10xl leading-priamary-font uppercase" :id="$id('send-a-hint-modal')">
+            {{ 'products.product.send_a_hint.modal_title' | t }}
+          </h4>
+          {%- if send_hint_modal_pre_text -%}
+            <p class="font-body text-sm leading-body-font text-black pt-2">
+              {{- send_hint_modal_pre_text | append: ' ' -}}
+              <span class="font-semibold">{{- product.title -}}</span>
+            </p>
+          {%- endif %}
+          <form
+            class="pt-6"
+            data-send-a-hint-form
+            method="post"
+          >
+            {% liquid
+              assign label_classes = 'form-label'
+              assign input_classes = 'form-input'
+            %}
+            <div class="divide-black divide-y-2 divide">
+              <!-- Sender details -->
+              <div class="send-a-hint__form-upper pb-12">
+                <div class="send-a-hint__form-input-group">
+                  <label for="your_name" class="{{ label_classes }}">
+                    {{- 'products.product.send_a_hint.your_name' | t -}}
+                  </label>
+                  <input
+                    type="text"
+                    class="{{ input_classes }}"
+                    name="your_name"
+                    placeholder="{{- 'products.product.send_a_hint.input_placeholder_your_name' | t -}}"
+                    {% if customer %}
+                      value="{{ customer.name }}"
+                    {% endif %}
+                    required
+                  >
+                </div>
+                <div class="send-a-hint__form-input-group">
+                  <label for="your_email" class="{{ label_classes }}">
+                    {{- 'products.product.send_a_hint.your_email' | t -}}
+                  </label>
+                  <input
+                    type="email"
+                    class="{{ input_classes }}"
+                    name="your_email"
+                    placeholder="{{- 'products.product.send_a_hint.input_placeholder_your_email' | t -}}"
+                    {% if customer %}
+                      value="{{ customer.email }}"
+                    {% endif %}
+                    required
+                  >
+                </div>
+              </div>
+              <!-- Recipient details -->
+              <div class="send-a-hint__form-lower pt-12">
+                <h5
+                  class="font-primary text-5xl md:text-8xl leading-priamary-font uppercase pb-6"
+                  :id="$id('send-a-hint-modal')"
+                >
+                  {{ 'products.product.send_a_hint.to_title' | t }}
+                </h5>
+
+                <div class="send-a-hint__form-input-group">
+                  <label for="recipient_name" class="{{ label_classes }}">
+                    {{- 'products.product.send_a_hint.recipients_name' | t -}}
+                  </label>
+                  <input
+                    type="text"
+                    class="{{ input_classes }}"
+                    name="recipient_name"
+                    placeholder=" {{- 'products.product.send_a_hint.input_placeholder_recipients_name' | t -}}"
+                    required
+                  >
+                </div>
+
+                <div class="send-a-hint__form-input-group">
+                  <label for="recipient_email" class="{{ label_classes }}">
+                    {{- 'products.product.send_a_hint.recipients_email' | t -}}
+                  </label>
+                  <input
+                    type="email"
+                    class="{{ input_classes }}"
+                    name="recipient_email"
+                    placeholder="{{- 'products.product.send_a_hint.input_placeholder_recipients_email' | t -}}"
+                    required
+                  >
+                </div>
+
+                <div class="send-a-hint__form-input-group">
+                  <label for="message" class="{{ label_classes }}">
+                    {{- 'products.product.send_a_hint.personalise_your_message' | t -}}
+                  </label>
+                  <textarea
+                    class="{{ input_classes }}"
+                    name="message"
+                    placeholder="{{- 'products.product.send_a_hint.input_placeholder_message' | t -}}"
+                  ></textarea>
+                </div>
+
+                <!-- Product data to be submitted -->
+                {% liquid
+                  assign product_name_val = product.title
+                  assign product_url_val = shop.url | append: product.url
+                  assign product_price_val = product.selected_or_first_available_variant.price | money
+
+                  if product.selected_or_first_available_variant.image
+                    assign product_image_val = product.selected_or_first_available_variant.image | img_url: '250x250', crop: 'center' | prepend: 'https:'
+                  elsif product.images
+                    assign product_image_val = product.images.first | img_url: '250x250', crop: 'center' | prepend: 'https:'
+                  endif
+
+                  if products.size > 1
+                    assign product_name_val = ''
+                    assign product_url_val = ''
+                    assign product_price_val = ''
+                    assign product_image_val = ''
+                  endif
+                %}
+                <input
+                  class="js-selected-hint-name"
+                  type="hidden"
+                  name="product_name"
+                  value="{{ product_name_val }}"
+                >
+                <input
+                  class="js-selected-hint-url"
+                  type="hidden"
+                  name="product_url"
+                  value="{{ product_url_val }}"
+                >
+                <input
+                  class="js-selected-hint-price"
+                  type="hidden"
+                  name="product_price"
+                  value="{{ product_price_val }}"
+                >
+                <input
+                  class="js-selected-hint-image"
+                  type="hidden"
+                  name="product_image"
+                  value="{{ product_image_val }}"
+                  data-default="{{ product.images.first | img_url: '250x250' | prepend: 'https:' }}"
+                >
+
+                <input
+                  type="hidden"
+                  name="signature"
+                  value="{{ 'now' | date: '%s' | hmac_sha256: shop.metafields.send_a_hint.app_api_secret }}"
+                >
+                <input type="hidden" name="timestamp" value="{{ 'now' | date: '%s' }}">
+
+                <!--
+                  Submit
+                  // @todo: dynamically remove disabled attribute on button when all required fields are populated
+                  // @todo: ensure form validation only takes place on submit attempt (currently the tailwind invlaid state shows when the modal opens)
+                -->
+                <div class="md:flex md:items-center md:space-x-4">
+                  <button
+                    type="submit"
+                    disabled
+                    class="btn-primary-dark w-full lg:w-auto px-4 lg:px-16"
+                    aria-label="{{ 'products.product.send_a_hint.submit' | t }}"
+                  >
+                    {{ 'products.product.send_a_hint.submit' | t }}
+                  </button>
+                  <!-- Cancel / close modal -->
+                  <div class="text-center mx-auto mt-2 md:mt-0">
+                    <button
+                      type="button"
+                      x-on:click="open = false"
+                      aria-label="{{ 'products.product.send_a_hint.cancel' | t }}"
+                    >
+                      <span class="font-body text-sm leading-body-font underline text-black">
+                        {{ 'products.product.send_a_hint.cancel' | t }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <!--
+                  Success
+                  // @todo finish form success
+                -->
+                <div
+                  class="hidden"
+                  data-send-a-hint-form-success
+                >
+                  <h4
+                    class="font-primary text-7xl md:text-10xl leading-priamary-font uppercase"
+                    :id="$id('send-a-hint-modal')"
+                  >
+                    {{ 'products.product.send_a_hint.success_title_html' | t }}
+                  </h4>
+
+                  <p class="font-body text-sm leading-body-font text-black pt-2">
+                    {{ 'products.product.send_a_hint.success_description_html' | t }}
+                  </p>
+                  <button
+                    type="submit"
+                    disabled
+                    class="btn-primary-dark w-full lg:w-auto px-4 lg:px-16"
+                    aria-label="{{ 'products.product.send_a_hint.submit' | t }}"
+                  >
+                    {{ 'products.product.send_a_hint.send_another_hint' | t }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Send a Hint",
+  "class": "send-a-hint",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "send_a_hint_title",
+      "label": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "send_a_hint_icon",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "send_a_hint_link_text",
+      "label": "Link Text"
+    },
+    {
+      "type": "textarea",
+      "id": "send_hint_modal_pre_text",
+      "label": "Modal Pre Text",
+      "info": "The pre-text in the modal that appears before the product name."
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Send a Hint"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

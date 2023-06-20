@@ -1,0 +1,177 @@
+{% liquid
+  assign title = section.settings.title
+  assign products = section.settings.product_list
+  assign section_spacing = section.settings.section_spacing
+%}
+{%- if products or title != blank -%}
+  {%- if title != blank -%}
+    <h3 class="font-secondary text-4xl md:text-6xl leading-secondary-font text-center pb-4 md:pb-12 px-6">
+      {{ title }}
+    </h3>
+  {%- endif -%}
+  <div class="{{- section_spacing -}}">
+    {%- if products -%}
+      <!-- Start of slider -->
+      <!-- @todo Can we create a function for the swiper for it to be reusable? -->
+      <div
+        x-data="{ swiper: null, isMobile: false }"
+        x-init="
+          isMobile = (window.innerWidth < 846) ? true : false;
+          if (isMobile) {
+            swiper = new Swiper($refs.relatedProducts, {
+              loop: false,
+              slidesPerView: 2,
+              navigation: {
+                nextEl: '.related-products-slider-next',
+                prevEl: '.related-products-slider-prev',
+              },
+              pagination: {
+                el: '.c9-swiper-progress-pagination-product-card-carousel',
+                progressbarFillClass: 'c9-swiper-pagination-progressbar-fill',
+                type: 'progressbar',
+              },
+            });
+          }
+        "
+        x-on:resize.window="
+          isMobile = (window.innerWidth < 846) ? true : false;
+          if (isMobile && swiper === null) {
+            swiper = new Swiper($refs.relatedProducts, {
+              loop: false,
+              slidesPerView: 2,
+              navigation: {
+                nextEl: '.related-products-slider-next',
+                prevEl: '.related-products-slider-prev',
+              },
+              pagination: {
+                el: '.c9-swiper-progress-pagination-product-card-carousel',
+                type: 'progressbar',
+              },
+            });
+          } else if ( !isMobile && swiper !== null) {
+            console.log('destroy swiper');
+            swiper.destroy();
+            swiper = null;
+          }
+        "
+        class="relative w-full"
+      >
+        <div class="swiper swiper-container" x-ref="relatedProducts">
+          <div class="swiper-wrapper md:grid md:grid-cols-12 gap-x-1">
+            <!-- Slides -->
+            {%- for upsellProduct in products -%}
+              <div
+                class="swiper-slide w-full md:col-span-3"
+                data-slider-id="{{ forloop.index }}"
+              >
+                {% render 'product-card',
+                  item: upsellProduct,
+                  cardClasses: 'w-full',
+                  addToCart: false,
+                  addToCartIcon: false,
+                  stackedMobileStyle: true,
+                  link: false
+                %}
+              </div>
+            {%- endfor -%}
+          </div>
+          <!-- Slider progress -->
+          <div class="flex justify-between items-center px-6 pt-4 md:hidden ">
+            <div class="relative w-full mr-4">
+              <div class="c9-swiper-progress-pagination c9-swiper-progress-pagination-product-card-carousel"></div>
+            </div>
+            <!-- Slider controls -->
+            <div class="flex items-center">
+              <button type="button" class="group related-products-slider-prev">
+                {% render 'icon',
+                  icon: 'arrow-full-left',
+                  iconClasses: 'text-black group-[.swiper-button-disabled]:text-gray-300'
+                %}
+              </button>
+              <button type="button" class="group related-products-slider-next">
+                {% render 'icon',
+                  icon: 'arrow-full-right',
+                  iconClasses: 'text-black group-[.swiper-button-disabled]:text-gray-300'
+                %}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of slider -->
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<script></script>
+
+{% schema %}
+{
+  "name": "Product Card Carousel",
+  "class": "product-card-carousel max-w-screen-2xl mx-auto",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "You may also like"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Products",
+      "limit": 4
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Product Card Carousel"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

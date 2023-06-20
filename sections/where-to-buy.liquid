@@ -1,0 +1,116 @@
+<div class="{{- section.settings.section_spacing -}}">
+  <div class="max-w-7xl mx-auto px-6">
+    <ul class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-8">
+      {%- for block in section.blocks -%}
+        <li>
+          <a
+            class="flex items-center border p-6"
+            href="{{ block.settings.url }}"
+            target="_blank"
+            rel="nofollow">
+            {%- if block.settings.image != blank -%}
+              <img
+                class="flex-none"
+                width="96"
+                height="96"
+                src="{{ block.settings.image | image_url: width: 96, height: 96 }}"
+                loading="lazy"
+                alt="{{ block.settings.image.alt | escape }}">
+            {%- endif -%}
+            <div class="pl-12">
+              {%- if block.settings.title != blank -%}
+                <h3 class="font-secondary text-2xl mb-1">
+                  {{ block.settings.title }}
+                </h3>
+              {%- endif -%}
+              {%- if block.settings.link_text != blank -%}
+                <p class="font-base text-sm underline">
+                  {{ block.settings.link_text }}
+                </p>
+              {%- endif -%}
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Where to Buy",
+    "class": "where-to-buy",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "select",
+        "id": "section_spacing",
+        "label": "Section Spacing",
+        "info": "Spacing will be added to the bottom of the section",
+        "options": [
+          {
+            "value": "mb-0",
+            "label": "None - 0px"
+          },
+          {
+            "value": "mb-1 md:mb-2",
+            "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+          },
+          {
+            "value": "mb-2 md:mb-4",
+            "label": "XSmall - Mobile: 8px | Desktop: 16px"
+          },
+          {
+            "value": "mb-4 md:mb-8",
+            "label": "Small - Mobile: 16px | Desktop: 32px"
+          }, {
+            "value": "mb-8 md:mb-16",
+            "label": "Medium - Mobile: 32px | Desktop: 64px"
+          }, {
+            "value": "mb-12 md:mb-28",
+            "label": "Large - Mobile: 48px | Desktop: 112px"
+          }, {
+            "value": "mb-20 md:mb-36",
+            "label": "XLarge - Mobile: 80px | Desktop: 144px"
+          }, {
+            "value": "mb-24 md:mb-44",
+            "label": "XXL - Mobile: 96px | Desktop: 176px"
+          }
+        ],
+        "default": "mb-0"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Link",
+        "type": "slide",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }, {
+            "type": "url",
+            "id": "url",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Where to Buy"
+      }
+    ],
+    "enabled_on": {
+      "templates": ["page"]
+    }
+  }
+{% endschema %}

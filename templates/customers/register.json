@@ -1,0 +1,61 @@
+{
+  "sections": {
+    "create-account-hero": {
+      "type": "create-account-hero",
+      "blocks": {
+        "6c26e56b-4947-4174-91a6-6b65038a0f43": {
+          "type": "bullets",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/icon-gift.svg",
+            "bullet": "Lorem ipsum dolor sit amet"
+          }
+        },
+        "36a68c9b-6fbb-4e34-ad56-12ee868ff746": {
+          "type": "bullets",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/icon-gift.svg",
+            "bullet": "Lorem ipsum dolor sit amet"
+          }
+        },
+        "aefbded4-b20e-4904-8948-b073d20741a2": {
+          "type": "bullets",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/icon-gift.svg",
+            "bullet": "Lorem ipsum dolor sit amet"
+          }
+        },
+        "d416591b-c4a1-4238-9041-65db448636d3": {
+          "type": "bullets",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/icon-gift.svg",
+            "bullet": "Lorem ipsum dolor sit amet"
+          }
+        }
+      },
+      "block_order": [
+        "6c26e56b-4947-4174-91a6-6b65038a0f43",
+        "36a68c9b-6fbb-4e34-ad56-12ee868ff746",
+        "aefbded4-b20e-4904-8948-b073d20741a2",
+        "d416591b-c4a1-4238-9041-65db448636d3"
+      ],
+      "settings": {
+        "left_image": "shopify:\/\/shop_images\/createaccount.jpg",
+        "right_image": "shopify:\/\/shop_images\/createaccount.jpg",
+        "create_account_title": "Create account",
+        "create_account_copy": "<p>Lorem ipsum dolor sit amet consectetur. Mi vitae ut lorem nec tempor diam. Sed turpis commodo nec sit cursus ut ornare.<\/p>",
+        "create_account_sub_title": "With a Cloud Nine account you can",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "main": {
+      "type": "main-register",
+      "settings": {
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    }
+  },
+  "order": [
+    "create-account-hero",
+    "main"
+  ]
+}

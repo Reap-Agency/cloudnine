@@ -1,0 +1,174 @@
+{% comment %} ToDo: refactor without jQuery {% endcomment %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="{{ 'comparison.js' | asset_url }}" async></script>
+
+{%- assign pageHandle = page.handle -%}
+
+{% comment %} ToDo: Add Page Title and Page content here {% endcomment %}
+
+<div class="m-auto mb-32 w-ful md:p-4 md:w-auto">
+  <ul class="overflow-visible justify-center list-none flex mb-2 pb-0 px-0 w-full md:px-10  md:w-auto">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'nav' -%}
+        <li
+          class="justify-between self-center flex w-full md:w-auto"
+        >
+          <a
+            href="{{ block.settings.nav_page.handle }}"
+            class="text-sm text-center w-full md-w-auto py-2 px-4 md:px-8 border-b border-solid hover:border-black {% if pageHandle == block.settings.nav_page.handle %}border-black{% else %}border-gray-300{% endif %}"
+          >
+            {{ block.settings.nav_text }}
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% assign comparisonProducts = page.metafields.accentuate.products | split: '|' %}
+
+{% if comparisonProducts != blank %}
+  <div id="comparisonWrap" class="container mx-auto max-w-screen-md flex flex-col px-6 mb-40 md:px-0">
+    <div class="comparison-content grid grid-cols-2 grid-flow-row auto-rows-max gap-x-4 md:gap-x-6">
+      {% for i in (1..2) %}
+        <div class="pb-4 {% if forloop.last %}right{% endif %}">
+          <div class="relative w-full border border-solid border-gray-300 flex">
+            <select
+              id="{% if i == 1 and forloop.first %}first{% else %}second{% endif %}"
+              class="appearance-none w-full p-4 text-sm"
+              data-compare-select
+              {% if forloop.first %}
+                data-compare-to
+              {% else %}
+                data-compare-other
+              {% endif %}
+            >
+              {% unless i == 1 %}
+                <option selected="selected" disabled="disabled">{{ 'general.forms.select' | t }}</option>
+              {% endunless %}
+              {% for item in comparisonProducts %}
+                {% assign p = forloop.index0 %}
+                {% assign product = all_products[comparisonProducts[p]] %}
+
+                {% assign mainImage = product.metafields.accentuate.main_image[0].cloudinary_src %}
+                {%- capture compareImage -%}
+                    {%- if mainImage -%}
+                        {{ mainImage | append: 'w_400' }}
+                    {%- else -%}
+                        {{ product.featured_image | img_url: '400x' }}
+                    {%- endif -%}
+                {%- endcapture -%}
+
+                <option
+                  value="{{ product.handle }}"
+                  data-product-id="{{ product.id }}"
+                  data-product-url="{{ product.url }}"
+                  data-product-image="{{ compareImage }}"
+                  data-product-title="{{ product.title }}"
+                  data-price-min="{{ product.price_min | money | replace: '.00', '' }}"
+                  data-price-max="{{ product.price_max | money | replace: '.00', '' }}"
+
+                  {% if i == 1 and forloop.first %}
+                    selected="selected"
+                  {% endif %}
+                >
+                  {{ product.title }}
+                </option>
+              {% endfor %}
+            </select>
+
+            <div class="pointer-events-none absolute inset-y-0 right-0 px-4 flex items-center">
+              {% render 'icon', icon: 'arrow-down', iconClasses: 'text-black' %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% for i in (1..2) %}
+        <div class="{% if forloop.last %}right compare-top{% endif %}">
+          <div class="relative {% if i != 1 and forloop.last %}hidden{% endif %}">
+            <img
+              data-item="{% if i == 1 and forloop.first %}first{% else %}second{% endif %}"
+              src=""
+              class="object-cover"
+              width="400"
+              height="400"
+              loading="lazy"
+            >
+          </div>
+          {% if i != 1 and forloop.last -%}
+            <div class="select-text font-secondary md:text-lg text-center p-6 md:p-12">
+              {{ 'sections.compare.selectProduct' | t }}
+            </div>
+          {%- endif %}
+        </div>
+      {% endfor %}
+
+      {% for i in (1..2) %}
+        <div class="{% if forloop.last %}right compare-middle{% endif %}">
+          <div class="flex items-start h-full">
+            <div
+              data-item="{% if i == 1 and forloop.first %}first{% else %}second{% endif %}"
+              class="product-title text-3xl font-primary leading-primary-font uppercase pb-2 pt-6 md:text-8xl"
+            ></div>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% for i in (1..2) %}
+        <div class="pb-8 {% if forloop.last %}right compare-middle{% endif %}">
+          <div class="flex flex-col font-secondary items-start mt-2 md:mt-4 md:flex-row md:items-center {% if i != 1 and forloop.last %}hidden{% endif %}">
+            <div class="flex items-end leading-none">
+              <span
+                data-item="{% if i == 1 and forloop.first %}first{% else %}second{% endif %}"
+                class="product-price"
+              ></span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="comparison-content__product-info grid grid-cols-2 grid-flow-row auto-rows-max gap-x-4 md:gap-x-6"></div>
+
+    <div class="comparison-content__product-buttons grid grid-cols-2 grid-flow-row auto-rows-max gap-x-4 md:gap-x-6">
+      {% for i in (1..2) %}
+        <div class="{% if forloop.last %}right compare-bottom{% endif %}">
+          <a
+            data-item="{% if i == 1 and forloop.first %}first{% else %}second{% endif %}"
+            class="product-link btn-primary-green {% if forloop.last %}hidden{% endif %}"
+            href=""
+          >
+            {{ 'products.product.add_to_cart' | t }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Comparison",
+  "class": "comparison",
+  "tag": "section",
+  "blocks": [
+    {
+      "name": "Nav Items",
+      "type": "nav",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "nav_text",
+          "label": "Nav Text"
+        },
+        {
+          "type": "page",
+          "id": "nav_page",
+          "label": "Nav Page"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

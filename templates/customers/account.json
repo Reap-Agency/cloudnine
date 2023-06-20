@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "account-hero-banner": {
+      "type": "account-hero-banner",
+      "settings": {
+        "account_bg_image": "shopify:\/\/shop_images\/collection-hero.png",
+        "account_title": "Your points",
+        "account_link_text": "View your rewards",
+        "section_spacing": "mb-8 md:mb-16"
+      }
+    },
+    "main": {
+      "type": "main-account",
+      "settings": {}
+    }
+  },
+  "order": [
+    "account-hero-banner",
+    "main"
+  ]
+}

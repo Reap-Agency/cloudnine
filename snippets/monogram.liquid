@@ -1,0 +1,73 @@
+<script src="{{ 'monogramming.js' | asset_url }}" defer></script>
+
+{% liquid
+  assign monogram_colour = product.metafields.custom.monogram_service.value.monogram_colour | default: 'White*#FFF'
+  assign monogram_hex = monogram_colour | split: '*' | last
+%}
+
+<div class="modal-monogram mx-auto w-full h-auto grid col-span-12 py-8  sm:py-8 md:py-20 lg:py-20 border-y-2">
+  <div class="flex flex-row flex-wrap sm:flex-wrap md:flex-nowrap lg:flex-nowrap">
+    <div class="modal-options w-full sm:w-full md:w-1/2 lg:w-1/2 h-auto flex flex-col">
+      {% comment %} canvas {% endcomment %}
+      <canvas
+        class="monogram-canvas h-full product-page-monogram-canvas ml-auto md:max-w-screen-sm w-full{% unless product.metafields.custom.monogram_service.value.monogram_image != blank %}is-hidden{% endunless %}"
+        data-image="https:{{ product.metafields.custom.monogram_service.value.monogram_image | image_url }}"
+        data-monogram-colour="{{ monogram_hex }}"
+        data-love-island-font="{{ product.metafields.custom.monogram_service.value.love_island_font | default: 'false' }}"
+        data-retro-font="{{ product.metafields.custom.monogram_service.value.retro_font | default: 'false' }}"
+        data-monogram-font-size="{{ product.metafields.custom.monogram_service.value.monogram_font_size | default: 30 }}"
+        data-monogram-text-x="{{ product.metafields.custom.monogram_service.value.monogram_text_x | default: 320 }}"
+        data-monogram-text-y="{{ product.metafields.custom.monogram_service.value.monogram_text_y | default: 160 }}"
+        id="{{ product.id }}"
+        width="640"
+        height="320"
+      ></canvas>
+    </div>
+    <div class="modal-options w-full sm:w-full md:w-1/2 lg:w-1/2 h-auto flex flex-col px-5 pt-5 sm:pt-5 md:pt-0 md:pl-28 lg:pl-28">
+      {% comment %} side bar {% endcomment %}
+      <div class="border-b border-gray-300 flex flex-col md:max-w-xs w-full">
+        <h2 class="font-primary text-10xl leading-primary-font uppercase mb-4">
+          {{ 'products.product.monogram_heading' | t }}
+        </h2>
+
+        <p>{{ product.metafields.custom.monogram_general_content.value.main_content }}</p>
+
+        <input
+          type="text"
+          placeholder="{{ 'products.product.monogram_input_placeholder' | t }}"
+          class="monogram-input w-full h-12 border border-gray-300 py-4 px-3 mb-4 placeholder-gray-600 placeholder:font-bold font-body"
+          data-profanity-list="{{ product.metafields.custom.monogram_service.value.profanity_list_matches }}"
+          data-profanity-list-contains="{{ product.metafields.custom.monogram_service.value.profanity_list_contains }}"
+          data-chars-list="{{ product.metafields.custom.monogram_service.value.invalid_characters }}"
+          maxlength="10"
+        >
+        <p class="monogram-error text-red hidden pb-2">
+          {{ 'products.product.monogram_error' | t }}
+        </p>
+      </div>
+
+      <div class="py-4 flex flex-col border-b border-gray-300 md:max-w-xs w-full pt-2">
+        <h3 class="font-secondary leading-secondary-font text-xl pb-2 monogram-priced" data-monogram-price="1000">
+          {{ product.metafields.custom.monogram_general_content.value.price_off }}
+        </h3>
+        <p class="pb-0 mb-0 font-gray-400">
+          {{ product.metafields.custom.monogram_general_content.value.notification }}
+        </p>
+      </div>
+      <div class="pt-4 flex flex-col md:max-w-xs w-full">
+        <p class="font-body leading-body-font font-bold font-black pb-2">
+          {{ product.metafields.custom.monogram_general_content.value.bottom_content }}
+        </p>
+        <button
+          id="monogram-add"
+          name="add"
+          class="js-add-to-cart add-to-cart btn-primary-green "
+          role="button"
+          disabled
+        >
+          {{ 'products.product.done' | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

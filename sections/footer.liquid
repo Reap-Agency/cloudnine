@@ -1,0 +1,155 @@
+<div class="footer__inner text-center md:text-left max-w-7xl mx-auto p-6">
+  <div class="footer__upper border-b border-b-gray-500 md:flex md:justify-between md:items-center py-6 md:py-12">
+    <div class="footer__social flex items-center justify-center md:justify-normal py-4 md:py-0">
+      {%- liquid
+        assign has_social_icons = true
+        if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank
+          assign has_social_icons = false
+        endif
+      -%}
+      {%- if section.settings.social_heading != blank -%}
+        <p class="font-body text-base leading-body-font font-semibold	text-gray-100 pr-2.5">
+          {{ section.settings.social_heading }}
+        </p>
+      {%- endif -%}
+      {%- if has_social_icons -%}
+        {%- render 'social-icons' -%}
+      {%- endif -%}
+    </div>
+    <div class="footer__lang">
+      {%- render 'footer-country-selector' -%}
+    </div>
+  </div>
+  <div class="footer__main md:grid md:grid-cols-12 md:gap-6 pt-6 md:pt-8 pb-6 md:pb-5">
+    <div class="footer__brand-messaging md:max-w-[22.125rem] md:col-span-4">
+      {%- if section.settings.brand_image != blank -%}
+        <div>
+          <img
+            src="{{ section.settings.brand_image | image_url: width: 80 }}"
+            width="40"
+            height="auto"
+            class="m-auto md:m-0 pb-4"
+            alt="{{ section.settings.brand_image.alt }}"
+            loading="lazy"
+          >
+        </div>
+      {% endif %}
+      {%- if section.settings.brand_heading != blank -%}
+        <p class="font-body text-base leading-body-font font-semibold text-gray-100 pb-4">
+          {{ section.settings.brand_heading }}
+        </p>
+      {% endif %}
+      {%- if section.settings.brand_supporting_text != blank -%}
+        <p class="font-body text-xs text-gray-300 pb-4">{{ section.settings.brand_supporting_text }}</p>
+      {% endif %}
+    </div>
+    {%- for block in section.blocks -%}
+      {% unless block.type == 'usp' %}
+        {%- if block.type == 'menu' -%}
+          {%- render 'footer-menu', block: block, forloop: forloop -%}
+        {% endif %}
+      {% endunless %}
+    {%- endfor -%}
+  </div>
+  <div class="footer__lower md:flex md:flex-wrap md:justify-between md:items-end pb-5 md:pb-9">
+    <div class="footer__payment pb-3 md:pb-0">
+      <p class="font-body text-base leading-body-font font-semibold text-gray-100 pb-4">
+        {{ section.settings.payment_method_heading }}
+      </p>
+      {%- render 'payment-methods' -%}
+    </div>
+    <div class="footer__legal">
+      {%- if section.settings.legal_menu != blank -%}
+        <nav aria-label="Legal Navigation">
+          <ul class="flex flex-wrap items-center justify-center md:justify-normal">
+            {%- for link in section.settings.legal_menu.links -%}
+              <li class="px-2 md:px-6 border-r border-r-gray-500 last:border-r-0">
+                <a href="{{ link.url }}" class="block font-body text-xs text-gray-400 hover:underline">
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if section.settings.footnote != blank -%}
+    <div class="footer__footnote pb-6 md:pb-11">
+      <p class="font-body text-xs text-gray-400 text-center">{{ section.settings.footnote }}</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "footer",
+  "class": "footer bg-black",
+  "settings": [
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Social Heading",
+      "default": "Socials"
+    },
+    {
+      "type": "header",
+      "content": "Brand Messaging  Signup"
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_image",
+      "label": "Brand Messaging Image"
+    },
+    {
+      "type": "text",
+      "id": "brand_heading",
+      "label": "Brand Messaging Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_supporting_text",
+      "label": "Brand Messaging Text"
+    },
+    {
+      "type": "header",
+      "content": "Payment Methods"
+    },
+    {
+      "type": "text",
+      "id": "payment_method_heading",
+      "label": "Payment Method Heading",
+      "default": "Payment Methods"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Legal menu"
+    },
+    {
+      "type": "text",
+      "id": "footnote",
+      "label": "Footnote"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Menu",
+      "type": "menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Menu Title"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

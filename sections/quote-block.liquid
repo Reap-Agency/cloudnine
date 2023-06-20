@@ -1,0 +1,134 @@
+{% liquid
+  assign theme = section.settings.theme
+  assign quote = section.settings.quote
+  assign quote_author_image = section.settings.quote_author_image
+  assign quote_author_text = section.settings.quote_author_text
+  assign section_spacing = section.settings.section_spacing
+
+  if theme == 'dark'
+    assign bg_color = 'bg-black'
+    assign text_color = 'text-white'
+
+  else
+    assign bg_color = 'bg-white'
+    assign text_color = 'text-black'
+  endif
+%}
+
+{%- if quote != blank or quote_author_image != blank or quote_author_image != blank or quote_author_text != blank -%}
+  <div class="{{- section_spacing -}}">
+    <div class="{{ bg_color }} flex flex-col items-center space-y-6 py-14 px-6 md:py-24">
+      {%- if quote != blank -%}
+        <div class="{{ text_color }} text-center font-secondary text-4xl leading-secondary-font max-w-5xl md:text-6xl">
+          " {{ quote }} "
+        </div>
+      {%- endif -%}
+
+      {%- if quote_author_image != blank -%}
+        <img
+          src="{{ quote_author_image | image_url: height: 80 }}"
+          width="auto"
+          height="40"
+          alt="{{ quote_author_image.alt }}"
+          loading="lazy"
+        >
+      {%- endif -%}
+
+      {%- if quote_author_text != blank -%}
+        <div class="{{ text_color }} text-sm">
+          {{ quote_author_text }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Quote Block",
+  "class": "quote-block",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "radio",
+      "id": "theme",
+      "label": "Select Theme",
+      "options": [
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "light",
+          "label": "Light"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "text",
+      "id": "quote",
+      "label": "Quote"
+    },
+    {
+      "type": "image_picker",
+      "id": "quote_author_image",
+      "label": "Quote Author Image"
+    },
+    {
+      "type": "text",
+      "id": "quote_author_text",
+      "label": "Quote Author Text"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quote Block"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

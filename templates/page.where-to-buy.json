@@ -1,0 +1,123 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "content-carousel": {
+      "type": "content-carousel",
+      "disabled": true,
+      "blocks": {
+        "1f4bd476-900c-4722-be39-7e3dc2993ea7": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3_2.png",
+            "subheading": "Recycling",
+            "text": "We’ve pioneered the industry’s first styling tool recycling service. Working with LSS, a leading UK Recycling and Waste Management company, we’ll recycle your old styling tools for free. Whatever the brand, whatever the condition."
+          }
+        },
+        "9e84e360-1689-4a76-b5e0-3392532d1d70": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3_2.png",
+            "subheading": "Subheading 2",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
+          }
+        },
+        "069dc966-cae9-494b-95eb-4c47a56e9f3d": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/3_2.png",
+            "subheading": "Subheading 3",
+            "text": "Lorem ipsum dolor sit amet, We’ve pioneered the industry’s first styling tool recycling service. Working with LSS, a leading UK Recycling and Waste Management company, we’ll recycle your old styling tools for free. Whatever the brand, whatever the condition."
+          }
+        }
+      },
+      "block_order": [
+        "1f4bd476-900c-4722-be39-7e3dc2993ea7",
+        "9e84e360-1689-4a76-b5e0-3392532d1d70",
+        "069dc966-cae9-494b-95eb-4c47a56e9f3d"
+      ],
+      "settings": {
+        "heading": "Our sustainability mission",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru",
+        "section_spacing": "mb-0"
+      }
+    },
+    "cf837482-2225-4d21-8768-cb454519f148": {
+      "type": "where-to-buy",
+      "blocks": {
+        "04a247b1-e317-4797-bb2c-74867030df97": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/macbook-air-on-desk.jpg",
+            "title": "Google",
+            "url": "https:\/\/google.com",
+            "link_text": "Visit site"
+          }
+        },
+        "dd5beefa-d201-4b51-8a8f-6dae2fc08cf0": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/macbook-air-on-desk.jpg",
+            "title": "Amazon",
+            "url": "https:\/\/amazon.com",
+            "link_text": "Visit site"
+          }
+        },
+        "e489161b-eab7-4044-847d-bc6256dd63e9": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/macbook-air-on-desk.jpg",
+            "title": "Amazon",
+            "url": "https:\/\/amazon.com",
+            "link_text": "Visit site"
+          }
+        },
+        "724a0c5d-8791-4afc-a720-3d3f5fa502cc": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/macbook-air-on-desk.jpg",
+            "title": "Amazon",
+            "url": "https:\/\/amazon.com",
+            "link_text": "Visit site"
+          }
+        },
+        "7150d898-d8b4-4dc8-a9d9-987ac88f2f86": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/macbook-air-on-desk.jpg",
+            "title": "Amazon",
+            "url": "https:\/\/amazon.com",
+            "link_text": "Visit site"
+          }
+        },
+        "6f05a99b-17b1-42eb-83bc-d18bb48643e8": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/macbook-air-on-desk.jpg",
+            "title": "Amazon",
+            "url": "https:\/\/amazon.com",
+            "link_text": "Visit site"
+          }
+        }
+      },
+      "block_order": [
+        "04a247b1-e317-4797-bb2c-74867030df97",
+        "dd5beefa-d201-4b51-8a8f-6dae2fc08cf0",
+        "e489161b-eab7-4044-847d-bc6256dd63e9",
+        "724a0c5d-8791-4afc-a720-3d3f5fa502cc",
+        "7150d898-d8b4-4dc8-a9d9-987ac88f2f86",
+        "6f05a99b-17b1-42eb-83bc-d18bb48643e8"
+      ],
+      "settings": {
+        "section_spacing": "mb-8 md:mb-16"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "content-carousel",
+    "cf837482-2225-4d21-8768-cb454519f148"
+  ]
+}

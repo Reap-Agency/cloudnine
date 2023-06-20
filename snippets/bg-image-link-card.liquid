@@ -1,0 +1,48 @@
+{% liquid
+  assign theme = theme
+  assign image = image
+  assign title = title
+  assign copy = copy
+  assign link = link
+  assign button = button
+
+  if theme == 'dark'
+    assign text_color = 'text-white'
+    assign button_theme = ' btn-secondary-light'
+
+  else
+    assign text_color = 'text-black'
+    assign button_theme = ' btn-secondary-dark'
+  endif
+%}
+
+<div class="flex flex-col items-center justify-center w-full relative h-full sm:h-[90%] lg:h-auto">
+  <div class="absolute w-full h-full flex items-center justify-center">
+    <div class="flex flex-col items-center justify-center w-full p-10 md:py-10 md:px-24 xl:px-44">
+      {%- if title != blank -%}
+        <h3 class="{{ text_color }} font-secondary text-5xl leading-secondary-font w-full text-center pb-2 sm:text-6xl">
+          {{ title }}
+        </h3>
+      {%- endif -%}
+      {%- if copy != blank -%}
+        <div class="{{ text_color }} text-center text-sm w-full mb-4">{{ copy }}</div>
+      {%- endif -%}
+      {%- if button != blank -%}
+        <a class="{{ button_theme }} w-full md:w-auto" href="{{ link }}">
+          {{- button -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if image != blank -%}
+    <img
+      class="w-full h-full object-cover object-center"
+      src="{{ image | image_url: width: 800 }}"
+      width="auto"
+      height="auto"
+      alt="{{ image.alt }}"
+      loading="lazy"
+    >
+  {%- endif -%}
+</div>

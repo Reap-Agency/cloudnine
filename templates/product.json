@@ -1,0 +1,184 @@
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "settings": {
+        "section_spacing": "mb-4 md:mb-8"
+      }
+    },
+    "51904b9c-678f-4f51-8339-114e80002c09": {
+      "type": "sticky-buy-now-bar",
+      "settings": {}
+    },
+    "product-section-1": {
+      "type": "product-content-section-1",
+      "settings": {
+        "pre_heading_text": "{{ product.metafields.content.product_section_1_pre_heading.value }}",
+        "heading_text": "{{ product.metafields.content.product_content_section_1_heading.value }}",
+        "sub_heading_text": "{{ product.metafields.content.product_section_1_sub_heading.value }}",
+        "main_image": "{{ product.metafields.content.product_section_1_main_image.value }}",
+        "small_image": "{{ product.metafields.content.product_section_1_small_image.value }}",
+        "main_text": "{{ product.metafields.content.product_section_1_main_text.value }}",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "product-section-2": {
+      "type": "product-content-section-2",
+      "settings": {
+        "small_image": "{{ product.metafields.content.product_section_2_small_image.value }}",
+        "pre_heading_text": "{{ product.metafields.content.product_section_2_pre_heading.value }}",
+        "heading_text": "{{ product.metafields.content.product_section_2_heading.value }}",
+        "main_text": "{{ product.metafields.content.product_section_2_main_text.value }}",
+        "button_text": "{{ product.metafields.content.product_section_2_button_text.value }}",
+        "button_link": "{{ product.metafields.content.product_section_2_button_link.value }}",
+        "main_image": "{{ product.metafields.content.product_section_2_main_image.value }}",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "product-section-3": {
+      "type": "product-content-section-3",
+      "settings": {
+        "image": "{{ product.metafields.content.product_section_3_main_image.value }}",
+        "pre_heading_text": "{{ product.metafields.content.product_section_3_pre_heading.value }}.",
+        "heading_text": "{{ product.metafields.content.product_section_3_heading.value }}",
+        "main_text": "{{ product.metafields.content.product_section_3_main_text.value }}",
+        "section_spacing": "mb-20 md:mb-36"
+      }
+    },
+    "24adc632-9a24-440a-9201-bfe176182e8f": {
+      "type": "product-content-section-1",
+      "settings": {
+        "pre_heading_text": "",
+        "heading_text": "Plates that cushion, not clamp",
+        "sub_heading_text": "With floating plates",
+        "main_image": "{{ product.metafields.content.product_section_1_main_image.value }}",
+        "small_image": "{{ product.metafields.content.product_section_1_small_image.value }}",
+        "main_text": "{{ product.metafields.content.product_section_1_main_text.value }}",
+        "section_spacing": "mb-20 md:mb-36"
+      }
+    },
+    "feature-product-block": {
+      "type": "feature-product-block",
+      "settings": {
+        "feature_product_block_image": "shopify:\/\/shop_images\/portrait-straightners.png",
+        "feature_product_block_title": "Feature Title",
+        "section_spacing": "mb-20 md:mb-36"
+      }
+    },
+    "image-grid-block": {
+      "type": "image-grid-block",
+      "settings": {
+        "image_1": "shopify:\/\/shop_images\/image-grid-1.png",
+        "image_2": "shopify:\/\/shop_images\/image-grid-2.png",
+        "image_3": "shopify:\/\/shop_images\/image-grid-2.png",
+        "section_spacing": "mb-20 md:mb-36"
+      }
+    },
+    "awards-block": {
+      "type": "awards-block",
+      "settings": {
+        "line_1": "Over",
+        "line_2": "300+",
+        "line_3": "beauty awards won globally",
+        "award_title": "Awards",
+        "award_text": "Lorem ipsum dolor sit amet consectetur. Lacus id fermentum orci ultrices lorem. Vel non fringilla mauris leo arcu. Cras convallis sed neque congue consectetur leo sit egestas pharetra.",
+        "section_spacing": "mb-20 md:mb-36"
+      }
+    },
+    "6a7465ff-97f1-4799-ad0f-6239ac30f072": {
+      "type": "product-content-section-3",
+      "settings": {
+        "image": "{{ product.metafields.content.product_section_3_main_image.value }}",
+        "pre_heading_text": "{{ product.metafields.content.product_section_3_pre_heading.value }}.",
+        "heading_text": "{{ product.metafields.content.product_section_3_heading.value }}",
+        "main_text": "{{ product.metafields.content.product_section_3_main_text.value }}",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "quote-block": {
+      "type": "quote-block",
+      "settings": {
+        "theme": "",
+        "quote": "Prepare to be the subject of serious hair envy",
+        "quote_author_text": "Danny Rippon",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "f34fabb0-a1e6-45e1-bcbf-ba85ed534509": {
+      "type": "product-accordion",
+      "settings": {
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "send-a-hint": {
+      "type": "send-a-hint",
+      "settings": {
+        "send_a_hint_title": "Want this as a gift?",
+        "send_a_hint_icon": "shopify:\/\/shop_images\/icon-gift.svg",
+        "send_a_hint_link_text": "Drop a hint to a loved one",
+        "send_hint_modal_pre_text": "Send a hint for:",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "comparison-block": {
+      "type": "comparison-block",
+      "settings": {
+        "content_block_title": "Get help choosing the right product",
+        "content_block_link_text": "Product Finder",
+        "content_block_link": "#",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "product-reviews": {
+      "type": "product-reviews",
+      "settings": {
+        "heading": "Reviews",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "upsell-block-1": {
+      "type": "upsell-block-1",
+      "settings": {
+        "upsell_block_1_image_left": "shopify:\/\/shop_images\/upsell-left.png",
+        "upsell_block_1_image_right": "shopify:\/\/shop_images\/upsell_right.png",
+        "upsell_block_1_title": "Upgrade to pro",
+        "upsell_block_1_copy": "<p>Lorem ipsum dolor sit amet consectetur. Eget nunc mauris massa ante cras amet.<\/p>",
+        "upsell_block_1_button_text": "Button",
+        "upsell_block_1_button_link": "#",
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    },
+    "product-card-carousel": {
+      "type": "product-card-carousel",
+      "settings": {
+        "title": "Still havent found what you are looking for?",
+        "product_list": [
+          "copy-of-test-product-three",
+          "test",
+          "test-sale-price",
+          "test-2"
+        ],
+        "section_spacing": "mb-12 md:mb-28"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "51904b9c-678f-4f51-8339-114e80002c09",
+    "product-section-1",
+    "product-section-2",
+    "product-section-3",
+    "24adc632-9a24-440a-9201-bfe176182e8f",
+    "feature-product-block",
+    "image-grid-block",
+    "awards-block",
+    "6a7465ff-97f1-4799-ad0f-6239ac30f072",
+    "quote-block",
+    "f34fabb0-a1e6-45e1-bcbf-ba85ed534509",
+    "send-a-hint",
+    "comparison-block",
+    "product-reviews",
+    "upsell-block-1",
+    "product-card-carousel"
+  ]
+}

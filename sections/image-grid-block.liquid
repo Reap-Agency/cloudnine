@@ -1,0 +1,121 @@
+{% liquid
+  assign image_grid_block_image_1 = section.settings.image_1
+  assign image_grid_block_image_2 = section.settings.image_2
+  assign image_grid_block_image_3 = section.settings.image_3
+  assign section_spacing = section.settings.section_spacing
+%}
+
+{%- if image_grid_block_image_1 != blank and image_grid_block_image_2 != blank and image_grid_block_image_3 != blank -%}
+  <div class="{{- section_spacing -}}">
+    <div
+      class="container mx-auto flex justify-center flex-col sm:flex-row-reverse px-6 sm:px-0"
+    >
+      <div class="grid grid-cols-12 sm:grid-rows-2 gap-4">
+        <div class="sm:col-start-2 sm:row-span-2 col-span-12 sm:col-span-7 flex bg-gray-50">
+          <img
+            src="{{ image_grid_block_image_1 | image_url }}"
+            alt="{{ image_grid_block_image_1.alt }}"
+            height="600"
+            width="auto"
+            loading="lazy"
+            class="object-fill w-full"
+          >
+        </div>
+        <div class="col-span-6 sm:col-span-3 flex bg-gray-50">
+          <img
+            src="{{ image_grid_block_image_2 | image_url }}"
+            alt="{{ image_grid_block_image_2.alt }}"
+            height="600"
+            width="auto"
+            loading="lazy"
+            class="object-fill"
+          >
+        </div>
+        <div class="col-span-6 sm:col-span-3 flex bg-gray-50">
+          <img
+            src="{{ image_grid_block_image_3 | image_url }}"
+            alt="{{ image_grid_block_image_3.alt }}"
+            height="600"
+            width="auto"
+            loading="lazy"
+            class="object-fill"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Image Grid Block",
+  "class": "image-grid-block",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Grid Block"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

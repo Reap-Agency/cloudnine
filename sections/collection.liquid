@@ -1,0 +1,48 @@
+{%- if collection.title != blank or collection.description != blank -%}
+  <div class="max-w-md m-auto px-4 my-12 md:my-28 md:p-0">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'title' -%}
+          {%- if collection.title != blank -%}
+            <h1 class="font-primary uppercase text-center text-10xl leading-primary-font mb-2 md:text-12xl">
+              {{ collection.title | escape }}
+            </h1>
+          {%- endif -%}
+        {%- when 'description' -%}
+          {%- if collection.description != blank -%}
+            <div class="text-center">
+              {{ collection.description }}
+            </div>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection Information",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Information"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}

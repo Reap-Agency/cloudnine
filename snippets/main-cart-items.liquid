@@ -1,0 +1,267 @@
+{% liquid
+  assign isPreorder = false
+  assign productTags = item.product.tags | join: ', '
+  assign isMonogram = false
+  if productTags contains 'monogram'
+    assign isMonogram = true
+  endif
+
+  unless item.properties == empty
+    for property in item.properties
+      if property.first contains '_groupId'
+        assign groupId = property.last
+      endif
+      if property.first == '_GWP'
+        assign isGwp = property.last
+      endif
+      if property.first == '_main'
+        assign ismain = property.last
+      endif
+      if property.first == '_Pre_Order'
+        assign deliveryDate = item.variant.metafields.accentuate.expected_delivery_date
+        if deliveryDate != blank and deliveryDate != '00-00-0000'
+          assign isPreorder = true
+        endif
+      endif
+    endfor
+  endunless
+%}
+
+
+{% comment %} item 1  {% endcomment %}
+
+{% for items in item %}
+  {% comment %} keep for testing
+   {{ items | json }} {% endcomment %}
+  <div class="shop-item w-full flex-wrap sm:flex-wrap md:flex-wrap lg:flex-nowrap lg:flex-row flex px-8 sm:px-8 md:px-0 pb-10 sm:pb-10 md:pb-6 lg:pb-6 pr-10 md:pr-1 lg:pr-1 border-b-gray-300 border-b-2 mb-12">
+    <div class="flex w-2/5 sm:w-2/5 md:w-2/5 lg:w-52 lg:min-w-min lg:max-w-max md:h-60 lg:h-60 relative bg-gray-50" style="">
+      {% comment %} Product image {% endcomment %}
+
+      <a
+        href="{{ items.url }}"
+        class="absolute w-full h-full top-0 left-0 bottom-0 right-0 block"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+      </a>
+      {% if items.image %}
+        <img
+          src="{{ items.image | image_url: width: 200 }}"
+          class="cart-item__image w-full"
+          alt="{{ items.image.alt | escape }}"
+          loading="lazy"
+          width="200"
+          height="{{ 200 | divided_by: items.image.aspect_ratio | ceil }}"
+        >
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder bg-gray-300' }}
+      {% endif %}
+    </div>
+    <div class="flex lg:flex-auto w-3/5 sm:w-3/5 md:w-3/5 flex-wrap ">
+      <div class="flex flex-col w-4/5 pl-8">
+      {% comment %} Product Name {% endcomment %}
+        {%- if settings.show_vendor -%}
+          <p class="caption-with-letter-spacing">{{ items.product.vendor }}</p>
+        {%- endif -%}
+        <a href="{{ items.url }}" class="font-primary text-4xl leading-primary-font uppercase"
+          >
+            {{ items.product.title | escape -}}
+        </a>
+      {% comment %} Preorder {% endcomment %}
+        {% if isPreorder %}
+          <p class="font-body pb-1">
+            {{ 'templates.cart.preorder' | t }}
+          </p>
+        {% endif %}
+
+      {% comment %} Subscription service {% endcomment %}
+        {% if items.product.metafields.subscription.message %}
+          <p class="font-body pb-1">
+            {{ 'templates.cart.subscription' | t }}
+            {{ items.product.metafields.subscription.message }}
+          </p>
+        {% elsif items.selling_plan_allocation.selling_plan.name %}
+          <p class="font-body pb-1">
+            {{ 'templates.cart.subscription' | t }}
+            {{ items.selling_plan_allocation.selling_plan.name }}
+          </p>
+        {% endif %}
+
+        {% comment %} @todo: add line items {% endcomment %}
+        <div class="mt-auto flex flex-row w-full gap-x-5 items-center">
+          <div x-data="{ qty: {{ items.quantity }} }">
+            <select
+              x-model="qty"
+              name="qty-{{ forloop.index }}"
+              x-on:change="location.href = `/cart/change?id={{ items.key }}&quantity=${qty}`;"
+              id="quantity-cart"
+              class="border-gray-300 box-content border px-2 py-3 w-16"
+            >
+              {% for i in (1..10) %}
+                <option
+                  value="{{ i }}"
+                  {% if items.quantity == i %}
+                    selected="selected"
+                  {% endif %}
+                >
+                  {{ i }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <a id="cart-remove-{{ items.key }}" href="/cart/change?id={{ items.key }}&amp;quantity=0"   data-item-key="{{ item.key }}"
+            {% if items.properties._main == 'true' %}
+              data-items-main="true"
+            {% endif %} class="underline text-gray-600" alt="{{ 'templates.cart.remove_btn_alt' | t }}">
+            {{- 'templates.cart.remove_btn' | t -}}
+          </a>
+        </div>
+
+        {% comment %} @todo: add personalisation {% endcomment %}
+        {% if personalisation != blank %}
+          <div class="mt-6 hidden md:hidden lg:flex flex-row w-full gap-x-5 items-center">
+          
+              {% unless items.properties == empty %}
+                <ul>
+                  {% for property in items.properties %}
+                  
+                    {% assign firstChar = property.first | slice: 0 %}
+                    {% if property.first == 'FREE' and property.last == 'true' %}
+                      {% assign showFree = true %}
+                    {% endif %}
+                    {% unless firstChar == '_' or property.first == 'FREE' %}
+                      <li>{{ property.first | replace: '_', ' ' | capitalize }}: {{ property.last }}</li>
+                    {% endunless %}
+                  {% endfor %}
+                </ul>
+              {% endunless %}
+            
+
+            <span>{{ 'templates.cart.personalisation_label' | t }}:</span>
+            <span class="uppercase font-semibold">Rawwww</span>
+          </div>
+          <div class="mt-6 hidden md:hidden lg:flex flex-row w-full gap-x-5 items-center md:m">
+            <a
+              id="cart-remove-{{ items.key }}"
+              href="/cart/change?id={{ items.key }}&amp;quantity=0"
+              data-item-key="{{ items.key }}"
+              {% if item.properties._main == 'true' %}
+                data-item-main="true"
+              {% endif %}
+              class="underline text-gray-600"
+              alt="{{ 'templates.cart.remove_btn_personalisation_alt' | t }}"
+            >
+              {{- 'templates.cart.remove_btn_personalisation' | t -}}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+      <div class="flex flex-col w-1/5 text-right justify-start md:justify-start {% if personalisation != blank %}lg:justify-end{%else%}lg:justify-start{% endif %}">
+        {% comment %} Product price {% endcomment %}
+        {%- if items.original_price != items.final_price -%}
+          <div class="cart-item__discounted-prices font-secondary text-xl leading-secondary-font">
+            <span class="sr-only">
+              {{ 'templates.cart.regular_price' | t }}
+            </span>
+            <span class="cart-item__old-price product-option font-secondary text-xl leading-secondary-font md:pl-2">
+              {{- items.original_price | money -}}
+            </span>
+            <span class="sr-only">
+              {{ 'templates.cart.sale_price' | t }}
+            </span>
+            <strong class="cart-item__final-price product-option font-secondary text-xl leading-secondary-font md:pl-2">
+              {{ items.final_price | money }}
+            </strong>
+          </div>
+        {%- else -%}
+          <div class="product-option font-secondary text-xl leading-secondary-font  md:pl-2">
+            {{ items.original_price | money }}
+          </div>
+        {%- endif -%}
+        {% if personalisation != blank %}
+          <span class="customisation mt-auto mb-12 hidden md:hidden font-secondary text-xl leading-secondary-font">£10</span>
+        {% endif %}
+      </div>
+
+      {% comment %} todo add proper logic {% endcomment %}
+      {% if personalisation == blank %}
+        <div class="hidden sm:hidden md:flex flex-row w-full pt-5 justify-end mt-auto">
+          <a
+            href="#"
+            data-target="#monogramming-modal{{ items.key | replace: ':', '' }}"
+            id="monogram-trigger"
+            class="text-teal-500 font-body underline flex justify-center gap-x-1"
+          >
+            {{ 'templates.cart.add_personalisation' | t }}
+            {% render 'icon', icon: 'teal-cross' %}
+          </a>
+        </div>
+    {% endif %}
+    </div>
+
+    <div class="flex w-full flex-col lg:hidden">
+
+      {% if personalisation == blank %}
+        <div class="flex sm:flex md:hidden flex-row w-full pt-5 mt-auto">
+          <div class="flex w-1/2 ">
+          <a
+            href="#"
+            class="text-gray-600 font-body underline flex justify-center gap-x-1"
+          >
+            {{ 'templates.cart.add_personalisation' | t }}
+          </a>
+        </div>
+        <div class="flex w-1/2 justify-end">
+          <a
+            href="#"
+            data-target="#monogramming-modal{{ items.key | replace: ':', '' }}"
+            id="monogram-trigger"
+            class="text-teal-500 font-body underline flex justify-center gap-x-1"
+          >
+            {{ 'templates.cart.add_personalisation_mobile' | t }}
+            {% render 'icon', icon: 'teal-cross' %}
+          </a>
+        </div>
+      
+    {% endif %}
+  </div>
+      {% if customisation == blank %}
+
+        <div class="mt-8 flex md:flex lg:hidden flex-row w-full items-center">
+          
+            {% unless items.properties == empty %}
+              <ul>
+                {% for property in items.properties %}
+                  {% assign firstChar = property.first | slice: 0 %}
+                  {% if property.first == 'FREE' and property.last == 'true' %}
+                    {% assign showFree = true %}
+                  {% endif %}
+                  {% unless firstChar == '_' or property.first == 'FREE' %}
+                    <li>{{ property.first | replace: '_', ' ' | capitalize }}: {{ property.last }}</li>
+                  {% endunless %}
+                {% endfor %}
+              </ul>
+            {% endunless %} 
+          
+
+          <span class="pr-2">{{ 'templates.cart.personalisation_label' | t }}:</span>
+          <span class="uppercase font-semibold">Rawwww</span>
+        </div>
+        <div class="mt-2 flex md:flex lg:hidden flex-row flex-wrap w-full gap-x-5 items-center md:m">
+          <a
+            id="cart-remove-{{ items.key }}"
+            href="/cart/change?id={{ items.key }}&amp;quantity=0"
+            data-item-key="{{ items.key }}"
+            {% if items.properties._main == 'true' %}
+              data-item-main="true"
+            {% endif %}
+            class="underline text-gray-600"
+            alt="{{ 'templates.cart.remove_btn_personalisation_alt' | t }}"
+          >
+            {{- 'templates.cart.remove_btn_personalisation' | t -}}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}

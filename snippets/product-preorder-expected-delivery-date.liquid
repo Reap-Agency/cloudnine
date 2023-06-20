@@ -1,0 +1,39 @@
+<!-- @todo Add line item attribute for pre-order delivery date once add to cart JS functionality is complete -->
+
+{% for variant in product.variants %}
+  {% if variant.metafields.accentuate.expected_delivery_date != blank and variant.metafields.accentuate.expected_delivery_date != "00-00-0000" %}
+	{% assign expectedDate = variant.metafields.accentuate.expected_delivery_date %}
+	{% assign expectedDay = expectedDate | date: '%d' %}
+	
+	{% comment %}
+	{% if expectedDay contains "0" %}
+	  {% assign expectedDay = expectedDay | split: "0" | last | strip %}
+	{% endif %}
+	{% endcomment %}
+	
+	{% assign expectedMonth = expectedDate | date: '%B' %}
+
+	{% assign delDate = expectedDay %}
+
+	{% case expectedDay %}
+	  {% when "1" or "01" or "21" or "31" %}
+		{% assign delDate = delDate | append: 'st ' %}
+	  {% when "2" or "02" or "22" %}
+		{% assign delDate = delDate | append: 'nd ' %}
+	  {% when "3" or "03" or "23" %}
+		{% assign delDate = delDate | append: 'rd ' %}
+	  {% else %}
+		{% assign delDate = delDate | append: 'th ' %}
+	{% endcase %}
+
+	{% assign delDate = delDate | append: expectedMonth %}
+	<p class="font-body text-base leading-body-font pt-2 pb-4" x-show="variantId == {{ variant.id }} && variantAvailable">
+  		{% if variant.metafields.accentuate.expected_delivery_date_title != blank %}
+		  <span class="font-semibold">{{ variant.metafields.accentuate.expected_delivery_date_title }}</span>
+		{% else %}
+			<span class="font-semibold">{{ 'products.product.default_expected_delivery_date_title' | t }}</span>
+		{% endif %} 
+		{{ 'products.product.expected_delivery_date_content' | t: date: delDate }}
+	</p>
+	{% endif %}
+{% endfor %}

@@ -1,0 +1,109 @@
+{% comment %}
+  Renders a header search modal. Should be used with 'header.liquid'
+
+    Accepts:
+  - input_id: {String} Id for the search input element (required)
+
+  Usage:
+  {% render 'header-search', input_id: 'My-Id'%}
+{% endcomment %}
+
+<div
+  x-data="{ searchModalOpen : false }"
+  class="header__search flex items-center"
+  @keyup.escape="searchModalOpen = false"
+>
+  <button
+    type="button"
+    aria-label="{{ 'general.search.search' | t }}"
+    x-on:click="searchModalOpen = true"
+  >
+    {% render 'icon',
+      icon: 'search',
+      iconClasses: 'w-5 md:w-full h-5 md:h-full text-white md:text-black md:hover:fill-gray-100'
+    %}
+  </button>
+  <div
+    x-cloak
+    x-trap="searchModalOpen"
+    x-show="searchModalOpen"
+    x-transition.opacity.duration.300
+    @click.outside="searchModalOpen = false"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ 'general.search.search' | t }}"
+    class="search-modal absolute top-0 left-0 justify-center w-full h-full md:h-auto py-28 md:py-12 px-8 md:px-28 bg-black search-modal-mobile md:z-search-modal-desktop"
+    x-bind:class="searchModalOpen ? 'flex' : 'hidden'"
+  >
+    <div class="search-modal__content w-full max-w-[25rem]">
+      <predictive-search>
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+          <input type="hidden" name="type" value="product">
+
+          <label for="{{ input_id }}" class="sr-only">{{ 'general.search.search' | t }}</label>
+          <div class="relative w-full flex items-center">
+            <input
+              id="{{ input_id }}"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              role="combobox"
+              placeholder="{{ 'general.search.search' | t }}"
+              aria-expanded="false"
+              aria-owns="predictive-search-results"
+              aria-controls="predictive-search-results"
+              aria-haspopup="listbox"
+              aria-autocomplete="list"
+              class="search__input w-full bg-black text-lg font-body leading-body-font text-gray-50 py-3 pl-9 pr-14 border-0 border-solid border-b border-b-gray-500 placeholder:text-gray-50/40 focus:border-b-white focus:ring-transparent focus:ring-0"
+            >
+            <!-- Search icon (purely decorative) -->
+            <span
+              class="absolute left-0 flex items-center justify-center w-5 top-1/2 -translate-y-1/2 not-sr-only"
+              tabindex="-1"
+            >
+              {% render 'icon', icon: 'search', iconClasses: 'text-white' %}
+            </span>
+            <div
+              id="js-predictive-search-controls"
+              class="items-center absolute right-0 top-1/2 -translate-y-1/2 space-x-2 hidden"
+            >
+              <!-- 'Search' arrow icon -->
+              <button
+                type="submit"
+                value="Search"
+                class="search__button flex items-center justify-center"
+                aria-label="{{ 'general.search.search' | t }}"
+              >
+                <img src="{{ 'icon-arrow-right-white.svg' | asset_url}}" width="13" height="14" alt="">
+                <span class="sr-only">{{ 'general.search.search' | t }}</span>
+              </button>
+              <!-- Reset search query -->
+              <button
+                type="reset"
+                class="search__reset w-6 flex items-center justify-center"
+              >
+                <img src="{{ 'icon-close-white.svg' | asset_url}}" width="24" height="24" alt="">
+                <span class="sr-only">{{ 'general.search.reset' | t }}</span>
+              </button>
+            </div>
+          </div>
+          <div
+            id="js-predictive-search"
+            class="text-white text-xs font-body leading-body-font hidden text-center mt-8 overflow-y-auto"
+            tabindex="-1"
+          ></div>
+        </form>
+      </predictive-search>
+    </div>
+    <!-- Close search -->
+    <button
+      type="button"
+      aria-label="{{ 'general.search.close_search' | t }}"
+      @click="searchModalOpen = false"
+      class="absolute top-11 md:top-12 left-9 md:left-auto md:right-28"
+    >
+      {% render 'icon', icon: 'close-white' %}
+    </button>
+    <div class="modal-overlay bg-black"></div>
+  </div>
+</div>

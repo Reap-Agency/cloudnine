@@ -1,0 +1,224 @@
+{% liquid
+  assign section_spacing = section.settings.section_spacing
+  assign theme = section.settings.hero_banner_theme
+  assign content_alignment = section.settings.content_alignment
+  assign hero_banner_bg_image = section.settings.hero_banner_bg_image
+  assign hero_banner_mobile_bg_image = section.settings.hero_banner_mobile_bg_image
+  assign hero_banner_pre_title = section.settings.hero_banner_pre_title
+  assign hero_banner_title = section.settings.hero_banner_title
+  assign hero_banner_copy = section.settings.hero_banner_copy
+  assign hero_banner_price = section.settings.hero_banner_price
+  assign hero_banner_button_1_text = section.settings.hero_banner_button_1_text
+  assign hero_banner_button_1_link = section.settings.hero_banner_button_1_link
+  assign hero_banner_button_2_text = section.settings.hero_banner_button_2_text
+  assign hero_banner_button_2_link = section.settings.hero_banner_button_2_link
+
+  if theme == 'dark'
+    assign button_1_type = 'btn-primary-dark'
+    assign button_2_type = 'btn-secondary-dark'
+    assign text_color = 'text-black'
+  else
+    assign button_1_type = 'btn-primary-light'
+    assign button_2_type = 'btn-secondary-light'
+    assign text_color = 'text-white'
+  endif
+
+  if content_alignment == 'right'
+    assign content_alignment = 'sm:justify-end'
+  elsif content_alignment == 'center'
+    assign content_alignment = 'sm:justify-center'
+  else
+    assign content_alignment = 'sm:justify-start'
+  endif
+%}
+
+{%- if hero_banner_title != blank
+  or hero_banner_copy != blank
+  or hero_banner_bg_image != blank
+  or hero_banner_mobile_bg_image != blank
+-%}
+  <div class="{{ section_spacing }} relative">
+    <div class="absolute w-full h-full">
+      <div class="container mx-auto flex items-end justify-center p-6 h-full w-full sm:items-center {{ content_alignment }}">
+        <div class="flex flex-col items-center">
+          {%- if hero_banner_pre_title != blank -%}
+            <div class="{{ text_color }} font-secondary leading-secondary-font text-2xl text-center mb-1 sm:max-w-[20rem]">
+              {{ hero_banner_pre_title }}
+            </div>
+          {%- endif -%}
+          {%- if hero_banner_title != blank -%}
+            <div class="{{ text_color }} font-primary leading-primary-font text-10xl uppercase text-center mb-4 sm:max-w-[20rem]">
+              {{ hero_banner_title }}
+            </div>
+          {%- endif -%}
+          {%- if hero_banner_copy != blank -%}
+            <div class="{{ text_color }} text-center text-sm mb-1 sm:max-w-[20rem]">
+              {{ hero_banner_copy }}
+            </div>
+          {%- endif -%}
+          {%- if hero_banner_price != blank -%}
+            <div class="{{ text_color }} font-secondary leading-secondary-font text-2xl text-center">
+              {{ hero_banner_price }}
+            </div>
+          {%- endif -%}
+          {%- if hero_banner_button_1_text != blank or hero_banner_button_2_text != blank -%}
+            <div class="flex flex-col w-full mt-6 sm:flex-row sm:items-center sm:justify-center">
+              {%- if hero_banner_button_1_text != blank -%}
+                <a class="{{ button_1_type }} w-full sm:w-auto sm:mr-4" href="{{hero_banner_button_1_link}}">
+                  {{- hero_banner_button_1_text -}}
+                </a>
+              {%- endif -%}
+              {%- if hero_banner_button_2_text != blank -%}
+                <a class="{{ button_2_type }} w-full mt-4 sm:mt-0 sm:w-auto" href="{{hero_banner_button_2_link}}">
+                  {{- hero_banner_button_2_text -}}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if hero_banner_mobile_bg_image != blank -%}
+      <img
+        class="w-full object-cover sm:hidden"
+        src="{{ hero_banner_mobile_bg_image | image_url }}"
+        width="auto"
+        height="auto"
+        alt="{{ hero_banner_mobile_bg_image.alt }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+
+    {%- if hero_banner_bg_image != blank -%}
+      <img
+        class="hidden w-full object-cover min-h-[22rem] sm:block"
+        src="{{ hero_banner_bg_image | image_url }}"
+        width="auto"
+        height="auto"
+        alt="{{ hero_banner_bg_image.alt }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collections hero banner",
+  "class": "collections-hero-banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero_banner_theme",
+      "label": "Select Theme, type dark or light",
+      "default": "dark"
+    },
+    {
+      "type": "text",
+      "id": "content_alignment",
+      "label": "Content alignment, type either left, center or right"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_banner_bg_image",
+      "label": "Desktop BG Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_banner_mobile_bg_image",
+      "label": "Mobile BG Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_banner_pre_title",
+      "label": "Pre Title"
+    },
+    {
+      "type": "text",
+      "id": "hero_banner_title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_banner_copy",
+      "label": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "hero_banner_price",
+      "label": "Price"
+    },
+    {
+      "type": "text",
+      "id": "hero_banner_button_1_text",
+      "label": "Button 1 Text"
+    },
+    {
+      "type": "url",
+      "id": "hero_banner_button_1_link",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "text",
+      "id": "hero_banner_button_2_text",
+      "label": "Button 2 Text"
+    },
+    {
+      "type": "url",
+      "id": "hero_banner_button_2_link",
+      "label": "Button 2 Link"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections hero banner"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["collection"]
+  }
+}
+{% endschema %}

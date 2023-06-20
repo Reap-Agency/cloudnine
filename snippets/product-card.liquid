@@ -1,0 +1,111 @@
+{% comment %}
+  Product Card Variables passed into this snippet
+    item: product object
+    cardClasses: the tailwind classes added to the product card wrapper
+    addToCart: show add to card change to true or false
+    addToCartIcon: show add to card Pluss Icon on the button change to true or false
+    stackedMobileStyle: on mobile show the stacked view style change to true or false
+    link: show a secondary button of Learn More to the card change to true or false
+{% endcomment %}
+
+{% liquid
+  assign stacked_mobile_style = stackedMobileStyle
+  assign product_short_description = item.metafields.custom.product_short_description
+  assign product_thumbnail = item.featured_image | img_url: '720x720', crop: 'center'
+  assign add_to_cart = addToCart
+  assign add_to_cart_icon = addToCartIcon
+  assign link = link
+  assign full_height_container = fullHeightContainer
+
+  if full_height_container == true
+    assign full_height = 'h-full'
+  endif
+
+  if stacked_mobile_style
+    assign flex_direction = 'flex-col'
+    assign detail_color = 'bg-white'
+    assign margin_bottom = 'mb-0'
+    assign aspect_ratio = 'aspect-square'
+    assign header_size = 'text-xl'
+    assign detail_width = 'w-auto'
+    assign image_width = 'w-auto'
+    assign detail_padding = 'p-4'
+
+  else
+    assign flex_direction = 'flex-row-reverse'
+    assign detail_color = 'bg-gray-50'
+    assign margin_bottom = 'mb-1'
+    assign aspect_ratio = 'aspect-4/5'
+    assign header_size = 'text-3xl'
+    assign detail_width = 'w-[60%]'
+    assign image_width = 'w-[40%]'
+    assign detail_padding = 'p-6'
+  endif
+%}
+
+<div class="product-card flex flex-col {{ full_height }} {{ margin_bottom }} sm:mb-0 {{ cardClasses }}">
+  <a href="{{ item.url }}" class="group flex justify-start {{ flex_direction }} sm:flex-col">
+    <div class="flex items-end bg-gray-50 overflow-hidden {{ image_width }} sm:w-full">
+      <img
+        class="w-full {{ aspect_ratio }} object-contain object-center sm:aspect-square group-hover:scale-110 origin-center transition ease-in-out duration-200 group-hover:duration-500"
+        width="100"
+        height="auto"
+        src="{{- product_thumbnail -}}"
+        loading="lazy"
+        alt="{{ image.alt | escape }}"
+      >
+    </div>
+    <div
+      class="{{ detail_padding }} sm:p-6 flex flex-col {{ detail_width }} {{ detail_color }} sm:bg-white sm:w-auto"
+    >
+      <h3 class="font-primary {{ header_size }} sm:text-xl leading-primary-font uppercase tracking-tight mb-2">
+        {{ item.title }}
+      </h3>
+      {%- if product_short_description -%}
+        <p class="text-gray-700 font-body text-sm leading-body-font mb-1">{{ product_short_description }}</p>
+      {%- endif -%}
+      <p class="font-secondary text-base leading-secondary-font flex flex-wrap items-baseline mt-auto">
+        {%- if item.compare_at_price > item.price -%}
+          <span class="text-gray-600 pr-2">
+            <s>{{ item.compare_at_price | money | replace: '.00', '' }}</s>
+          </span>
+        {%- endif -%}
+        <span class="font-secondary text-base leading-secondary-font pr-2">
+          {{- item.price | money | replace: '.00', '' -}}
+        </span>
+        {%- if item.compare_at_price > item.price -%}
+          <span class="font-body leading-body-font font-semibold text-brand-red">
+            {{ 'products.product.save_text' | t }}
+            {{ item.compare_at_price | minus: item.price | money | replace: '.00', '' }}
+          </span>
+        {%- endif -%}
+      </p>
+    </div>
+  </a>
+  {%- if add_to_cart or link -%}
+    <div class="flex mt-auto">
+      {%- if add_to_cart -%}
+        <div class="px-4 sm:px-6 pb-4 sm:pb-6 pt-0">
+          <!-- @todo Insert add to cart functionalty -->
+          <button class="js-add-to-cart btn-primary-dark btn-small">
+            {{ 'products.product.quick_add_to_cart_text' | t }}
+            {%- if add_to_cart_icon -%}
+              <span class="ml-2">
+                {% render 'icon', icon: 'plus-white' %}
+              </span>
+            {%- endif -%}
+          </button>
+        </div>
+      {%- endif -%}
+
+      {%- if link -%}
+        <div class="flex items-center justify-center pb-4 sm:pb-6 ">
+          <!-- @todo Insert add to cart functionalty -->
+          <a href="{{ item.url }}" class="pl-3 underline">
+            {{ 'products.product.learn-more' | t }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

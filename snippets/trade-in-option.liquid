@@ -1,0 +1,252 @@
+{% comment %}  {% endcomment %}
+<div
+  class="trade-in w-full mx-auto h-auto grid col-span-12 text-center{%if border == false%} {% else %} border-y-2  border-black{% endif %}"
+  x-data="
+    app(),
+    {tradein: 'tradein', brand: '{% if cart.attributes.Trade_In_Brand %}{{ cart.attributes.Trade_In_Brand }}{% endif %}'}
+    {% comment %} {tradein: {% if cart.attributes.Trade_In == 'true'%}'tradein'{% else %}'notradein'{% endif %}, brand: {% if cart.attributes.Trade_In_Brand %}'{{ cart.attributes.Trade_In_Brand }}' {% else %} false {% endif %} } {% endcomment %}
+  "
+  x-cloak
+>
+  <form
+    data-trade-in-form
+    class="flex justify-center items-center pb-2 flex-col py-8 sm:py-8 md:py-20 border-b border-b-gray-300 max-w-7xl mx-auto w-full"
+    x-on:submit="event.preventDefault();"
+  >
+    <div
+      x-show.transition="step != 'complete'"
+      class="w-full flex justify-center items-center flex-col sm:py-8 md:py-16 lg:py-16"
+    >
+      <div x-show="step === 1" class="max-w-sm w-full flex flex-col justify-center">
+        <img
+          src="{{ shop.metaobjects.trade_in.trade-in-uni.logo | image_url }}"
+          alt="{{ shop.metaobjects.trade_in.trade-in-uni.logo.alt }}"
+          height="80"
+          width="80"
+          loading="lazy"
+          class="object-fill mx-auto"
+        >
+
+        <h2 class="font-primary text-10xl leading-primary-font uppercase pt-6 pb-4 text-center">
+          {{ 'products.product.trade_in.trade_in_title' | t }}
+        </h2>
+
+        <p class="font-body text-center text-sm fon mb-4 px-4">
+          {{ shop.metaobjects.trade_in['trade-in-uni'].content }}
+        </p>
+
+        <button
+          role="button"
+          class="text-teal-500 font-body underline flex justify-center gap-x-1 trade-in-yes"
+          @click="step = 2"
+          {% comment %} @click.prevent="tradein='tradein'; CartJS.setAttributes({ 'Trade_In': true }); addTradeIn();" {% endcomment %}
+        >
+          {{ 'products.product.trade_in.add_trade_in' | t }}
+          {% render 'icon', icon: 'teal-cross' %}
+        </button>
+      </div>
+
+      <div x-show="step === 2" class="max-w-sm w-full flex flex-col justify-center">
+        <img
+          src="{{ shop.metaobjects.trade_in.trade-in-uni.logo | image_url }}"
+          alt="{{ shop.metaobjects.trade_in.trade-in-uni.logo.alt }}"
+          height="80"
+          width="80"
+          loading="lazy"
+          class="object-fill mx-auto"
+        >
+
+        <h2 class="font-primary text-10xl leading-primary-font uppercase pt-6 pb-4 text-center">
+          {{ 'products.product.trade_in.trade_in_title' | t -}}
+          <span></span>
+        </h2>
+
+        <p class="font-body text-center text-sm fon mb-4 px-4">
+          {{ shop.metaobjects.trade_in['trade-in-uni'].content_stage_2 }}
+        </p>
+      </div>
+
+      <div x-show="step === 2" class="max-w-xl w-full flex items-center flex-col justify-center bg-gray-100 py-6">
+        <div class="flex justify-center flex-row w-full">
+          <p class="font-body text-center text-sm font-semibold mb-8 px-4">
+            {{ 'products.product.trade_in.select_trade_in' | t }}
+          </p>
+        </div>
+        <div class="flex justify-center  flex-row gap-x-3 w-full max-w-screen-sm">
+          {% for imglink in shop.metaobjects.trade_in['trade-in-uni'].trade_in_brands.value %}
+            {%- assign index = forloop.index -%}
+
+            <div class="trade-in-options w-20 h-20 sm:w-20 sm:h-20 md:w-32 md:h-32">
+              <input
+                class="hidden"
+                id="radio_{{- index -}}"
+                type="radio"
+                name="radio"
+                value="{{ imglink.alt }}"
+                {% if index == 1 %}
+                  checked
+                {% endif %}
+              >
+              <label
+                @click="checkboxMe"
+                {% comment %} @click.prevent="brand='{{ imglink.alt }}'; CartJS.setAttributes({ 'Trade_In': true, 'Trade_In_Brand': brand });" {% endcomment %}
+                class="flex flex-col p-4 border-2 border-gray-400 cursor-pointer w-full h-full justify-center relative z-10"
+                for="radio_{{ index }}"
+                data-label="{{ imglink.alt }}"
+              >
+                <div class="w-6 h-6 bg-black absolute top-0 left-0 hidden">
+                  <span class="font-primary text-white mx-auto w-full flex justify-center">✓</span>
+                </div>
+                <div class="z-0">
+                  {{ imglink | img_tag }}
+                </div>
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div x-show="step === 2" x-data="{ checkClick: false }">
+        <div class="flex items-start space-x-3 py-6">
+          <input type="checkbox" class="border-gray-500 h-8 w-8 accent-black" x-model="checkClick">
+
+          <div class="flex flex-col">
+            <p class="font-body text-xs text-black mt-2 leading-4">
+              {{ 'products.product.trade_in.agree_to_terms' | t }}
+              <a href="/pages/terms-conditions" target="blank" class="font-body font-bold underline">
+                {{- 'products.product.trade_in.terms' | t -}}
+              </a>
+            </p>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <button
+            name="add"
+            class="js-add-to-cart add-to-cart btn-primary-green w-fit"
+            x-bind:disabled="!checkClick"
+            @click="finalvalue, step = 'complete'"
+          >
+            <span data-add-to-cart-text="">
+              {{- 'products.product.trade_in.confirm_trade_in_btn' | t -}}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      x-show.transition="step === 'complete'"
+      class="w-full flex justify-center items-center flex-col sm:py-8 md:py-16 lg:py-16"
+    >
+      <div class="max-w-sm w-full flex flex-col justify-center ">
+        <img
+          src="{{ shop.metaobjects.trade_in.trade-in-uni.logo | image_url }}"
+          alt="{{ shop.metaobjects.trade_in.trade-in-uni.logo.alt }}"
+          height="80"
+          width="80"
+          loading="lazy"
+          class="object-fill mx-auto"
+        >
+
+        <h2 class="font-primary text-10xl leading-primary-font uppercase pt-6 pb-4 text-center">
+          {{ 'products.product.trade_in.trade_in_title_confirmed' | t }}
+        </h2>
+
+        <p class="font-body text-center text-sm fon mb-4 px-4">
+          {{ shop.metaobjects.trade_in['trade-in-uni'].content_complete }}
+        </p>
+
+        <p class="font-body text-center text-sm fon mb-4 px-4">
+          {{ 'products.product.trade_in.your_trade_in' | t }}
+          <span id="chosen-device"></span>
+        </p>
+        <a
+          href="#"
+          class="text-center text-sm fon mb-4 px-4 font-body underline flex justify-center text-gray-600"
+          alt="remove trade in"
+          @click="step = 1"
+        >
+          {{ 'products.product.trade_in.remove_trade_in' | t }}
+        </a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  function removeTradeIn() {
+    CartJS.setAttributes({ Trade_In: undefined });
+    var count = CartJS.cart.item_count;
+    var i = 0;
+    while (i < count) {
+      var properties = CartJS.cart.items[i].properties;
+      var qty = CartJS.cart.items[i].quantity;
+      Object.assign(properties, { _Trade_In: undefined });
+      CartJS.updateItem(i + 1, qty, properties);
+      i++;
+    }
+  }
+
+  function addTradeIn() {
+    CartJS.setAttributes({ Trade_In: true });
+    var count = CartJS.cart.item_count;
+    var i = 0;
+    while (i < count) {
+      var properties = CartJS.cart.items[i].properties;
+      var qty = CartJS.cart.items[i].quantity;
+      Object.assign(properties, { _Trade_In: true });
+      CartJS.updateItem(i + 1, qty, properties);
+      i++;
+    }
+  }
+
+  function checkboxMe(e) {
+    var target = e.target;
+
+    var parent = target.previousSibling;
+    var prevParent = target.parentElement.parentElement;
+    var parentPrev = prevParent.previousSibling;
+    var prev = parent.previousSibling;
+
+    var label = document.querySelectorAll('.trade-in-options label');
+    var img = document.querySelectorAll('.trade-in-options label img');
+
+    var resultSpan = document.getElementById('chosen-device');
+
+    label.forEach(function (index) {});
+
+    for (var labels of label) {
+      if (target === labels) {
+        resultSpan.innerHTML = target.dataset.label;
+      }
+
+      if (target === img) {
+        parentPrev.checked = true;
+        resultSpan.innerHTML = target.dataset.label;
+      }
+    }
+  }
+
+  function app() {
+    return {
+      step: 1,
+
+      finalvalue() {
+        //TODO: Submit method
+      },
+    };
+  }
+</script>
+
+{% if cart.attributes.Trade_In == 'true' %}
+  <script>
+    window.location = '/cart/update?attributes[Trade_In]=&attributes[Trade_In_Brand]=';
+  </script>
+{% endif %}
+
+{% if cart.attributes.Trade_In == 'true' %}
+  <script>
+    setTimeout(function () {
+      document.querySelector('.trade-in-yes').click();
+    }, 1000);
+  </script>
+{% endif %}

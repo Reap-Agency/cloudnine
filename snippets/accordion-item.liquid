@@ -1,0 +1,37 @@
+<div
+  x-data="
+    {
+        id: {{ id }},
+        get expanded() {
+            return this.active === this.id
+        },
+        set expanded(value) {
+            this.active = value ? this.id : null
+        },
+    }
+  "
+  role="region"
+  class="bg-white border-b"
+  x-bind:class="expanded ? 'border-b-black' : 'border-b-gray-300'"
+>
+  <h3>
+    <button
+      x-on:click="expanded = !expanded"
+      :aria-expanded="expanded"
+      class="accordion__control flex w-full items-center justify-between p-6 text-2xl hover:bg-gray-100"
+    >
+      <span class="font-secondary leading-secondary-font text-2xl">{{ title }}</span>
+      <span
+        aria-hidden="true"
+        class="accordion__control-icon relative block w-4 h-4 border border-black rounded-full ml-6 before:absolute before:top-1/2 before:left-1/2 before:-translate-y-1/2 before:-translate-x-1/2 before:bg-black before:opacity-100 before:transition-all before:w-2 before:h-px after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:bg-black after:opacity-100 after:h-2 after:w-px after:transition-all "
+        x-bind:class="expanded ? 'after:-translate-y-1/2 after:-translate-x-1/2 after:rotate-90 after:opacity-0 after:transition-all' : ''"
+      ></span>
+    </button>
+  </h3>
+
+  <div x-show="expanded" x-collapse.duration.500ms>
+    <div class="p-6 {{ contentClasses }}">
+      {{ content }}
+    </div>
+  </div>
+</div>

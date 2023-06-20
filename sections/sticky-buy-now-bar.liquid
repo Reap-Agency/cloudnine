@@ -1,0 +1,185 @@
+{% liquid
+  assign addToCartText = 'products.product.add_to_cart' | t
+  assign productPrice = product.price | money
+  assign productTitle = product.title
+  if product.available != true
+    assign addToCartText = 'products.product.inventory_out_of_stock' | t
+  endif
+%}
+
+<div
+  x-data="{atTop: false}"
+>
+  <nav
+    @scroll.window="atTop = (window.pageYOffset >= cheightB) ? true: false;"
+    @resize.window="atTop = (window.pageYOffset >= cheightB) ? true: false;"
+    role="region"
+    class="sm:p-0 sm:pt-3 md:pt-0 lg:pt-0 sticky top-0 left-0 right-0 pb-0 z-50 overflow-hidden sticky-nav border-b  sm:border-b md:border-b-0 lg:border-b-0 border-gray-300 sm:border-transparent  md:border-transparent lg:border-transparent md:order-b-0"
+    x-bind:class="{ ' pb-0 bg-white lg:border-b lg:border-gray-300' : atTop }"
+    x-transition.500ms
+  >
+    <div
+      class="bg-white md:grid md:grid-cols-12 max-w-screen-2xl mx-auto relative "
+    >
+      <div class="hidden" x-bind:class="{ 'md:block md:col-span-2' : atTop }">
+        <div class="flex flex-row flex-nowrap h-full items-center">
+          <span class="font-primary text-2xl pr-2 leading-primary-font">{{ productTitle }}</span>
+          <span class="font-secondary text-base leading-secondary-font">{{ productPrice }}</span>
+        </div>
+      </div>
+      <div class="sm:md:col-span-10 md:col-span-12" x-data="{tab: 1}" x-bind:class="{'md:col-span-8' : atTop }">
+        <ul
+          class="flex flex-row flex-nowrap justify-center align-middle relative"
+          x-data="{ show: false }"
+        >
+          {% assign variable = 0 %}
+          {% assign counter = -1 %}
+
+          {% for items in product.metafields.custom.sticky_buy_now_nav.value.link_title.value %}
+            {% assign variable = variable | plus: 1 %}
+            {% assign counter = counter | plus: 1 %}
+            {% assign prodId = product.metafields.custom.sticky_buy_now_nav.value.link_navigation_id.value[counter] %}
+
+            <li
+              class="flex py-3 sm:px-0 md:px-11 z-50 w-full md:w-auto text-center justify-center"
+              x-bind:class="{'border-b border-black text-black': tab === {{ variable }}, 'text-gray-600': tab !== {{ variable }}}"
+            >
+              <a
+                href="{{- prodId -}}"
+                class="'active': show"
+                @click.prevent="tab = {{ variable }}"
+                alt=" "
+              >
+                {{- items -}}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div
+        x-data="scrollProgress()"
+        x-init="init()"
+        x-cloak
+        class="absolute -bottom-px inset-x-0 z-40 m-auto justify-center hidden sm:hidden md:flex lg:flex"
+        x-transition.500ms
+      >
+        <div
+          id="progress-bar"
+          class="h-0.5 bg-gray-300 block"
+          :style="`width: ${percent}%`"
+        ></div>
+      </div>
+
+      <div class="hidden justify-end" x-bind:class="{'md:block md:col-span-2' : atTop }">
+        <form
+          method="post"
+          action="/cart/add"
+          id="product-form- {{ product.id }}"
+          x-on:submit="{% if product.metafields.custom.configurable_product_check == true %}event.preventDefault();{% endif %}"
+        >
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+          <button
+            name="add"
+            class="js-add-to-cart add-to-cart btn-sticky-primary-green w-max h-full float-right absolute right-0"
+            {% if product.metafields.custom.configurable_product_check == true %}
+              x-on:click="modal = ! modal, clickModal()"
+            {% endif %}
+            {% if product.available != true %}
+              disabled
+            {% endif %}
+          >
+            <span data-add-to-cart-text>
+              {{ addToCartText }}
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div
+      x-on:resize.window="isMobile = (window.innerWidth < 845) ? true : false"
+      x-cloak
+      x-data="{isMobile: (window.innerWidth < 845) ? true : false}"
+      class="grid-cols-12 bg-white fixed bottom-0 left-0 right-0 z-50"
+      x-bind:class="{'grid': atTop, 'hidden' : !atTop}"
+      x-show="isMobile"
+    >
+      <div class="col-span-8">
+        <div class="flex flex-row flex-nowrap h-full align-middle">
+          <span class="font-primary text-4xl pr-2 text-white bg-black w-1/2 p-4">
+            {{- productTitle | truncate: 17 -}}
+          </span>
+          <span class="font-secondary text-2xl text-white leading-9 bg-black w-1/2 p-4 text-right">
+            {{- productPrice }}
+          </span>
+        </div>
+      </div>
+      <div class="col-span-4">
+        <button
+          name="add"
+          class="js-add-to-cart add-to-cart btn-primary-green w-full h-full"
+          {% if product.metafields.custom.configurable_product_check == true %}
+            x-on:click="modal = ! modal, clickModal()"
+          {% endif %}
+          {% if product.available != true %}
+            disabled
+          {% endif %}
+        >
+          <span data-add-to-cart-text>
+            {{ addToCartText }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<script>
+  const cheight = document.querySelector('product-info').offsetHeight;
+  const cheightB = document.querySelector('.z-sticky-nav').offsetTop;
+  const sticky = document.querySelector('.z-sticky-nav');
+
+  const scrollProgress = () => {
+    return {
+      init() {
+        window.addEventListener('scroll', () => {
+          let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+          const contentHeight = sticky.offsetHeight;
+          const contentOffssetTop = sticky.offsetTop;
+
+          this.check = Math.round((winScroll / contentOffssetTop) * 100);
+          if (this.check > 40) {
+            this.percent = Math.round((winScroll / contentOffssetTop) * 100);
+          }
+        });
+      },
+      percent: 40,
+    };
+  };
+
+  document.querySelectorAll('.z-sticky-nav nav ul li a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute('href')).scrollIntoView({
+        behavior: 'smooth',
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Sticky Buy Now Bar",
+  "tag": "section",
+  "class": "sticky top-0 z-sticky-nav nav-mb",
+  "presets": [
+    {
+      "name": "Sticky Buy Now Bar"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

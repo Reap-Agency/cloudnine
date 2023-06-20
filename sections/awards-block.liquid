@@ -1,0 +1,123 @@
+<div class="{{- section.settings.section_spacing -}}">
+  <div class="max-w-screen-lg w-full mx-auto px-6 md:px-0">
+    <div class="awards__inner md:grid md:grid-cols-4 lg:grid-cols-3 gap-4">
+      <div class="awards__award-info bg-black text-white flex items-center justify-center p-8 md:col-span-2 lg:col-span-1 mb-2 md:mb-0">
+        <div class="border border-white rounded-full flex items-center justify-center w-[16.5rem] xl:w-[17.75rem] h-[16.5rem] xl:h-[17.75rem] mx-auto">
+          <p class="max-w-[7.25rem]">
+            {%- if section.settings.line_1 != blank -%}
+              <span class="block font-secondary text-2xl leading-secondary-font">{{ section.settings.line_1 }}</span>
+            {%- endif -%}
+            {%- if section.settings.line_2 != blank -%}
+              <span class="block font-primary text-10xl leading-primary-font">{{ section.settings.line_2 }}</span>
+            {%- endif -%}
+            {%- if section.settings.line_3 != blank -%}
+              <span class="block font-body text-base leading-body-font">{{ section.settings.line_3 }}</span>
+            {%- endif -%}
+          </p>
+        </div>
+      </div>
+      <div class="awards__content md:flex items-center justify-center bg-gray-50 text-black col-span-2 px-6 lg:px-40 py-12 lg:py-[6.75rem]">
+        <div>
+          {%- if section.settings.award_title != blank -%}
+            <h3 class="font-secondary text-6xl leading-secondary-font pb-2">{{ section.settings.award_title }}</h3>
+          {%- endif -%}
+          {%- if section.settings.award_text != blank -%}
+            <p class="font-body text-sm">{{ section.settings.award_text }}</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Awards Block",
+  "class": "awards",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Award Info"
+    },
+    {
+      "type": "text",
+      "id": "line_1",
+      "label": "Line 1"
+    },
+    {
+      "type": "text",
+      "id": "line_2",
+      "label": "Line 2"
+    },
+    {
+      "type": "text",
+      "id": "line_3",
+      "label": "Line 3"
+    },
+    {
+      "type": "header",
+      "content": "Award Supporting Text"
+    },
+    {
+      "type": "text",
+      "id": "award_title",
+      "label": "Award Title"
+    },
+    {
+      "type": "textarea",
+      "id": "award_text",
+      "label": "Award Text"
+    },
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Awards Block"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

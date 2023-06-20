@@ -1,0 +1,76 @@
+{% liquid
+  assign section_spacing = section.settings.section_spacing
+%}
+
+{%- if collection != blank -%}
+  <div class="flex flex-col pb-8 sm:pb-20 sm:grid sm:grid-cols-2 sm:gap-1 sm:auto-rows-auto md:grid-cols-3 2xl:grid-cols-4 {{ section_spacing }}">
+    {%- for product in collection.products -%}
+      {% render 'product-card',
+        item: product,
+        cardClasses: 'w-full',
+        addToCart: false,
+        addToCartIcon: false,
+        stackedMobileStyle: false,
+        link: false
+      %}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection Listing Block",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Listing Block"
+    }
+  ]
+}
+{% endschema %}

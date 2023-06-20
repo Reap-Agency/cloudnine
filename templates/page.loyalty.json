@@ -1,0 +1,306 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "59cc5d46-1349-469b-bebb-f69ffc6e0011": {
+      "type": "loyalty-lion-hero",
+      "blocks": {
+        "549de9ee-0bce-464d-902e-2bf644563c60": {
+          "type": "secondary_heading",
+          "settings": {
+            "heading": "Our Cloud Nine"
+          }
+        },
+        "4337e805-59d2-4fe2-89d2-01352d417598": {
+          "type": "primary_heading",
+          "settings": {
+            "heading": "Rewards"
+          }
+        },
+        "07093a64-b49d-43f7-8773-8175969db0d1": {
+          "type": "text",
+          "settings": {
+            "text": "Join our rewards program to start earning points and earning exclusive member discounts"
+          }
+        },
+        "f5b55e48-0440-4173-9743-46a031c6f655": {
+          "type": "button",
+          "settings": {
+            "button_link": "shopify:\/\/pages\/loyalty",
+            "button_text": "Join Today",
+            "button_style": "primary"
+          }
+        },
+        "171a2de3-3c4f-4c8c-bb84-81813f27ea2c": {
+          "type": "button",
+          "settings": {
+            "button_link": "shopify:\/\/pages\/homepage",
+            "button_text": "Sign Up",
+            "button_style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "549de9ee-0bce-464d-902e-2bf644563c60",
+        "4337e805-59d2-4fe2-89d2-01352d417598",
+        "07093a64-b49d-43f7-8773-8175969db0d1",
+        "f5b55e48-0440-4173-9743-46a031c6f655",
+        "171a2de3-3c4f-4c8c-bb84-81813f27ea2c"
+      ],
+      "settings": {
+        "theme": "light",
+        "background_image": "shopify:\/\/shop_images\/AdobeStock_470781837_1.png",
+        "section_spacing": "mb-0"
+      }
+    },
+    "56c4009b-db2c-47b9-87b2-fbcbd56227ab": {
+      "type": "earn-points-grid",
+      "blocks": {
+        "95f36298-8d9a-4206-80f8-a71b22afd2b7": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        },
+        "eef8954e-d356-424f-aa1b-9cb692fa5b61": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        },
+        "f6f6eae2-aafd-45ab-91a6-e4a6ac734a32": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        },
+        "b0d2f9ea-2457-4313-a6e3-ee502c709485": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        },
+        "b032192e-6149-48d0-9f6e-886507be8ed7": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        },
+        "9eb56b83-12a4-48a3-8685-8011a2aa6f3b": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        },
+        "71ab1f2a-c576-4545-95d9-ae54910a6f59": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        },
+        "79fba152-8946-4341-bacb-dc60ddc97f35": {
+          "type": "points_item",
+          "settings": {
+            "heading": "10 points per £1",
+            "description": "Points for a purchase",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "95f36298-8d9a-4206-80f8-a71b22afd2b7",
+        "eef8954e-d356-424f-aa1b-9cb692fa5b61",
+        "f6f6eae2-aafd-45ab-91a6-e4a6ac734a32",
+        "b0d2f9ea-2457-4313-a6e3-ee502c709485",
+        "b032192e-6149-48d0-9f6e-886507be8ed7",
+        "9eb56b83-12a4-48a3-8685-8011a2aa6f3b",
+        "71ab1f2a-c576-4545-95d9-ae54910a6f59",
+        "79fba152-8946-4341-bacb-dc60ddc97f35"
+      ],
+      "settings": {
+        "heading": "More ways to earn points",
+        "section_spacing": "mb-20 md:mb-36"
+      }
+    },
+    "4ebf45ae-0470-4507-b6fe-f48ea9815428": {
+      "type": "loyalty-lion-tiers",
+      "blocks": {
+        "28ec4608-4b6c-4bd6-b563-e08c070c102f": {
+          "type": "tier",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/ll-cloud.svg",
+            "background_image": "shopify:\/\/shop_images\/AdobeStock_470781837_1.png",
+            "subtitle": "500 points",
+            "title": "Rising Star",
+            "summary": "It may be tier 1 but you still get a huge range of benefits",
+            "tier_detail": "<h3>Includes<\/h3><ul><li>Early Access to New Products<\/li><li>Exclusive Competitions<\/li><li>Refer a Friend<\/li><li>Birthday Points<\/li><\/ul>"
+          }
+        },
+        "369c3fec-b3ca-4ba7-bf01-8c40bb9cf6c9": {
+          "type": "tier",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/ll-cloud.svg",
+            "background_image": "shopify:\/\/shop_images\/AdobeStock_470781837_1.png",
+            "subtitle": "5,000 points",
+            "title": "Over the Moon",
+            "summary": "It may be tier 1 but you still get a huge range of benefits",
+            "tier_detail": "<h3>Includes<\/h3><ul><li>Early Access Sale<\/li><li>Exclusive Content<\/li><li>+ Everything in Rising Star<\/li><\/ul>"
+          }
+        },
+        "93638e06-ca1c-4d06-acd7-f1bb88499482": {
+          "type": "tier",
+          "settings": {
+            "icon": "shopify:\/\/shop_images\/ll-cloud.svg",
+            "background_image": "shopify:\/\/shop_images\/AdobeStock_470781837_1.png",
+            "subtitle": "10,00 points",
+            "title": "On Cloud Nine",
+            "summary": "It may be tier 1 but you still get a huge range of benefits",
+            "tier_detail": "<h3>Includes<\/h3><ul><li>Free Monogramming<\/li><li>+ Everything in Rising Star and  Over the Moon<\/li><\/ul>"
+          }
+        }
+      },
+      "block_order": [
+        "28ec4608-4b6c-4bd6-b563-e08c070c102f",
+        "369c3fec-b3ca-4ba7-bf01-8c40bb9cf6c9",
+        "93638e06-ca1c-4d06-acd7-f1bb88499482"
+      ],
+      "settings": {
+        "heading": "The TIers",
+        "section_spacing": "mb-0"
+      }
+    },
+    "9d51b0d1-0d5b-4a6c-b6f9-7cb0acc27a5d": {
+      "type": "faqs",
+      "blocks": {
+        "9fee2d4e-a4da-497b-82e5-a69bbbecdeab": {
+          "type": "faq_item",
+          "settings": {
+            "faq_title": "FAQ 1",
+            "faq_content": "<p>With <strong>DPD Pickup<\/strong>, if you’re not going to be at home for your <em>delivery<\/em> you can choose to have your order delivered to your nearest DPD Pickup point, where you can collect your order at your convenience. There are more than 6,500 locations to choose from and it's better for the environment! It’s a greener, more sustainable option and you’ll be contributing to reducing Co2 emissions from transportation.<br\/><br\/>How long will my parcel stay in the store? Your parcel will stay in store for 7 days, it will then be returned to the sender if it’s not collected in that time.<br\/><br\/>What do you need for DPD Pickup? You will need your Pickup pass which you will receive in an email.<br\/><br\/>How do I check my DPD collection? You can track your DPD parcel online using your reference number or opt-in to receive emails or texts about a parcel's progress.<br\/><br\/>What do I do if I can't find my Pickup pass? Your parcel number will be in the email\/text that you received when the parcel was dispatched. Visit www.dpd.co.uk and enter your parcel number and your home postcode. From here you can click to download your Pickup pass.<br\/><\/p>"
+          }
+        },
+        "84ff9b5c-8926-497c-a7b5-e854bcdd3fa5": {
+          "type": "faq_item",
+          "settings": {
+            "faq_title": "FAQ 2",
+            "faq_content": "<h1>This is a heading<\/h1><p><\/p><p>This is a paragraph sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercit<\/p><p><\/p><p><strong>Bold<\/strong> <em>italic<\/em> <a href=\"\/pages\/available-at-checkout\" title=\"Available at checkout\">link<\/a><\/p><ul><li>list item 1<\/li><li>list item 2<\/li><\/ul>"
+          }
+        },
+        "5bdcda82-7438-44fb-ad87-b7a77d0f4ac0": {
+          "type": "faq_item",
+          "settings": {
+            "faq_title": "FAQ 3",
+            "faq_content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercit<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "9fee2d4e-a4da-497b-82e5-a69bbbecdeab",
+        "84ff9b5c-8926-497c-a7b5-e854bcdd3fa5",
+        "5bdcda82-7438-44fb-ad87-b7a77d0f4ac0"
+      ],
+      "settings": {
+        "heading": "Popular questions",
+        "heading_alignment": "text-center",
+        "button_text": "View all questions",
+        "button_link": "shopify:\/\/pages\/homepage",
+        "section_spacing": "mb-20 md:mb-36"
+      }
+    },
+    "a60edd35-8aed-48aa-bea1-7f5db8081494": {
+      "type": "contained-link-card",
+      "blocks": {
+        "4d6d750d-4f07-4bb2-a0f6-581d8f6368fe": {
+          "type": "secondary_heading",
+          "settings": {
+            "heading": "Join"
+          }
+        },
+        "d956a43c-5a92-4e43-bb89-9802e1b2d0f6": {
+          "type": "primary_heading",
+          "settings": {
+            "heading": "On cloud nine rewards"
+          }
+        },
+        "9cee0730-7a84-436e-a337-fbaed2209a11": {
+          "type": "button",
+          "settings": {
+            "button_link": "",
+            "button_text": "Sign up now",
+            "button_style": "primary"
+          }
+        },
+        "2e94e148-dc40-4edc-aa49-a0ad630a4bdb": {
+          "type": "button",
+          "settings": {
+            "button_link": "shopify:\/\/collections",
+            "button_text": "Test button",
+            "button_style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "4d6d750d-4f07-4bb2-a0f6-581d8f6368fe",
+        "d956a43c-5a92-4e43-bb89-9802e1b2d0f6",
+        "9cee0730-7a84-436e-a337-fbaed2209a11",
+        "2e94e148-dc40-4edc-aa49-a0ad630a4bdb"
+      ],
+      "settings": {
+        "theme": "light",
+        "section_spacing": "mb-0"
+      }
+    },
+    "16003b65-2ed7-405b-9123-c26fc3828298": {
+      "type": "contained-link-card",
+      "blocks": {
+        "020e1886-bc40-4166-a43b-989433257c33": {
+          "type": "primary_heading_large",
+          "settings": {
+            "heading": "Want to Earn<br>more points?"
+          }
+        },
+        "52bf6989-bf3e-4071-a50b-6e97cdb69e3c": {
+          "type": "button",
+          "settings": {
+            "button_link": "shopify:\/\/collections",
+            "button_text": "Shop Now",
+            "button_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "020e1886-bc40-4166-a43b-989433257c33",
+        "52bf6989-bf3e-4071-a50b-6e97cdb69e3c"
+      ],
+      "settings": {
+        "theme": "light",
+        "section_spacing": "mb-0"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "59cc5d46-1349-469b-bebb-f69ffc6e0011",
+    "56c4009b-db2c-47b9-87b2-fbcbd56227ab",
+    "4ebf45ae-0470-4507-b6fe-f48ea9815428",
+    "9d51b0d1-0d5b-4a6c-b6f9-7cb0acc27a5d",
+    "a60edd35-8aed-48aa-bea1-7f5db8081494",
+    "16003b65-2ed7-405b-9123-c26fc3828298"
+  ]
+}

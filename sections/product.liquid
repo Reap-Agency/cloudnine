@@ -1,0 +1,477 @@
+{% liquid
+  assign loyaltyExcluded = false
+  for collection in product.collections
+    if collection.title contains 'Exclusion' or collection.title contains 'Subscription'
+      assign loyaltyExcluded = true
+    endif
+  endfor
+
+  assign symg_disabled = false
+  for tag in product.tags
+    if tag == 'swym-disabled'
+      assign symg_disabled = true
+    endif
+  endfor
+
+  assign current_variant = product.selected_or_first_available_variant
+
+  assign addToCartText = 'products.product.add_to_cart' | t
+  if current_variant.available != true
+    if symg_disabled
+      assign addToCartText = 'products.product.sold_out' | t
+    else
+      assign addToCartText = 'products.product.sold_out_notify' | t
+    endif
+  endif
+
+  if current_variant.inventory_policy == 'continue' and current_variant.available == true
+    assign addToCartText = 'products.product.pre_order' | t
+  endif
+
+  assign productPrice = product.price | money
+  assign monogram_colour = product.metafields.custom.monogram_service.value.monogram_colour | default: 'White*#FFF'
+  assign monogram_hex = monogram_colour | split: '*' | first | remove: '["'
+%}
+
+<form
+  method="post"
+  action="/cart/add"
+  x-on:submit="{% if product.metafields.custom.configurable_product_check == true %}event.preventDefault();{% endif %}"
+>
+  <input type="hidden" name="quantity" value="1">
+
+  <div
+    id="MainProduct-{{ section.id }}"
+    class="{{ section.settings.section_spacing }}"
+    data-section="{{ section.id }}"
+    {% if product.metafields.custom.configurable_product_check == true %}
+      x-data="
+        {
+          clickModal() {
+            var tick = document.querySelector('.modal-options .grid .tick');
+            var value = tick.dataset.productid;
+            var ticketVal = tick.querySelector('.price-varient').innerText;
+            var ticketId = document.getElementById('config-price');
+            var formInput = document.querySelector('.modal form input');
+            var symPlugginForm = document.querySelector('.modal form .swym-isa-inline-form');
+            var swymPlugginButtonBar = document.querySelector('.modal form .swym-button-bar');
+
+
+            formInput.setAttribute('value', value);
+            ticketId.setAttribute('data-prodId', value);
+            ticketId.innerText = ticketVal;
+
+            setTimeout(function() {
+            if (symPlugginForm || swymPlugginButtonBar) {
+
+              symPlugginForm.classList.add('hidden');
+              swymPlugginButtonBar.classList.add('hidden');
+
+            } else {
+              return
+            }
+          }, 4000);
+          },
+
+          selectedClick(e) {
+
+            var prodId = e.target.dataset.productid;
+            var price = e.target.dataset.price;
+            var ticketId = document.getElementById('config-price');
+            var formInput = document.querySelector('.modal form input');
+
+            formInput.setAttribute('value', prodId);
+            ticketId.setAttribute('data-prodId', prodId);
+            ticketId.innerText = price;
+          },
+        }
+      "
+    {% endif %}
+  >
+    {% if product.metafields.custom.configurable_product_check == true %}
+      {% render 'product-configuration-view',
+        product: product,
+        productName: product.title,
+        productAvailable: product.available,
+        productPrice: product.price,
+        productImg: section.settings.product_config_img
+      %}
+    {% endif %}
+    <product-info
+      id="ProductInfo-{{ section.id }}"
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      class=""
+
+      x-data="
+        {
+          showCountdown: true,
+          variantId: {{ current_variant.id }},
+          variantTitle: '{{ current_variant.title }}',
+          atcButtonText: '{{ addToCartText }}',
+          variantInventoryPolicy: '{{ current_variant.inventory_policy }}',
+          variantPrice: {{ current_variant.price }},
+          variantPriceFormatted: '{{ current_variant.price | money }}',
+          variantCompareAtPrice: {{ current_variant.compare_at_price | default: 0 }},
+          variantCompareAtPriceFormatted: '{{ current_variant.compare_at_price | default: 0 | money }}',
+          variantSaving: {{ current_variant.compare_at_price | minus: product.selected_or_first_available_variant.price }},
+          variantSavingFormatted: '{{ current_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}',
+          variantAvailable: {{ current_variant.available }},
+          variantDeliveryDate: '{{ current_variant.metafields.accentuate.expected_delivery_date }}',
+          onVariantChange(event) {
+            var productJSON = JSON.parse(document.querySelector('[data-product-json]').innerHTML);
+            var variantId = event.target.value;
+
+            productJSON.variants.forEach(function(variant) {
+
+              if(variant.id == variantId) {
+                currentVariant = variant;
+                return;
+              }
+            });
+
+            this.variantId = currentVariant.id;
+            this.variantTitle = currentVariant.title;
+            this.variantInventoryPolicy = Alpine.$data(event.target[event.target.selectedIndex]).vInventoryPolicy;
+            this.variantPrice = currentVariant.price;
+            this.variantPriceFormatted = '£'+(currentVariant.price / 100).toFixed(2);
+            this.variantCompareAtPrice = currentVariant.compare_at_price;
+            this.variantCompareAtPriceFormatted = '£'+(currentVariant.compare_at_price / 100).toFixed(2);
+            this.variantSaving = this.variantCompareAtPrice - this.variantPrice;
+            this.variantSavingFormatted = '£'+(this.variantSaving / 100).toFixed(2);
+            this.variantAvailable = currentVariant.available;
+            this.showCountdown = true;
+
+
+            if(this.variantAvailable) {
+              if (this.variantInventoryPolicy == 'continue') {
+                this.atcButtonText = '{{ 'products.product.pre_order' | t }}';
+                this.showCountdown = false;
+              } else {
+                this.atcButtonText = '{{ 'products.product.add_to_cart' | t }}';
+              }
+            } else {
+              if ({{ symg_disabled }} == false) {
+                this.atcButtonText = '{{ 'products.product.sold_out_notify' | t }}';
+                this.showCountdown = false;
+              } else {
+                this.atcButtonText = '{{ 'products.product.sold_out' | t }}';
+                this.showCountdown = false;
+              }
+            }
+
+            var variantUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?variant=' + this.variantId;
+            window.history.replaceState({path: variantUrl}, '', variantUrl);
+
+          }
+
+        }
+      "
+    >
+      <div class="bg-gray-50">
+        <div class="product__hero md:grid md:grid-cols-12 max-w-screen-2xl mx-auto">
+          <div class="md:col-span-6">
+            <!-- Product Image Carousel -->
+            {% assign product_media = product.media %}
+            {%- render 'product-image-carousel', product_media: product_media -%}
+          </div>
+          <div class="h-8 md:h-auto md:col-span-1 bg-white md:bg-gray-50"><!-- Spacing block --></div>
+
+          <div class="bg-white flex justify-center flex-col pb-8 md:pb-0 md:col-span-4 md:bg-gray-50 px-6 md:px-0">
+            <div class="pb-4">
+              <div class="border-b border-b-gray-300 mb-4">
+                <p x-show="!variantAvailable" class="font-body text-base text-brand-red uppercase">
+                  {{ 'products.product.inventory_out_of_stock' | t }}
+                </p>
+
+                <h1 class="font-primary text-12xl leading-primary-font uppercase pb-2">
+                  {{ product.title }}
+                </h1>
+
+                {% unless product.has_only_default_variant %}
+                  <p x-text="variantTitle" class="font-secondary text-2xl leading-secondary-font pb-2">
+                    {{ current_variant.title }}
+                  </p>
+                {% endunless %}
+
+                {% if product.metafields.custom.product_short_description != blank %}
+                  <p class="font-body text-base leading-body-font pt-2 pb-4">
+                    {{ product.metafields.custom.product_short_description }}
+                  </p>
+                {% endif %}
+
+                {% render 'product-preorder-expected-delivery-date' %}
+              </div>
+
+              {%- include 'product-linked-colour-options' -%}
+
+              {% liquid
+                unless product.has_only_default_variant
+                  render 'product-options'
+                endunless
+              %}
+
+              <div class="flex justify-between">
+                <div>
+                  <p
+                    class="font-secondary text-2xl leading-secondary-font pb-4 inline-block"
+                    data-product-price
+                    x-text="variantPriceFormatted"
+                    data-lion-price-for-product-id="{{ product.id }}"
+                  >
+                    {{ current_variant.price | money }}
+                  </p>
+
+                  {% if current_variant.compare_at_price > current_variant.price %}
+                    <p
+                      class="font-body text-sm leading-primary-font inline-block text-brand-red"
+                      x-show="variantSaving > 0"
+                    >
+                      <span data-product-price-saving-label>{{ 'products.product.save_text' | t }}</span>
+                      <span x-show="variantSaving > 0" x-text="variantSavingFormatted"></span>
+                    </p>
+                  {% endif %}
+                </div>
+
+                {% render 'product-reviews' %}
+              </div>
+
+              <div>
+                <button
+                  name="add"
+
+                  {% if product.metafields.custom.configurable_product_check == true %}
+                    x-on:click="modal = ! modal, clickModal()"
+                  {% endif %}
+                  class="js-add-to-cart add-to-cart btn-primary-green w-full"
+                  x-text="atcButtonText"
+                  x-bind:disabled="!variantAvailable"
+                  x-show="variantAvailable"
+                  {% if product.selected_or_first_available_variant.available != true %}
+                    disabled
+                  {% endif %}
+                >
+                  <span data-add-to-cart-text>
+                    {{ addToCartText }}
+                  </span>
+                </button>
+
+                {% include 'swym-product-view', product: product %}
+                <button
+                  x-show="!variantAvailable"
+                  x-text="atcButtonText"
+                  data-swaction="addToWatchlist"
+                  data-product-id="{{  product.id | json }}"
+                  data-product-url="{{ shop.url }}{{ product.url }}"
+                  class="product_{{product.id}} swym-add-to-watchlist btn-primary-dark w-full"
+                  {% if symg_disabled %}
+                    disabled
+                  {% endif %}
+                >
+                  {{ addToCartText }}
+                </button>
+              </div>
+            </div>
+
+            <p class="monogram-selected-text hidden mb-4">
+              {{ current_variant.title }}
+              (<span
+                class="selected-mono font-semibold"
+                data-monogram-colour="{{ monogram_hex }}"
+                data-monogram-free="{{ product.selected_or_first_available_variant.metafields.monogramming.free_monogram | default: 'false' }}"
+                data-monogram-id="{{ current_variant.id }}"
+              ></span
+              >) -
+              <a
+                class="has-text-black is-underlined modal-trigger"
+                href="#"
+                data-target="#monogramming-modal"
+                {% if product.metafields.custom.configurable_product_check == true %}
+                  x-on:click="modal = ! modal, clickModal()"
+                {% endif %}
+              >
+                {{- 'products.product.edit' | t -}}
+              </a>
+              {{ 'products.product.or' | t }}
+              <a class="has-text-black is-underlined" id="monogram-remove" href="#">
+                {{- 'products.product.remove' | t -}}
+              </a>
+            </p>
+
+            <div
+              class="space-y-4"
+              x-data="timer(new Date('{{ 'now' | date: '%Y-%m-%d' }} {{ shop.metafields.accentuate.next_day_cut_off }}'))"
+              x-init="init();"
+            >
+              <div class="flex items-center" x-show="time().hours > 0 && showCountdown">
+                <div class="w-6 h-6">{% render 'icon', icon: 'temp' %}</div>
+                {% if shop.metafields.accentuate.next_day_cut_off != blank %}
+                  {%- capture countdown -%}
+                  <span class="text-black font-semibold">
+                    <span x-show="time().days > 0"><span x-text="time().days"></span>d</span>
+                    <span x-show="time().hours > 0"><span x-text="time().hours"></span>hr</span>
+                    <span x-show="time().minutes > 0"><span x-text="time().minutes"></span>m</span>
+                    <span x-show="time().seconds > 0"><span x-text="time().seconds"></span>sec</span>
+                  </span>
+                  {%- endcapture -%}
+
+                  {%- capture countdownText -%}
+                  {{ 'products.product.delivery_countdown_html' | t }}
+                  {% endcapture %}
+                  <p class="delivery-countdown font-body text-xs text-gray-600 leading-none ml-2">
+                    {{ countdownText | replace: '[countdown]', countdown }}
+                  </p>
+                {% endif %}
+              </div>
+
+              <!-- @todo Move timer function -->
+              <script>
+                function timer(expiry) {
+                  return {
+                    expiry: expiry,
+                    remaining: null,
+                    init() {
+                      this.setRemaining();
+                      setInterval(() => {
+                        this.setRemaining();
+                      }, 1000);
+                    },
+                    setRemaining() {
+                      const diff = this.expiry - new Date().getTime();
+                      this.remaining = parseInt(diff / 1000);
+                    },
+                    days() {
+                      return {
+                        value: this.remaining / 86400,
+                        remaining: this.remaining % 86400,
+                      };
+                    },
+                    hours() {
+                      return {
+                        value: this.days().remaining / 3600,
+                        remaining: this.days().remaining % 3600,
+                      };
+                    },
+                    minutes() {
+                      return {
+                        value: this.hours().remaining / 60,
+                        remaining: this.hours().remaining % 60,
+                      };
+                    },
+                    seconds() {
+                      return {
+                        value: this.minutes().remaining,
+                      };
+                    },
+                    format(value) {
+                      return parseInt(value);
+                    },
+                    time() {
+                      return {
+                        days: this.format(this.days().value),
+                        hours: this.format(this.hours().value),
+                        minutes: this.format(this.minutes().value),
+                        seconds: this.format(this.seconds().value),
+                      };
+                    },
+                  };
+                }
+              </script>
+
+              {% if settings.show_klarna %}
+                <div class="flex items-center">
+                  <div class="w-6 h-6">{% render 'icon', icon: 'temp' %}</div>
+                  <p class="font-body text-xs leading-none text-gray-600 mx-2">Make 3 payments of £79.66 with</p>
+                  <div class="w-[2.813rem]">{% render 'icon', icon: 'klarna' %}</div>
+                </div>
+              {% endif %}
+
+              {%- if settings.loyalty -%}
+                {%- unless loyaltyExcluded == true -%}
+                  <div class="flex items-center">
+                    <div class="w-6 h-6">{% render 'icon', icon: 'temp' %}</div>
+                    <p class="font-body text-xs leading-none text-gray-600 ml-2">
+                      {{ 'products.product.loyalty_lion_rewards_first' | t }}
+                      <span data-lion-points-for-product-id="{{ product.id }}"></span>
+                      <span class="text-black">{{ 'products.product.loyalty_lion_rewards_last_html' | t }}</span>
+                    </p>
+                  </div>
+                {%- endunless -%}
+              {%- endif -%}
+
+              {%- if settings.enable_product_trade_in -%}
+                {%- for c in product.collections -%}
+                  {%- if c.handle == 'trade-in' -%}
+                    <div class="product__trade-in richtext p-4 border border-gray-300 max-w-none">
+                      {{ settings.product_trade_in_text }}
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </product-info>
+  </div>
+</form>
+
+<script type="application/json" data-product-json>
+  {{ product | json }}
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_spacing",
+      "label": "Section Spacing",
+      "info": "Spacing will be added to the bottom of the section",
+      "options": [
+        {
+          "value": "mb-0",
+          "label": "None - 0px"
+        },
+        {
+          "value": "mb-1 md:mb-2",
+          "label": "XXSmall - Mobile: 4px | Desktop: 8px"
+        },
+        {
+          "value": "mb-2 md:mb-4",
+          "label": "XSmall - Mobile: 8px | Desktop: 16px"
+        },
+        {
+          "value": "mb-4 md:mb-8",
+          "label": "Small - Mobile: 16px | Desktop: 32px"
+        },
+        {
+          "value": "mb-8 md:mb-16",
+          "label": "Medium - Mobile: 32px | Desktop: 64px"
+        },
+        {
+          "value": "mb-12 md:mb-28",
+          "label": "Large - Mobile: 48px | Desktop: 112px"
+        },
+        {
+          "value": "mb-20 md:mb-36",
+          "label": "XLarge - Mobile: 80px | Desktop: 144px"
+        },
+        {
+          "value": "mb-24 md:mb-44",
+          "label": "XXL - Mobile: 96px | Desktop: 176px"
+        }
+      ],
+      "default": "mb-4 md:mb-8"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_config_img",
+      "label": "Product Configure Main Image"
+    }
+  ]
+}
+{% endschema %}

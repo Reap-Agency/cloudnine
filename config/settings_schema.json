@@ -1,0 +1,186 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Cloud Nine 2.0",
+    "theme_version": "1.0.0",
+    "theme_author": "Shopify",
+    "theme_documentation_url": "https:\/\/help.shopify.com\/manual\/online-store\/themes",
+    "theme_support_url": "https:\/\/support.shopify.com\/"
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social accounts"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube",
+        "info": "https:\/\/www.youtube.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https:\/\/facebook.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "http:\/\/instagram.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter",
+        "info": "https:\/\/twitter.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https:\/\/pinterest.com\/shopify"
+      }
+    ]
+  },
+  {
+    "name": "Trade In",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_product_trade_in",
+        "label": "Enable product trade-in text",
+        "default": true
+      },
+      {
+        "type": "richtext",
+        "id": "product_trade_in_text",
+        "label": "Product Trade-in Text",
+        "info": "Enter text for the trade-in box shown on the product page."
+      }
+    ]
+  },
+  {
+    "name": "Loyalty",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "loyalty",
+        "label": "Enable Loyalty",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Payments",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_klarna",
+        "label": "Show Klarna"
+      }
+    ]
+  },
+  {
+    "name": "Salesforce Chat",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "salesforce_enable",
+        "label": "Enable salesforce chat?",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "salesforce_button_background",
+        "label": "Contact Us\/Chat with us button background colour",
+        "default": "#30af9c"
+      },
+      {
+        "type": "header",
+        "content": "Script Settings"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_base_core_url",
+        "label": "Base Core URL",
+        "info": "e.g. https:\/\/cloudninehair--fullsbx.my.salesforce.com"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_base_webchat_url",
+        "label": "Base Webchat URL",
+        "info": "e.g. https:\/\/fullsbx-c9hair.cs110.force.com\/webchat"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_organizationId",
+        "label": "organizationId",
+        "info": "e.g. 00D0C0000000iQG"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_baseLiveAgentContentURL",
+        "label": "baseLiveAgentContentURL",
+        "info": "e.g. https:\/\/c.la1-c1cs-lo2.salesforceliveagent.com\/content"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_baseLiveAgentURL",
+        "label": "baseLiveAgentURL",
+        "info": "e.g. https:\/\/d.la1-c1cs-lo3.salesforceliveagent.com\/chat"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_deploymentId",
+        "label": "deploymentId",
+        "info": "e.g. 5720C00000000Iu"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_buttonId",
+        "label": "buttonId",
+        "info": "e.g. 5730C00000000aB"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_eswLiveAgentDevName",
+        "label": "eswLiveAgentDevName",
+        "info": "e.g. UK_Chat_Team"
+      },
+      {
+        "type": "checkbox",
+        "id": "salesforce_isOfflineSupportEnabled",
+        "label": "isOfflineSupportEnabled",
+        "info": "true\/false"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_embeddedServiceScriptSrc",
+        "label": "embeddedServiceScriptSrc",
+        "info": "e.g. https:\/\/cloudninehair--fullsbx.my.salesforce.com\/embeddedservice\/5.0\/esw.min.js"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_chat_with_us",
+        "label": "Chat with us text",
+        "default": "Chat with us"
+      },
+      {
+        "type": "text",
+        "id": "salesforce_disabledMinimizedText",
+        "label": "disabledMinimizedText",
+        "default": "Help Centre"
+      },
+      {
+        "type": "checkbox",
+        "id": "salesforce_redirectOfflineToHelpcentre",
+        "label": "Redirect Offline To Help Centre?",
+        "default": false
+      }
+    ]
+  }
+]

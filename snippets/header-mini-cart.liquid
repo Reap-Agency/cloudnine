@@ -1,0 +1,74 @@
+{% comment %}
+  Renders a header mini cart. Should be used with 'header.liquid'
+
+  Usage:
+  {% render 'header-mini-cart' %}
+{% endcomment %}
+
+<div
+  x-cloak
+  x-data="{ miniCartIsOpen: false, isMobile: false }"
+  x-init="isMobile = (window.innerWidth < 846) ? true : false"
+  x-on:resize.window="isMobile = (window.innerWidth < 846) ? true : false"
+  class="relative z-mini-cart"
+  @mouseleave.out="miniCartIsOpen = false"
+  @keyup.escape="miniCartIsOpen = false"
+>
+  <!-- @todo dynamic aria label for empty cart or number of items in cart -->
+  <a
+    href="/cart"
+    aria-label="Bag 1 item"
+    aria-controls="minicart-dropdown"
+    class="block"
+    @mouseover="miniCartIsOpen = !miniCartIsOpen"
+    @keyup.space="miniCartIsOpen = !miniCartIsOpen"
+  >
+    <!-- Setting the basket icon SVG here to set hover state via alpine.js -->
+    <svg
+      width="24"
+      height="24"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="1.2"
+      stroke="currentColor"
+      class="icon icon-bag text-black block pointer-events-none"
+      x-bind:class="miniCartIsOpen ? 'fill-gray-100' : 'fill-none'"
+      paint-order="fill"
+    >
+      <path d="M7.90625 7.69443V5.85091C7.90625 3.63094 9.73581 1.82617 11.9988 1.82617C14.2619 1.82617 16.0914 3.6254 16.0914 5.85091V7.69443"/>
+      <path d="M5.14277 7.45117H18.856L19.9988 21.1752H4L5.14277 7.45117Z"/>
+    </svg>
+  </a>
+  <div
+    x-show="miniCartIsOpen && !isMobile"
+    x-collapse.duration.500
+    id="minicart-dropdown"
+    class="absolute top-6 -right-4 pt-6 cursor-default"
+  >
+    <div class="p-10 pt-12 bg-white border border-gray-400 w-full md:w-[25rem]">
+      <h4 class="font-primary text-3xl leading-primary-font text-black p-2 pb-4 border-b border-b-gray-400">
+        {{ 'general.cart.my_cart' | t }}
+      </h4>
+      <div class="py-8">
+        <!-- Products loop here -->
+        <!-- @todo product line items get added here (will be a snippet) -->
+        <!-- End of products loop -->
+
+        <!-- @todo conditional logic to show this if no products are added -->
+        <p class="font-body text-sm leading-body-font text-gray-700 text-center">
+          {{ 'general.cart.cart_empty' | t }}
+        </p>
+      </div>
+      <!-- @todo conditional logic to show this if products are added -->
+      {% comment %}
+        <div class="mini-cart__total flex justify-between items-center p-2">
+          <h4 class="font-primary text-3xl leading-primary-font text-black uppercase">Sub total:</h4>
+          <!-- Configure price -->
+          <p class="font-secondary leading-primary-font text-black text-xl uppercase pb-6">£219</p>
+        </div>
+      {% endcomment %}
+      <a href="/cart" class="btn-primary-dark w-full">{{ 'general.cart.view_empty_cart' | t }}</a>
+    </div>
+  </div>
+</div>
