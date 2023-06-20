@@ -2,3 +2,5 @@ development:
   password: shptka_faaf83aee8ea3d08601c763036f2ad12
   theme_id: "152891359533"
   store: cloudninehair-uk.myshopify.com
+  ignore_files:
+  - config/settings_data.json
