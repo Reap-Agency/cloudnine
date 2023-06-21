@@ -89,9 +89,6 @@
       </div>
     </div>
 
-    {% comment %} Options {% endcomment %}
-
-    {% render 'trade-in-option' %}
 
     <div class="spacer w-full h-20"></div>
     <div class="modal-options mx-auto w-full h-auto grid col-span-12">
@@ -194,6 +191,10 @@
     {% comment %} mongram {% endcomment %}
 
     {% render 'monogram' %}
+
+    {% comment %} Options {% endcomment %}
+
+    {% render 'trade-in-option' %}
 
     {% render 'bundle-card' %}
     <div x-cloak class="modal-content mx-auto w-full h-auto grid col-span-12"></div>
