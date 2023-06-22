@@ -74,9 +74,6 @@
       {%- capture countdownText -%}
       {{ 'products.product.delivery_countdown_html' | t }}
       {% endcapture %}
-      <p class="delivery-countdown font-body text-xs text-gray-600 leading-none ml-2">
-        {{ countdownText | replace: '[countdown]', countdown }}
-      </p>
     {% endif %}
     <div class="modal-content w-full mx-auto h-auto grid col-span-12 text-center">
       {% comment %} Content {% endcomment %}

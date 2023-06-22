@@ -368,30 +368,29 @@
                     },
                     time() {
                       if(this.format(this.days().value) > 0){
-                        $(".show-model-timer [x-show='time().days > 0'] span").text(this.format(this.days().value));
-                        $(".show-model-timer [x-show='time().days > 0']").show();
+                        document.querySelectorAll(".show-model-timer [x-show='time().days > 0'] span")[0].innerHTML = this.format(this.days().value);
+                        document.querySelectorAll(".show-model-timer [x-show='time().days > 0']")[0].style.display = "unset";
                       }else{
-                        $(".show-model-timer [x-show='time().days > 0']").hide();
+                        document.querySelectorAll(".show-model-timer [x-show='time().days > 0']")[0].style.display = "none";
                       }
                       if(this.format(this.hours().value) > 0){
-                        $(".show-model-timer [x-show='time().hours > 0'] span").text(this.format(this.hours().value));
-                        $(".show-model-timer [x-show='time().hours > 0']").show();
+                        document.querySelectorAll(".show-model-timer [x-show='time().hours > 0'] span")[0].innerHTML = this.format(this.hours().value);
+                        document.querySelectorAll(".show-model-timer [x-show='time().hours > 0']")[0].style.display = "unset";
                       }else{
-                        $(".show-model-timer [x-show='time().hours > 0']").hide();
+                        document.querySelectorAll(".show-model-timer [x-show='time().hours > 0']")[0].style.display = "none";
                       }
                       if(this.format(this.minutes().value) > 0){
-                        $(".show-model-timer [x-show='time().minutes > 0'] span").text(this.format(this.minutes().value));
-                        $(".show-model-timer [x-show='time().minutes > 0']").show();
+                        document.querySelectorAll(".show-model-timer [x-show='time().minutes > 0'] span")[0].innerHTML = this.format(this.minutes().value);
+                        document.querySelectorAll(".show-model-timer [x-show='time().minutes > 0']")[0].style.display = "unset";
                       }else{
-                        $(".show-model-timer [x-show='time().minutes > 0']").hide();
+                        document.querySelectorAll(".show-model-timer [x-show='time().minutes > 0']")[0].style.display = "none";
                       }
                       if(this.format(this.seconds().value) > 0){
-                        $(".show-model-timer [x-show='time().seconds > 0'] span").text(this.format(this.seconds().value));
-                        $(".show-model-timer [x-show='time().seconds > 0']").show();
+                        document.querySelectorAll(".show-model-timer [x-show='time().seconds > 0'] span")[0].innerHTML = this.format(this.seconds().value);
+                        document.querySelectorAll(".show-model-timer [x-show='time().seconds > 0']")[0].style.display = "unset";
                       }else{
-                        $(".show-model-timer [x-show='time().seconds > 0']").hide();
+                        document.querySelectorAll(".show-model-timer [x-show='time().seconds > 0']")[0].style.display = "none";
                       }
-
                       return {
                         days: this.format(this.days().value),
                         hours: this.format(this.hours().value),
